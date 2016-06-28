@@ -2,6 +2,8 @@ package com.das.chart;
 
 import android.graphics.Color;
 
+import com.das.Myapp;
+import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
@@ -92,11 +94,15 @@ public class ChartManager {
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setAxisMaxValue(ChartConstants.SPEED_LIMIT_UP);
         leftAxis.setAxisMinValue(ChartConstants.SPEED_LIMIT_DOWN);
+        //刻度间距
         leftAxis.addLimitLine(limitLine);
+        leftAxis.setLabelCount(ChartConstants.SPEED_LEVEL,false);
 
         //不显示右边Y轴
         YAxis rightAxis = barChart.getAxisRight();
         rightAxis.setEnabled(false);
+        rightAxis.setTextColor(Myapp.sContext.getResources().getColor(R.color.white));
+        rightAxis.setTextSize(16f);
 
         barChart.setData(barData); // 设置数据
 
@@ -105,10 +111,6 @@ public class ChartManager {
         mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
         mLegend.setFormSize(6f);// 字体
         mLegend.setTextColor(Color.BLACK);// 颜色
-
-//      X轴设定
-//      XAxis xAxis = barChart.getXAxis();
-//      xAxis.setPosition(XAxisPosition.BOTTOM);
 
         barChart.animateX(2500); // 立即执行的动画,x轴
     }

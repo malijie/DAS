@@ -10,5 +10,9 @@ public class ChartConstants {
     public static final float SPEED_LIMIT_DOWN = 0F;
     //速度限制
     public static final float SPEED_LIMIT = 180F;
+    //Y轴间距
+    public static final int SPEED_LEVEL = 220;
+
+
 
 }

@@ -37,7 +37,7 @@ public class ShowSpeedFragment extends Fragment{
 
     private void initViews(View v) {
         mTextCurrentSpeed = (TextView) v.findViewById(R.id.id_speed_text_current_speed);
-        mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_barchart_suggest_speed);
+        mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
     }
 
 }

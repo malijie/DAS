@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/showspeed"
         android:name="com.das.fragment.ShowSpeedFragment"
-        android:layout_width="400dp"
+        android:layout_width="420dp"
         android:layout_height="550dp"
         android:layout_marginTop="100dp"
         android:layout_marginStart="80dp"/>
