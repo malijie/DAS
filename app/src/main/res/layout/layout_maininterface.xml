@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/gray_8f">
+
+    <fragment
+        android:id="@+id/mytime"
+        android:name="com.das.fragment.MyTimeFragment"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        tools:layout="@layout/mytime" />
+
+
+    <fragment
+        android:id="@+id/fragment_drivingadvice"
+        android:name="com.das.fragment.DrivingAdviceFragment"
+        android:layout_width="800dp"
+        android:layout_height="200dp"
+        tools:layout="@layout/fragment_drivingadvice"
+        android:layout_toEndOf="@+id/button_energy"
+        android:layout_marginTop="120dp" />
+
+    <fragment
+        android:id="@+id/fragment_speed"
+        android:name="com.das.fragment.SpeedFragment"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        tools:layout="@layout/fragment_speed"
+        android:layout_above="@+id/button_exit"
+        android:layout_alignStart="@+id/fragment_drivingadvice" />
+
+    <fragment
+        android:id="@+id/fragment_simpleschedule"
+        android:name="com.das.fragment.SimpleScheduleFragment"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        tools:layout="@layout/fragment_simpleschedule"
+        android:layout_alignTop="@+id/fragment_speed"
+        android:layout_alignEnd="@+id/fragment_drivingadvice" />
+
+    <Button
+        android:id="@+id/button_energy"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/button_energy" />
+
+    <Button
+        android:id="@+id/button_schedule"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/button_energy"
+        android:text="@string/button_schedule" />
+
+    <Button
+        android:id="@+id/button_drivingspeedcurves"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/button_schedule"
+        android:text="@string/button_drivingspeedcurves" />
+
+    <Button
+        android:id="@+id/button_traininformation"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/button_drivingspeedcurves"
+        android:text="@string/button_traininformation" />
+
+    <Button
+        android:id="@+id/button_settings"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/button_traininformation"
+        android:text="@string/button_settings" />
+
+    <Button
+        android:id="@+id/button_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/button_exit" />
+</RelativeLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_8f"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="列车辅助驾驶系统"
+        android:textColor="@color/red"
+        android:textSize="70sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="司机姓名:"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            />
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
+            android:textSize="45sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  车  次    :"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            android:layout_marginLeft="30dp"
+            />
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
+            android:textSize="45sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="机车、车辆信息:"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            />
+        <Spinner
+            android:id="@+id/id_login_spinner_train_info"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="线路信息导入:"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            />
+        <Spinner
+            android:id="@+id/id_login_spinner_route_info"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_login_text_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发车确认"
+        android:layout_gravity="center_horizontal"
+        android:textSize="60dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="true"/>
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/id_speed_barchart_suggest_speed"
+        android:layout_width="320dp"
+        android:layout_height="400dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_speed_barchart_suggest_speed"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="50dp">
+        <TextView
+            android:id="@+id/id_speed_text_current_speed"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@color/yellow"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:text="150"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/id_speed_text_current_speed"
+            android:textSize="30sp"
+            android:text="当前速度"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

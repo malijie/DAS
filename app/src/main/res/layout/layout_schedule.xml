@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/gray_8f">
+
+    <fragment
+        android:id="@+id/mytime"
+        android:name="com.das.fragment.MyTimeFragment"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        tools:layout="@layout/mytime" />
+
+    <fragment
+        android:id="@+id/fragment_schedule"
+        android:name="com.das.fragment.ScheduleFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="450dp"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="800dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="@string/button_schedule"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textSize="30sp"
+        android:id="@+id/titleschedule" />
+
+
+    <TextView
+        android:layout_width="800dp"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/titleschedule"
+        android:layout_toStartOf="@+id/mytime" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        android:layout_alignBottom="@+id/mytime"
+        android:layout_alignStart="@+id/mytime"
+        android:id="@+id/textView" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/mytime"
+        android:layout_alignBottom="@+id/mytime" />
+
+    <Button
+        android:id="@+id/button_schedule_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/button_return" />
+
+
+</RelativeLayout>

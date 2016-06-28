@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">DAS</string>
+    <string name="title_activity_main_interface">MainInterface</string>
+
+    <string name="button_energy">能耗统计</string>
+    <string name="button_schedule">时刻表</string>
+    <string name="button_drivingspeedcurves">运行曲线</string>
+    <string name="button_traininformation">列车信息</string>
+    <string name="button_settings">设置</string>
+    <string name="button_exit">退出</string>
+    <string name="currentcondition">当前工况</string>
+    <string name="nextcondition">下一工况</string>
+    <string name="countdown">切换倒计时</string>
+    <string name="currentspeed">当前速度</string>
+    <string name="advicespeed">建议速度</string>
+    <string name="maximumspeed">最高限速</string>
+    <string name="arrivaltime">到达时间</string>
+    <string name="mileage">里程</string>
+    <string name="trainplan">当前计划</string>
+    <string name="button_return">返回</string>
+    <string name="driver">司机</string>
+    <string name="trainnumber">车次</string>
+    <string name="trainmodel">车型</string>
+    <string name="departuretime">计划发车时间</string>
+    <string name="terminaltime">计划终到时间</string>
+</resources>

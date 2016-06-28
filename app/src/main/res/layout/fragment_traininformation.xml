@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/driver"
+        android:layout_width="600dp"
+        android:layout_height="100dp"
+        android:text="@string/driver"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/trainnumber"
+        android:layout_width="600dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/driver"
+        android:layout_alignParentStart="true"
+        android:text="@string/trainnumber"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/trainmodel"
+        android:layout_width="600dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/trainnumber"
+        android:layout_alignParentStart="true"
+        android:text="@string/trainmodel"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/departuretime"
+        android:layout_width="600dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/trainmodel"
+        android:layout_alignParentStart="true"
+        android:text="@string/departuretime"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/terminaltime"
+        android:layout_width="600dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/departuretime"
+        android:layout_alignParentStart="true"
+        android:text="@string/terminaltime"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:layout_width="600dp"
+        android:layout_height="1dp"
+        android:background="@color/white" />
+
+    <TextView
+        android:layout_width="600dp"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        android:layout_below="@+id/terminaltime"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="500dp"
+        android:background="@color/white" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="500dp"
+        android:background="@color/white"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/driver" />
+
+</RelativeLayout>
