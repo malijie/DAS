@@ -36,51 +36,132 @@
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="1dp"/>
-    
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/id_speed_bar_chart_suggest_speed"
-        android:layout_width="200dp"
-        android:layout_height="460dp"
-        android:layout_centerInParent="true"/>
 
     <RelativeLayout
-        android:id="@+id/id_speed_layout_limit"
-        android:layout_width="120dp"
+        android:id="@+id/id_energy_layout_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_toRightOf="@id/id_speed_bar_chart_suggest_speed">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp">
         <TextView
-            android:id="@+id/id_speed_text_limit"
+            android:id="@+id/id_energy_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="最高限速"
-            android:textColor="@color/white"
-            android:textSize="25dp"/>
-        <TextView
-            android:id="@+id/id_speed_text_limit_value"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/white"
-            android:textSize="25dp"
-            android:gravity="center"
-            android:layout_below="@id/id_speed_text_limit"
-            android:text="170"
+            android:text="能耗"
+            android:textSize="30sp"
             android:layout_centerHorizontal="true"
-            android:background="@color/red"/>
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1562KWH"
+            android:textSize="40sp"
+            android:layout_below="@id/id_energy_text_title"
+            android:textColor="@color/white"/>
     </RelativeLayout>
+
+   <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/id_energy_bar_chart_pop"
+        android:layout_width="100dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/id_energy_layout_title"
+        android:layout_centerHorizontal="true"/>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/id_energy_bar_chart_break"
+        android:layout_width="100dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/id_energy_bar_chart_pop"
+        android:layout_centerHorizontal="true"/>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/id_energy_bar_chart_emergency"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/id_energy_bar_chart_break"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/id_energy_text_pop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="牵引档位"
+        android:textSize="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/id_energy_bar_chart_pop"/>
+
+    <TextView
+        android:id="@+id/id_energy_text_break"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="制动档位"
+        android:textSize="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/id_energy_bar_chart_pop"
+        android:layout_below="@id/id_energy_text_pop"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="紧急制动"
+        android:textSize="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/id_energy_bar_chart_pop"
+        android:layout_below="@id/id_energy_text_break"/>
+
+
+
+       <RelativeLayout
+           android:id="@+id/id_speed_layout_suggest"
+           android:layout_width="120dp"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="30dp"
+           android:layout_below="@id/id_energy_layout_title"
+           android:layout_toRightOf="@id/id_energy_bar_chart_pop"
+           android:layout_marginRight="20dp">
+
+           <TextView
+               android:id="@+id/id_energy_text_suggest"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="8dp"
+               android:textColor="@color/white"
+               android:text="建议功耗"
+               android:textSize="25dp"/>
+
+           <TextView
+               android:id="@+id/id_energy_text_suggest_value"
+               android:layout_width="100dp"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="8dp"
+               android:textColor="@color/white"
+               android:textSize="25dp"
+               android:gravity="center"
+               android:text="170"
+               android:layout_centerHorizontal="true"
+               android:background="@color/green"
+               android:layout_below="@id/id_energy_text_suggest"/>
+
+       </RelativeLayout>
 
 
     <RelativeLayout
-        android:id="@+id/id_speed_layout_suggest"
+        android:id="@+id/id_energy_layout_current"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_below="@id/id_speed_layout_limit"
-        android:layout_toRightOf="@id/id_speed_bar_chart_suggest_speed">
+        android:layout_below="@id/id_speed_layout_suggest"
+        android:layout_toRightOf="@id/id_energy_bar_chart_pop"
+        android:layout_marginRight="20dp">
 
         <TextView
-            android:id="@+id/id_speed_text_suggest_value"
+            android:id="@+id/id_power_text_current"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -89,48 +170,20 @@
             android:gravity="center"
             android:text="170"
             android:layout_centerHorizontal="true"
-            android:background="@color/green"/>
+            android:background="@color/yellow"/>
+
 
         <TextView
-            android:id="@+id/id_speed_text_suggest"
+            android:id="@+id/id_energy_layout_current_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="最高限速"
+            android:text="当前功耗"
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
-            android:layout_below="@id/id_speed_text_suggest_value"
+            android:layout_below="@id/id_power_text_current"
             android:textSize="25dp"/>
 
+
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/id_speed_bar_chart_suggest_speed"
-        android:layout_centerHorizontal="true">
-        <TextView
-            android:id="@+id/id_speed_text_current_speed"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@color/yellow"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="150"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/id_speed_text_current_speed"
-            android:textSize="30sp"
-            android:text="当前速度"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"/>
-    </RelativeLayout>
-
-
 
 </RelativeLayout>
