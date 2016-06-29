@@ -9,33 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/white"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginTop="5dp"/>
     <View
         android:id="@+id/id_speed_bar_chart_border_left"
         android:layout_width="3dp"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginTop="5dp"/>
     <View
         android:id="@+id/id_speed_bar_chart_border_right"
         android:layout_width="3dp"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginTop="5dp"/>
     <View
         android:id="@+id/id_speed_bar_chart_border_bottom"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/white"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="1dp"/>
+        />
 
     <RelativeLayout
         android:id="@+id/id_energy_layout_title"
@@ -87,9 +82,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="牵引档位"
-        android:textSize="30dp"
+        android:textSize="24dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="200dp"
-        android:layout_marginRight="20dp"
         android:layout_toLeftOf="@id/id_energy_bar_chart_pop"/>
 
     <TextView
@@ -98,9 +93,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="制动档位"
-        android:textSize="30dp"
+        android:textSize="24dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="100dp"
-        android:layout_marginRight="20dp"
         android:layout_toLeftOf="@id/id_energy_bar_chart_pop"
         android:layout_below="@id/id_energy_text_pop"/>
 
@@ -109,9 +104,10 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="紧急制动"
-        android:textSize="30dp"
+        android:textSize="24dp"
         android:layout_marginTop="100dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center"
         android:layout_toLeftOf="@id/id_energy_bar_chart_pop"
         android:layout_below="@id/id_energy_text_break"/>
 
@@ -124,7 +120,7 @@
            android:layout_marginTop="30dp"
            android:layout_below="@id/id_energy_layout_title"
            android:layout_toRightOf="@id/id_energy_bar_chart_pop"
-           android:layout_marginRight="20dp">
+           android:layout_marginLeft="30dp">
 
            <TextView
                android:id="@+id/id_energy_text_suggest"
@@ -133,7 +129,7 @@
                android:layout_marginTop="8dp"
                android:textColor="@color/white"
                android:text="建议功耗"
-               android:textSize="25dp"/>
+               android:textSize="24dp"/>
 
            <TextView
                android:id="@+id/id_energy_text_suggest_value"
@@ -158,7 +154,7 @@
         android:layout_marginTop="30dp"
         android:layout_below="@id/id_speed_layout_suggest"
         android:layout_toRightOf="@id/id_energy_bar_chart_pop"
-        android:layout_marginRight="20dp">
+        android:layout_marginLeft="30dp">
 
         <TextView
             android:id="@+id/id_power_text_current"
@@ -166,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
-            android:textSize="25dp"
+            android:textSize="24dp"
             android:gravity="center"
             android:text="170"
             android:layout_centerHorizontal="true"
@@ -181,8 +177,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
             android:layout_below="@id/id_power_text_current"
-            android:textSize="25dp"/>
-
+            android:textSize="24dp"/>
 
     </RelativeLayout>
 

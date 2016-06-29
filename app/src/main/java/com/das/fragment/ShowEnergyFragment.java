@@ -17,13 +17,10 @@ import com.github.mikephil.charting.data.BarData;
  */
 public class ShowEnergyFragment extends Fragment{
 
-    private TextView mTextCurrentSpeed = null;
-    private BarChart mBarChartSuggestSpeed = null;
-    private BarData mBarData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View v = inflater.inflate(R.layout.fragment_showspeed, container,false);
+        View v = inflater.inflate(R.layout.fragment_energy, container,false);
 
         initViews(v);
         initData();
@@ -32,12 +29,10 @@ public class ShowEnergyFragment extends Fragment{
     }
 
     private void initData() {
-        ChartManager.getInstance().createEnergyBarChart(mBarChartSuggestSpeed);
+
     }
 
     private void initViews(View v) {
-        mTextCurrentSpeed = (TextView) v.findViewById(R.id.id_speed_text_current_speed);
-        mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
     }
 
 }

@@ -25,8 +25,7 @@
         android:layout_toRightOf="@id/showspeed"
         android:layout_width="420dp"
         android:layout_height="550dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginStart="1dp"/>
+        android:layout_marginTop="100dp"/>
 
     <TextView
         android:layout_width="800dp"
