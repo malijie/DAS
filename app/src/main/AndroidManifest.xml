@@ -25,12 +25,10 @@
 
         <activity android:name="com.das.activity.MainActivity"/>
 
-        <activity android:name="com.das.activity.EnergyActivity" >
-        </activity>
-        <activity android:name="com.das.activity.ScheduleActivity" >
-        </activity>
-        <activity android:name="com.das.activity.TrainInformationActivity" >
-        </activity>
+        <activity android:name="com.das.activity.EnergyActivity" />
+        <activity android:name="com.das.activity.ScheduleActivity" />
+        <activity android:name="com.das.activity.TrainInformationActivity" />
+        <activity android:name="com.das.activity.RunningCurveActivity" />
 
         <service android:name="com.das.service.CalculateSpeedService">
         </service>

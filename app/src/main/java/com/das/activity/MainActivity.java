@@ -15,8 +15,6 @@ import com.example.das.R;
  */
 public class MainActivity extends Activity implements View.OnClickListener {
 
-
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -48,6 +46,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 case R.id.button_traininformation:
                     Intent intent_traininformation = new Intent(MainActivity.this, TrainInformationActivity.class);
                     startActivity(intent_traininformation);
+                    break;
+                case R.id.button_drivingspeedcurves:
+                    Intent intent = new Intent(MainActivity.this,RunningCurveActivity.class);
+                    startActivity(intent);
+
                     break;
 
             }

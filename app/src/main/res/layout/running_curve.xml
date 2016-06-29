@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray">
+
+    <TextView
+        android:id="@+id/id_curve_text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="运行曲线"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:layout_marginTop="20dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/white"
+        android:layout_below="@id/id_curve_text_title"
+        android:layout_marginTop="5dp"/>
+
+    <fragment
+        android:id="@+id/id_curve_fragment_mytime"
+        android:name="com.das.fragment.MyTimeFragment"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/id_curve_line_chart_running"
+        android:layout_width="800dp"
+        android:layout_height="400dp"
+        android:background="#ffffff"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/id_curve_line_chart_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+
+</RelativeLayout>
