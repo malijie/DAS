@@ -32,9 +32,10 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/id_curve_line_chart_running"
         android:layout_width="800dp"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         android:background="#ffffff"
-        android:layout_centerInParent="true"/>
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/id_curve_line_chart_back"
