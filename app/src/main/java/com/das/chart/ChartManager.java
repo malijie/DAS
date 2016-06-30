@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,16 +79,57 @@ public class ChartManager {
             xValues.add("" + i);
         }
 
+        LineDataSet suggestSpeedLineDataSet = getSuggestSpeedLineDataSet();
+        LineDataSet topSpeedDataSet = getTopSpeedLineDataSet();
+
+        ArrayList<ILineDataSet> allLinesList = new ArrayList<ILineDataSet>();
+        allLinesList.add(topSpeedDataSet); // add the datasets
+        allLinesList.add(suggestSpeedLineDataSet); // add the datasets
+
+        // create a data object with the datasets
+        LineData lineData = new LineData(xValues, allLinesList);
+        lineData.setDrawValues(false);
+
+        return lineData;
+    }
+
+    /**
+     * 获取建议速度值得集合
+     * @return
+     */
+    private LineDataSet getSuggestSpeedLineDataSet(){
+        ArrayList<Entry> yValues = new ArrayList<Entry>();
+        List<Integer> speedList = DataManager.getInstance().getSuggestSpeedList();
+        for (int i = 0; i < speedList.size(); i++) {
+            float value = (float) speedList.get(i);
+            yValues.add(new Entry(value, i));
+        }
+        LineDataSet lineSpeedDataSet = new LineDataSet(yValues, "距离");
+        lineSpeedDataSet.setLineWidth(1.75f); // 线宽
+        lineSpeedDataSet.setCircleSize(3f);// 显示的圆形大小
+        lineSpeedDataSet.setColor(Color.YELLOW);// 显示颜色
+        lineSpeedDataSet.setCircleColor(Color.YELLOW);// 圆形的颜色
+        lineSpeedDataSet.setHighLightColor(Color.YELLOW); // 高亮的线的颜色
+        lineSpeedDataSet.setCubicIntensity(1f);//设置平滑度
+        lineSpeedDataSet.setDrawFilled(true);//允许填充
+        lineSpeedDataSet.setDrawCubic(false);//设置曲线平滑
+        lineSpeedDataSet.setDrawCircles(false);//不显示小圆点
+        return lineSpeedDataSet;
+    }
+
+    /**
+     * 获取最高速度值得集合
+     * @return
+     */
+    private LineDataSet getTopSpeedLineDataSet(){
         // y轴的数据
         ArrayList<Entry> yValues = new ArrayList<Entry>();
         List<Integer> speedList = DataManager.getInstance().getSafeSpeedList();
         for (int i = 0; i < speedList.size(); i++) {
             float value = (float) speedList.get(i);
-Logger.d("MLJ","value=" + value);
             yValues.add(new Entry(value, i));
         }
 
-        // create a data set and give it a type
         // y轴的数据集合
         LineDataSet lineDataSet = new LineDataSet(yValues, "距离");
         // mLineDataSet.setFillAlpha(110);
@@ -104,14 +146,7 @@ Logger.d("MLJ","value=" + value);
         lineDataSet.setDrawCubic(false);//设置曲线平滑
         lineDataSet.setDrawCircles(false);//不显示小圆点
 
-        ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
-        lineDataSets.add(lineDataSet); // add the datasets
-
-        // create a data object with the datasets
-        LineData lineData = new LineData(xValues, lineDataSet);
-        lineData.setDrawValues(false);
-
-        return lineData;
+        return lineDataSet;
     }
 
     // 设置曲线显示的样式
