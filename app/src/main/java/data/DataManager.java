@@ -41,21 +41,22 @@ public class DataManager {
     }
 
     public List<Integer> getSuggestSpeedList(){
-        List<Integer> safeSpeedList = new ArrayList<>();
+        List<Integer> suggestSpeedList = new ArrayList<>();
         for(int i=0;i<DataConstants.ROUTE_DISTANCE;i++){
             //前10公里140码
             if(i<10){
-                safeSpeedList.add(110);
+                suggestSpeedList.add(110);
             }
             if(i>10 && i<25){
-                safeSpeedList.add(140);
+                suggestSpeedList.add(140);
             }
 
             if(i>25 && i<30){
-                safeSpeedList.add(10);
+                suggestSpeedList.add(10);
             }
         }
-        return safeSpeedList;
+        return suggestSpeedList;
     }
+
 
 }

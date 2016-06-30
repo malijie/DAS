@@ -32,7 +32,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     }
 
     private void initData(){
-        ChartManager.getInstance().createRunningCurveChart(mLineChart);
+        ChartManager.getInstance().createRunningCurveLineChart(mLineChart);
     }
 
     @Override
