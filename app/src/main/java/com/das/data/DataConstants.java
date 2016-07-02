@@ -1,4 +1,4 @@
-package data;
+package com.das.data;
 
 /**
  * Created by malijie on 2016/6/30.

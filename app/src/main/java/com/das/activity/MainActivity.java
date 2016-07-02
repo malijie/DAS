@@ -8,6 +8,8 @@ import android.view.Window;
 import android.widget.Button;
 //import android.support.v4.app.FragmentActivity;
 
+import com.das.db.DBManager;
+import com.das.util.Logger;
 import com.example.das.R;
 
 /**
@@ -48,8 +50,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     startActivity(intent_traininformation);
                     break;
                 case R.id.button_drivingspeedcurves:
-                    Intent intent = new Intent(MainActivity.this,RunningCurveActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(MainActivity.this,RunningCurveActivity.class);
+//                    startActivity(intent);
+
+                    Logger.d("MLJ","test db=" + DBManager.getInstance().test());
 
                     break;
 
