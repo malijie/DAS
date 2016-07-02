@@ -8,6 +8,8 @@ import android.view.Window;
 import android.widget.Button;
 //import android.support.v4.app.FragmentActivity;
 
+import com.das.control.TrainControl;
+import com.das.data.DataManager;
 import com.das.db.DBManager;
 import com.das.util.Logger;
 import com.example.das.R;
@@ -52,9 +54,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 case R.id.button_drivingspeedcurves:
 //                    Intent intent = new Intent(MainActivity.this,RunningCurveActivity.class);
 //                    startActivity(intent);
-
-                    Logger.d("MLJ","test db=" + DBManager.getInstance().test());
-
+                    Logger.d("MLJ","speed=" + TrainControl.getInstance().getCurrentSpeed(30.69719088,104.00874601,30.6971987,104.0087506));
                     break;
 
             }

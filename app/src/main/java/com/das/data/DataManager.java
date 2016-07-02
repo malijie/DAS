@@ -11,6 +11,7 @@ public class DataManager {
     private static final Object sObject = new Object();
     private static DataManager sDataManager = null;
 
+
     public static DataManager getInstance(){
         if (sDataManager == null){
             synchronized (sObject){
@@ -59,4 +60,6 @@ public class DataManager {
     }
 
 
+
 }
+

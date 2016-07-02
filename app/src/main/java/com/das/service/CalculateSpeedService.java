@@ -144,7 +144,6 @@ public class CalculateSpeedService extends Service {
 
         Speed = speed;
 
-    //    String currentPosition = "lat:" +x + " " + xx + " "+ (x-xx) + "\n" +
     //            "lon:" + y +" "+ yy +" "+(y-yy) + "\n" + "速度" + 3.6*Speed;
     //    positionTextView.setText(currentPosition);
 
