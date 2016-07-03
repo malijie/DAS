@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.das.control.TrainControl;
 import com.das.data.DataManager;
 import com.das.db.DBManager;
+import com.das.service.CalculateSpeedService;
 import com.das.util.Logger;
 import com.example.das.R;
 
@@ -52,9 +53,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     startActivity(intent_traininformation);
                     break;
                 case R.id.button_drivingspeedcurves:
-//                    Intent intent = new Intent(MainActivity.this,RunningCurveActivity.class);
-//                    startActivity(intent);
-                    Logger.d("MLJ","speed=" + TrainControl.getInstance().getCurrentSpeed(30.69719088,104.00874601,30.6971987,104.0087506));
+                    Intent intent = new Intent(MainActivity.this,RunningCurveActivity.class);
+                    startActivity(intent);
+
                     break;
 
             }

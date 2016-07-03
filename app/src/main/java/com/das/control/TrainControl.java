@@ -26,29 +26,34 @@ public class TrainControl {
         return mTrainControl;
     }
 
-    public int getCurrentSpeed(float srcLat,float srcLong,float desLat,float desLong){
-        Logger.d("MLJ","time=" + TrainConstants.TIME_UNIT);
-        return (int) (Math.round(getTotalDistance(srcLat,srcLong,desLat,desLong)/TrainConstants.DISTANCE_UNIT)
-                        /(TrainConstants.TIME_UNIT));
+    /**
+     * 获取当前速度，单位是千米/小时
+     * @param srcLat
+     * @param srcLong
+     * @param desLat
+     * @param desLong
+     * @return
+     */
+    public int getCurrentSpeed(double srcLat,double srcLong,double desLat,double desLong){
+        return (int) ((getTotalDistance(srcLat,srcLong,desLat,desLong)/TrainConstants.TIME_INTERVAL) * TrainConstants.KM_PER_HOUR_UNIT);
 
     }
 
-    public float getTotalDistance(float srcLat,float srcLong,float desLat,float desLong){
-        float Lat1 = rad(srcLat);
-        float Lat2 = rad(desLat);
-        float a = Lat1 - Lat2;
-        float b = rad(srcLong) - rad(desLong);
-        float s = (float) (2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+    public double getTotalDistance(double srcLat,double srcLong,double desLat,double desLong){
+        double Lat1 = rad(srcLat);
+        double Lat2 = rad(desLat);
+        double a = Lat1 - Lat2;
+        double b = rad(srcLong) - rad(desLong);
+        double s = (2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
                         + Math.cos(Lat1) * Math.cos(Lat2)
                         * Math.pow(Math.sin(b / 2), 2))));
-        s = (float) (s * EARTH_RADIUS);
+        s = (s * EARTH_RADIUS);
         s = Math.round(s * 10000) / 10000;
-        Logger.d("MLJ","getTotalDistance=" + s);
         return s;
     }
 
-    private float rad(float d) {
-        return (float) (d * Math.PI / 180.0);
+    private double rad(double d) {
+        return (d * Math.PI / 180.0);
     }
 
 }
