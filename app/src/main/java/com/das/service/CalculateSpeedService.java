@@ -8,20 +8,19 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.widget.Toast;
 
 import com.das.control.TrainControl;
-import com.das.data.DASLocationManager;
-import com.das.util.Logger;
+import com.das.manager.BaiduLocationManager;
 
 public class CalculateSpeedService extends Service {
     private static final String ACTION_REQUEST_LOCATION_UPDATE = "ACTION_REQUEST_LOCATION_UPDATE";
+    private static final String ACTION_UPDATE_SPEED = "ACTION_UPDATE_SPEED";
 
     private static final int MSG_CALCULATE_SPEED = 1;
     private static final int MSG_GET_LAST_SPEED_INFO = 2;
 
     private TrainControl mTrainControl = null;
-    private DASLocationManager mLocationManager = null;
+    private BaiduLocationManager mLocationManager = null;
     private double mLastLatitude;
     private double mLastLongtitude;
     private double mCurrentLongtitude;
@@ -35,7 +34,7 @@ public class CalculateSpeedService extends Service {
     @Override
     public void onCreate() {
         mTrainControl = TrainControl.getInstance();
-        mLocationManager = DASLocationManager.getInstance();
+        mLocationManager = BaiduLocationManager.getInstance();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_REQUEST_LOCATION_UPDATE);
@@ -46,7 +45,7 @@ public class CalculateSpeedService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        mLocationManager.startRequestLocationUpdates();
+        mLocationManager.start();
         mSpeedHandler.sendEmptyMessage(MSG_GET_LAST_SPEED_INFO);
 
         return START_STICKY;
@@ -57,24 +56,29 @@ public class CalculateSpeedService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case MSG_GET_LAST_SPEED_INFO:
-                    mLastLatitude = mLocationManager.getLatitude();
-                    mLastLongtitude = mLocationManager.getLongitude();
+                    mLastLatitude = mLocationManager.getCurrentLatitude();
+                    mLastLongtitude = mLocationManager.getCurrentLongitude();
                     sendEmptyMessageDelayed(MSG_CALCULATE_SPEED,3000);
                 break;
                 case MSG_CALCULATE_SPEED:
 
-                    mCurrentLatitude = mLocationManager.getLatitude();
-                    mCurrentLongtitude = mLocationManager.getLongitude();
+                    mCurrentLatitude = mLocationManager.getCurrentLatitude();
+                    mCurrentLongtitude = mLocationManager.getCurrentLongitude();
 
-                    Toast.makeText(CalculateSpeedService.this,"current speed=" +
-                            mTrainControl.getCurrentSpeed(mLastLatitude,mLastLongtitude,mCurrentLatitude,mCurrentLongtitude),
-                            Toast.LENGTH_SHORT).show();
+                    sendUpdateSpeedMsg(mTrainControl.getCurrentSpeed(mLastLatitude,mLastLongtitude,mCurrentLatitude,mCurrentLongtitude));
 
                     sendEmptyMessage(MSG_GET_LAST_SPEED_INFO);
                     break;
             }
         }
     };
+
+    private void sendUpdateSpeedMsg(int speed){
+        Intent i = new Intent();
+        i.setAction(ACTION_UPDATE_SPEED);
+        i.putExtra("speed",speed);
+        sendBroadcast(i);
+    }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override

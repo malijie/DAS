@@ -8,11 +8,7 @@ import android.view.Window;
 import android.widget.Button;
 //import android.support.v4.app.FragmentActivity;
 
-import com.das.control.TrainControl;
-import com.das.data.DataManager;
-import com.das.db.DBManager;
 import com.das.service.CalculateSpeedService;
-import com.das.util.Logger;
 import com.example.das.R;
 
 /**
@@ -26,6 +22,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.layout_maininterface);
 
+            initViews();
+            initData();
+
+        }
+
+    private void initData() {
+        startService(new Intent(this, CalculateSpeedService.class));
+    }
+
+    private void initViews(){
             Button buttonenergy = (Button) findViewById(R.id.button_energy);
             buttonenergy.setOnClickListener(this);
             Button buttonschedule = (Button) findViewById(R.id.button_schedule);

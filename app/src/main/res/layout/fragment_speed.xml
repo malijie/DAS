@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_8f">
     
     <TextView
         android:id="@+id/currentspeed"
@@ -9,7 +11,7 @@
         android:background="@color/transparent"
         android:textColor="@android:color/white"
         android:lines="1"
-        android:textSize="36sp"
+        android:textSize="20sp"
         android:text="@string/currentspeed"
         android:gravity="center_vertical"/>
 
