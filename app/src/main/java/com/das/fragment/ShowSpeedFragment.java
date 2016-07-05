@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.das.chart.ChartManager;
 import com.das.control.TrainControl;
+import com.das.data.Constants;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -39,21 +41,34 @@ public class ShowSpeedFragment extends Fragment{
     private void initData() {
         ChartManager.getInstance().createEnergyBarChart(mBarChartSuggestSpeed);
         mTrainControl = TrainControl.getInstance();
-        mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed());
+
+        mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
+        getActivity().registerReceiver(mSpeedReceiver,filter);
+
     }
 
     private void initViews(View v) {
         mTextCurrentSpeed = (TextView) v.findViewById(R.id.id_speed_text_current_speed);
         mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
+
+
     }
 
     private BroadcastReceiver mSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals("")){
-
+            if(intent.getAction().equals(Constants.ACTION_UPDATE_CURRENT_SPEED)){
+                mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
             }
         }
     };
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().unregisterReceiver(mSpeedReceiver);
+    }
 }
