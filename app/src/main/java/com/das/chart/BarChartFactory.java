@@ -40,22 +40,21 @@ public class BarChartFactory {
 
     /**
      * 生成一个能耗图
-     * @param energyBarChart
+     * @param speedBarChart
      */
-    public void createEnergyBarChart(BarChart energyBarChart){
-        mBarData = getEnergyBarChartData();
-        showEnergyBarChart(energyBarChart,mBarData);
+    public void createSpeedBarChart(BarChart speedBarChart,int currentSpeed){
+        mBarData = getSpeedBarChartData(currentSpeed);
+        showSpeedBarChart(speedBarChart,mBarData);
     }
 
-    private BarData getEnergyBarChartData() {
+    private BarData getSpeedBarChartData(int currentSpeed) {
         //X轴表示的含义
         ArrayList<String> xValues = new ArrayList<String>();
         xValues.add("");
 
         //Y轴表示的含义
         ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
-        yValues.add(new BarEntry(170f, 0));
-        //TODO 170表示当前的速度，后期经过测速来赋值
+        yValues.add(new BarEntry(currentSpeed, 0));
 
         // y轴的数据集合
         BarDataSet barDataSet = new BarDataSet(yValues, "");
@@ -70,7 +69,7 @@ public class BarChartFactory {
         return barData;
     }
 
-    private void showEnergyBarChart(BarChart barChart, BarData barData) {
+    private void showSpeedBarChart(BarChart barChart, BarData barData) {
         barChart.setDrawBorders(false);  ////是否在折线图上添加边框
         barChart.setDescription("");// 数据描述
         // 如果没有数据的时候，会显示这个，类似ListView的EmptyView
@@ -108,4 +107,6 @@ public class BarChartFactory {
 
         barChart.animateX(2500); // 立即执行的动画,x轴
     }
+
+
 }

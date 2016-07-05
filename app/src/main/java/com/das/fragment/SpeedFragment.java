@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.das.data.Constants;
+import com.das.manager.ToastManager;
 import com.das.util.Logger;
 import com.example.das.R;
 
@@ -23,7 +25,6 @@ import com.example.das.R;
  * Created by �� on 2016/3/16.
  */
 public class SpeedFragment extends Fragment {
-    private static final String ACTION_UPDATE_SPEED = "ACTION_UPDATE_SPEED";
     private TextView accelerometer;
     private TextView mTextCurrentSpeed = null;
 
@@ -37,7 +38,7 @@ public class SpeedFragment extends Fragment {
 
     private void initData() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_UPDATE_SPEED);
+        filter.addAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
         this.getActivity().registerReceiver(mSpeedReceiver,filter);
     }
 
@@ -51,9 +52,9 @@ public class SpeedFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getAction().equals(ACTION_UPDATE_SPEED)){
+            if(intent.getAction().equals(Constants.ACTION_UPDATE_CURRENT_SPEED)){
                 Log.d("MLJ","onReceive speed");
-                mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H");
+                mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H" +"当前经纬度是:" + intent.getDoubleExtra("lat",0));
             }
         }
     };

@@ -1,15 +1,22 @@
-package com.das.config;
+package com.das.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/6/27.
+ * Created by malijie on 2016/7/5.
  */
 public class Constants {
+    /**
+     * 广播Action
+     */
+    //获取当前速度
+    public static final String ACTION_UPDATE_CURRENT_SPEED = "ACTION_UPDATE_CURRENT_SPEED";
+
+
     public static List<String> getTrainInfoList(){
         String[] strTrainInfo = new String[]{
-            "T1","T2","T3","T4"
+                "T1","T2","T3","T4"
         };
         List<String> trainInfos = new ArrayList<>();
         for(int i=0;i<strTrainInfo.length;i++){
@@ -28,4 +35,5 @@ public class Constants {
         }
         return routeInfos;
     }
+
 }

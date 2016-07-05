@@ -7,10 +7,10 @@ import android.os.IBinder;
 import android.os.Message;
 
 import com.das.control.TrainControl;
+import com.das.data.Constants;
 import com.das.manager.BaiduLocationManager;
 
 public class CalculateSpeedService extends Service {
-    private static final String ACTION_UPDATE_SPEED = "ACTION_UPDATE_SPEED";
 
     private static final int MSG_CALCULATE_SPEED = 1;
     private static final int MSG_GET_LAST_SPEED_INFO = 2;
@@ -55,8 +55,10 @@ public class CalculateSpeedService extends Service {
 
     private void sendUpdateSpeedMsg(int speed){
         Intent i = new Intent();
-        i.setAction(ACTION_UPDATE_SPEED);
+        i.setAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
         i.putExtra("speed",speed);
+        i.putExtra("lat",mLocationManager.getCurrentLatitude());
+
         sendBroadcast(i);
     }
 

@@ -90,7 +90,7 @@
             android:id="@+id/id_speed_text_suggest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="最高限速"
+            android:text="建议速度"
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
             android:layout_below="@id/id_speed_text_suggest_value"

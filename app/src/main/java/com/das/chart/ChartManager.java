@@ -30,8 +30,9 @@ public class ChartManager {
     }
 
     public void createEnergyBarChart(BarChart barchart){
-        mBarChartFactory.createEnergyBarChart(barchart);
+//        mBarChartFactory.createSpeedBarChart(barchart);
     }
+
 
     public void createRunningCurveLineChart(LineChart lineChart){
         mLineChartFactory.createRunningCurveChart(lineChart);

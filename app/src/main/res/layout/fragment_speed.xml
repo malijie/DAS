@@ -10,7 +10,7 @@
         android:layout_height="100dp"
         android:background="@color/transparent"
         android:textColor="@android:color/white"
-        android:lines="1"
+        android:lines="2"
         android:textSize="20sp"
         android:text="@string/currentspeed"
         android:gravity="center_vertical"/>
