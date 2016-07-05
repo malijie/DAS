@@ -53,7 +53,7 @@ public class SpeedFragment extends Fragment {
 
             if(intent.getAction().equals(ACTION_UPDATE_SPEED)){
                 Log.d("MLJ","onReceive speed");
-                mTextCurrentSpeed.setText("建议速度:" + intent.getIntExtra("speed",0) + "KM/H");
+                mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H");
             }
         }
     };

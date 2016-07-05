@@ -1,6 +1,7 @@
 package com.das.control;
 
 import com.das.data.DataConstants;
+import com.das.manager.BaiduLocationManager;
 import com.das.util.Logger;
 
 /**
@@ -8,11 +9,13 @@ import com.das.util.Logger;
  */
 public class TrainControl {
     private static final Object sObject = new Object();
+
     private static TrainControl mTrainControl = null;
     private static final double EARTH_RADIUS = 6378137.0;
+    private BaiduLocationManager mLocationManager = null;
 
     private TrainControl(){
-
+        mLocationManager = BaiduLocationManager.getInstance();
     }
 
     public static TrainControl getInstance(){
@@ -26,17 +29,8 @@ public class TrainControl {
         return mTrainControl;
     }
 
-    /**
-     * 获取当前速度，单位是千米/小时
-     * @param srcLat
-     * @param srcLong
-     * @param desLat
-     * @param desLong
-     * @return
-     */
-    public int getCurrentSpeed(double srcLat,double srcLong,double desLat,double desLong){
-        return (int) ((getTotalDistance(srcLat,srcLong,desLat,desLong)/TrainConstants.TIME_INTERVAL) * TrainConstants.KM_PER_HOUR_UNIT);
-
+    public int getCurrentSpeed(){
+       return (int)mLocationManager.getCurrentSpeed();
     }
 
     public double getTotalDistance(double srcLat,double srcLong,double desLat,double desLong){
