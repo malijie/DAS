@@ -62,20 +62,11 @@ public class ShowSpeedFragment extends Fragment{
 
 
     }
-    int i = 120;
 
     private void initViews(View v) {
         mTextCurrentSpeed = (TextView) v.findViewById(R.id.id_speed_text_current_speed);
         mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
         mTextSuggestSpeed = (TextView)v.findViewById(R.id.id_speed_text_suggest_value);
-        mTextSuggestSpeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Logger.d(TAG,"i=" + i);
-                updateSpeed(i);
-                i = i + 10;
-            }
-        });
 
     }
 
@@ -84,6 +75,7 @@ public class ShowSpeedFragment extends Fragment{
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(Constants.ACTION_UPDATE_CURRENT_SPEED)){
                 mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
+                updateSpeed(mTrainControl.getCurrentSpeed());
             }
         }
     };
