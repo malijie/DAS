@@ -6,14 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.das.chart.ChartManager;
+import com.das.chart.EnergySpeedChart;
 import com.das.control.TrainControl;
 import com.das.data.Constants;
+import com.das.util.Logger;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -22,11 +25,14 @@ import com.github.mikephil.charting.data.BarData;
  * Created by �� on 2016/4/19.
  */
 public class ShowSpeedFragment extends Fragment{
-
+    private static final String TAG = ShowSpeedFragment.class.getSimpleName();
+    private TextView mTextSuggestSpeed = null;
     private TextView mTextCurrentSpeed = null;
     private BarChart mBarChartSuggestSpeed = null;
     private TrainControl mTrainControl = null;
     private BarData mBarData;
+
+    private EnergySpeedChart mEnergySpeedChart = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -34,12 +40,17 @@ public class ShowSpeedFragment extends Fragment{
 
         initViews(v);
         initData();
+        initChart();
 
         return v;
     }
 
+    private void initChart() {
+        mEnergySpeedChart.createSpeedBarChart(mBarChartSuggestSpeed,150);
+    }
+
     private void initData() {
-        ChartManager.getInstance().createEnergyBarChart(mBarChartSuggestSpeed);
+        mEnergySpeedChart = EnergySpeedChart.getInstance();
         mTrainControl = TrainControl.getInstance();
 
         mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
@@ -48,12 +59,23 @@ public class ShowSpeedFragment extends Fragment{
         filter.addAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
         getActivity().registerReceiver(mSpeedReceiver,filter);
 
+
+
     }
+    int i = 120;
 
     private void initViews(View v) {
         mTextCurrentSpeed = (TextView) v.findViewById(R.id.id_speed_text_current_speed);
         mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
-
+        mTextSuggestSpeed = (TextView)v.findViewById(R.id.id_speed_text_suggest_value);
+        mTextSuggestSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.d(TAG,"i=" + i);
+                updateSpeed(i);
+                i = i + 10;
+            }
+        });
 
     }
 
@@ -65,6 +87,10 @@ public class ShowSpeedFragment extends Fragment{
             }
         }
     };
+
+    private void updateSpeed(int speed){
+        mEnergySpeedChart.updateSpeed(speed);
+    }
 
     @Override
     public void onDestroyView() {

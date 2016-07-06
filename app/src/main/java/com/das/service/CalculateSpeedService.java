@@ -57,7 +57,6 @@ public class CalculateSpeedService extends Service {
         Intent i = new Intent();
         i.setAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
         i.putExtra("speed",speed);
-        i.putExtra("lat",mLocationManager.getCurrentLatitude());
 
         sendBroadcast(i);
     }
