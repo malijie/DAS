@@ -6,17 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.das.chart.ChartManager;
 import com.das.chart.EnergySpeedChart;
 import com.das.control.TrainControl;
 import com.das.data.Constants;
-import com.das.util.Logger;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;

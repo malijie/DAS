@@ -16,7 +16,7 @@ public class Constants {
 
     public static List<String> getTrainInfoList(){
         String[] strTrainInfo = new String[]{
-                "T1","T2","T3","T4"
+                "东风4D"
         };
         List<String> trainInfos = new ArrayList<>();
         for(int i=0;i<strTrainInfo.length;i++){
@@ -27,7 +27,7 @@ public class Constants {
 
     public static List<String> getRouteInfoList(){
         String[] strRouteInfo = new String[]{
-                "北京-成都","成都-合肥","重庆-成都","北京-上海"
+                "庐铜铁路_下行"
         };
         List<String> routeInfos = new ArrayList<>();
         for(int i=0;i<strRouteInfo.length;i++){

@@ -31,5 +31,27 @@ public class DBManager {
         return  sDBManager;
     }
 
+    public double[][] read2DArrayFromTable(String tableName){
+
+        Cursor result = db.rawQuery(SQLContainer.getSelectAllSQL() + tableName,null);
+        double resultArray[][] = new double[result.getCount()][2];
+        for(int i=0;result.moveToNext();i++){
+
+            resultArray[i][0] = Float.parseFloat(result.getString(0));
+            resultArray[i][1] = Float.parseFloat(result.getString(1));
+        }
+
+        return resultArray;
+    }
+
+    public double[] read1DArrayFromTable(String tableName){
+        Cursor result = db.rawQuery(SQLContainer.getSelectAllSQL() + tableName,null);
+        double resultArray[] = new double[result.getCount()];
+        for(int i=0;result.moveToNext();i++){
+            resultArray[i] = Float.parseFloat(result.getString(0));
+        }
+        return resultArray;
+    }
+
 
 }

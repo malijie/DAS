@@ -41,5 +41,9 @@ public class SQLContainer {
         return "DROP TABLE IF EXISTS" + DBConfig.TABLE_PATH;
     }
 
+    public static String getSelectAllSQL(){
+        return "SELECT * FROM ";
+    }
+
 
 }

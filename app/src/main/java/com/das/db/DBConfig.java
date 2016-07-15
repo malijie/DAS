@@ -8,6 +8,10 @@ public class DBConfig {
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_PATH = "paths";
     public static final String TABLE_NODE = "nodes";
+    public static final String TABLE_GRADIENTS = "LutongX_Gradients";
+    public static final String TABLE_STATION_INFO = "LutongX_Stations_info";
+    public static final String TABLE_VELOCITY = "LutongX_Veloteprofile";
+
 
 
 }

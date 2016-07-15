@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.das.data.Constants;
+import com.das.data.SingleTrainSimulator;
 import com.das.file.FileManager;
 import com.das.manager.IntentManager;
 import com.example.das.R;
@@ -35,6 +36,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private void initData() {
         FileManager.getInstance().copyDBToRootDirectory();
         //数据
+        SingleTrainSimulator.getInstance().updateTrainStatus();
+
 
         ArrayAdapter trainInfoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, Constants.getTrainInfoList());;

@@ -87,11 +87,9 @@ public class RunningSpeedLineChartManager {
         xAxis.addLimitLine(xLimitLine);
     }
 
-    int i = 5;
-    public void updateCurrentSpeed(){
+    public void updateCurrentSpeed(int speed){
         xAxis.removeAllLimitLines();
-        i = i + 2;
-        xLimitLine = new LimitLine(i,"xL 测试");
+        xLimitLine = new LimitLine(speed,"速率");
         xLimitLine.setLineColor(Color.GREEN);
         xLimitLine.setTextColor(Color.GREEN);
         xAxis.addLimitLine(xLimitLine);
