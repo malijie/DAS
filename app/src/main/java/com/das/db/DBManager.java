@@ -53,5 +53,8 @@ public class DBManager {
         return resultArray;
     }
 
+    public void saveTheStartLatLng(double lat,double lng){
+        db.execSQL(SQLContainer.getInsertStartLatLng(lat, lng));
+    }
 
 }

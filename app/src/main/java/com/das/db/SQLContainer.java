@@ -33,17 +33,22 @@ public class SQLContainer {
                 "track_id VARCHAR(10))";
     }
 
-    public static String getDropNodeTableSQL(){
+    public final static String getDropNodeTableSQL(){
         return "DROP TABLE IF EXISTS" + DBConfig.TABLE_NODE;
     }
 
-    public static String getDropPathTableSQL(){
+    public final static String getDropPathTableSQL(){
         return "DROP TABLE IF EXISTS" + DBConfig.TABLE_PATH;
     }
 
-    public static String getSelectAllSQL(){
+    public final static String getSelectAllSQL(){
         return "SELECT * FROM ";
     }
 
+    public final static String getInsertStartLatLng(double lat,double lng){
+        return "INSERT INTO " + DBConfig.TABLE_STATION_INFO +
+                "(start_lat,start_lng) " +
+                "VALUES('" + lat + "','" + lng + "')";
+    }
 
 }

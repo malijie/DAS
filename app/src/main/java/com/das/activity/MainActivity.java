@@ -28,7 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
     private void initData() {
-        startService(new Intent(this, CalculateSpeedService.class));
+
     }
 
     private void initViews(){

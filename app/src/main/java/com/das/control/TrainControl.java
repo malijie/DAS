@@ -50,4 +50,12 @@ public class TrainControl {
         return (d * Math.PI / 180.0);
     }
 
+    public double getCurrentLatitude(){
+        return mLocationManager.getCurrentLatitude();
+    }
+
+    public double getCurrentLongitude(){
+        return mLocationManager.getCurrentLongitude();
+    }
+
 }

@@ -32,7 +32,6 @@ public class FileManager {
         File dbFile = new File(getDBAbsolutePath());
         InputStream is = null;
         FileOutputStream os = null;
-        Logger.d(TAG,"dbFile.exists()=" + dbFile.exists());
         if(!dbFile.exists()){//判断文件夹是否存在，不存在就新建一个
             Logger.d(TAG,"copy db to phone");
             dbFile.getParentFile().mkdirs();

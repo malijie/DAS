@@ -44,5 +44,6 @@ public class Myapp extends Application{
         Logger.d("MLJ","application onCreate");
         sContext = getApplicationContext();
         Logger.setLogSwitch(true);
+        FileManager.getInstance().copyDBToRootDirectory();
     }
 }
