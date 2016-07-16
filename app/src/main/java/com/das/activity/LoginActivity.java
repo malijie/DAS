@@ -18,6 +18,7 @@ import com.das.file.FileManager;
 import com.das.manager.IntentManager;
 import com.das.manager.ToastManager;
 import com.das.service.CalculateSpeedService;
+import com.das.service.SimulatorService;
 import com.das.util.DistanceUtil;
 import com.das.util.SharePreferenceUtil;
 import com.example.das.R;
@@ -38,8 +39,11 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login_layout);
+
         initViews();
         initData();
+        startServices();
+
     }
 
     private void initData() {
@@ -61,7 +65,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         mSpinnerRouteInfo.setAdapter(routeInfoAdapter);
         mSpinnerTrainInfo.setAdapter(trainInfoAdapter);
 
-        IntentManager.startService(CalculateSpeedService.class);
+
     }
 
     private void initViews() {
@@ -117,5 +121,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private int getStartDistance(){
       return (int) DistanceUtil.getDistance(TrainConstants.RUTONG_START_LATITUDE,TrainConstants.RUTONG_START_LOGITUDE,
                 mTrainControl.getCurrentLatitude(),mTrainControl.getCurrentLongitude()) * 1000;
+    }
+
+    private void startServices(){
+        IntentManager.startService(CalculateSpeedService.class);
+        IntentManager.startActivity(SimulatorService.class);
     }
 }

@@ -25,6 +25,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             initViews();
             initData();
 
+
         }
 
     private void initData() {
