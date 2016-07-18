@@ -41,10 +41,6 @@ public class TrainControl {
     }
 
 
-    private double rad(double d) {
-        return (d * Math.PI / 180.0);
-    }
-
     public double getCurrentLatitude(){
         return mLocationManager.getCurrentLatitude();
     }

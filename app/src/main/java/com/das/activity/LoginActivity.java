@@ -80,12 +80,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.id_login_text_confirm:
+                if(checkPosition()) {
+                    SharePreferenceUtil.saveStartLatitude(123.0f);
+                    SharePreferenceUtil.saveStartLongitude(234f);
+                    IntentManager.startActivity(MainActivity.class);
 
+                }
                 break;
             case R.id.id_login_text_title:
 //                if(checkPosition()){
-//                    mDBManager.saveTheStartLatLng(mTrainControl.getCurrentLatitude(),
-//                                                  mTrainControl.getCurrentLongitude());
                         SharePreferenceUtil.saveStartLatitude(123.0f);
                         SharePreferenceUtil.saveStartLongitude(234f);
                         IntentManager.startActivity(MainActivity.class);
@@ -105,18 +108,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             return false;
         }
 
-
         if(getStartDistance()> TrainConstants.DISTANCE_FROM_START_TO_CURRENT_LOCATION){
             ToastManager.showMsg("当前未在发车位置上，无法发车");
             return false;
         }
 
         return true;
-
     }
 
     private int getStartDistance(){
-      return (int) DistanceUtil.getDistance(TrainConstants.RUTONG_START_LATITUDE,TrainConstants.RUTONG_START_LOGITUDE,
+      return (int) DistanceUtil.getDistance(TrainConstants.RUTONG_START_LATITUDE,TrainConstants.RUTONG_START_LONGITUDE,
                 mTrainControl.getCurrentLatitude(),mTrainControl.getCurrentLongitude()) * 1000;
     }
 

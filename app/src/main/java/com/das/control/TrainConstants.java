@@ -11,9 +11,9 @@ public class TrainConstants {
     // 米/秒转换成千米/小时
     public static final float KM_PER_HOUR_UNIT = 3.6f;
     //起始车站经度
-    public static final double RUTONG_START_LATITUDE = 0.0;
+    public static final double RUTONG_START_LATITUDE = 31.24002;
     //起始车站纬度
-    public static final double RUTONG_START_LOGITUDE = 0.0;
+    public static final double RUTONG_START_LONGITUDE = 117.13971;
     //发车位置到当前位置距离
     public static final int DISTANCE_FROM_START_TO_CURRENT_LOCATION = 50;
     //牵引
@@ -22,6 +22,5 @@ public class TrainConstants {
     public static final int TRAIN_RUN_STATUS_BREAK = -1;
     //惰行
     public static final int TRAIN_RUN_STATUS_KEEP = 0;
-
 
 }
