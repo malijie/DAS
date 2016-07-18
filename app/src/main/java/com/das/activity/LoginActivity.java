@@ -2,7 +2,6 @@ package com.das.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -11,10 +10,8 @@ import android.widget.TextView;
 
 import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
-import com.das.data.Constants;
-import com.das.data.SingleTrainSimulator;
+import com.das.constants.Constants;
 import com.das.db.DBManager;
-import com.das.file.FileManager;
 import com.das.manager.IntentManager;
 import com.das.manager.ToastManager;
 import com.das.service.CalculateSpeedService;
@@ -125,6 +122,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private void startServices(){
         IntentManager.startService(CalculateSpeedService.class);
-        IntentManager.startActivity(SimulatorService.class);
+        IntentManager.startService(SimulatorService.class);
     }
 }

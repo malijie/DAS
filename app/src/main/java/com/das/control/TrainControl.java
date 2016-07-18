@@ -1,18 +1,25 @@
 package com.das.control;
 
-import com.das.data.DataConstants;
+import android.os.Handler;
+import android.os.Message;
+
+import com.das.constants.MsgConstant;
 import com.das.manager.BaiduLocationManager;
-import com.das.util.Logger;
+import com.das.constants.IntentConstants;
+import com.das.manager.IntentManager;
 
 /**
- * Created by Administrator on 2016/7/2.
+ * Created by malijie on 2016/7/2.
  */
 public class TrainControl {
     private static final Object sObject = new Object();
 
     private static TrainControl mTrainControl = null;
-    private static final double EARTH_RADIUS = 6378137.0;
     private BaiduLocationManager mLocationManager = null;
+
+    private int mLastSpeed;
+    private int mCurrentSpeed;
+    private int mTrainCurrentRunningStatus;
 
     private TrainControl(){
         mLocationManager = BaiduLocationManager.getInstance();
@@ -33,18 +40,6 @@ public class TrainControl {
        return (int)mLocationManager.getCurrentSpeed();
     }
 
-    public double getTotalDistance(double srcLat,double srcLong,double desLat,double desLong){
-        double Lat1 = rad(srcLat);
-        double Lat2 = rad(desLat);
-        double a = Lat1 - Lat2;
-        double b = rad(srcLong) - rad(desLong);
-        double s = (2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
-                        + Math.cos(Lat1) * Math.cos(Lat2)
-                        * Math.pow(Math.sin(b / 2), 2))));
-        s = (s * EARTH_RADIUS);
-        s = Math.round(s * 10000) / 10000;
-        return s;
-    }
 
     private double rad(double d) {
         return (d * Math.PI / 180.0);
@@ -54,8 +49,49 @@ public class TrainControl {
         return mLocationManager.getCurrentLatitude();
     }
 
-    public double getCurrentLongitude(){
+    public double getCurrentLongitude() {
         return mLocationManager.getCurrentLongitude();
     }
+
+    public int getTrainCurrentStatus(){
+        return mTrainCurrentRunningStatus;
+    }
+
+    public Handler getHandler(){
+        return mTrainControlHandler;
+    }
+
+    private Handler mTrainControlHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MsgConstant.MSG_GET_TRAIN_CURRENT_SPEED:
+                    if(mLocationManager.getCurrentSpeed() == 0){
+                        IntentManager.sendBroadcastMsg(IntentConstants.ACTION_GET_TRAIN_CURRENT_STATUS_STOP);
+                        return;
+                    }
+                    mLastSpeed = (int) mLocationManager.getCurrentSpeed();
+                    sendEmptyMessageDelayed(MsgConstant.MSG_GET_TRAIN_CURRENT_STATUS,1000);
+                    break;
+                case MsgConstant.MSG_GET_TRAIN_CURRENT_STATUS:
+                    mCurrentSpeed = (int) mLocationManager.getCurrentSpeed();
+                    if(mCurrentSpeed > mLastSpeed){
+                        mTrainCurrentRunningStatus = TrainConstants.TRAIN_RUN_STATUS_ACCLERATE;
+                    }else if(mCurrentSpeed == mLastSpeed){
+                        mTrainCurrentRunningStatus = TrainConstants.TRAIN_RUN_STATUS_KEEP;
+                    }else{
+                        mTrainCurrentRunningStatus = TrainConstants.TRAIN_RUN_STATUS_BREAK;
+                    }
+
+                    IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_CURRENT_TRAIN_STATUS,
+                            "train_running_status",mTrainCurrentRunningStatus);
+
+                    sendEmptyMessage(MsgConstant.MSG_GET_TRAIN_CURRENT_SPEED);
+
+                    break;
+            }
+        }
+    };
+
 
 }

@@ -10,8 +10,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.das.chart.RunningSpeedLineChartManager;
+import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
-import com.das.data.Constants;
+import com.das.constants.Constants;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.LineChart;
 
@@ -48,7 +49,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mRunningChartManager = RunningSpeedLineChartManager.getInstance();
         mTrainContol = TrainControl.getInstance();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
+        filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
         registerReceiver(mRunningSpeedReceiver,filter);
     }
 
@@ -59,7 +60,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(Constants.ACTION_UPDATE_CURRENT_SPEED)){
+            if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
                 updateSpeedLine(mTrainContol.getCurrentSpeed());
             }
         }

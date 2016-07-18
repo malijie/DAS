@@ -6,7 +6,7 @@ import android.os.IBinder;
 
 import com.das.db.DBConfig;
 import com.das.db.DBManager;
-import com.das.manager.IntentConstants;
+import com.das.constants.IntentConstants;
 import com.das.util.Logger;
 
 import java.util.concurrent.ExecutorService;

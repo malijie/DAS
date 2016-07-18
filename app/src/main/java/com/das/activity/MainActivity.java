@@ -3,12 +3,13 @@ package com.das.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-//import android.support.v4.app.FragmentActivity;
 
-import com.das.service.CalculateSpeedService;
+import com.das.constants.MsgConstant;
+import com.das.control.TrainControl;
 import com.example.das.R;
 
 /**
@@ -27,6 +28,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
         }
+
+
 
     private void initData() {
 
@@ -69,4 +72,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

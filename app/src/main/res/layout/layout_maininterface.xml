@@ -16,10 +16,10 @@
 
     <fragment
         android:id="@+id/fragment_drivingadvice"
-        android:name="com.das.fragment.DrivingAdviceFragment"
+        android:name="com.das.fragment.TrainRunningStatusFragment"
         android:layout_width="800dp"
         android:layout_height="200dp"
-        tools:layout="@layout/fragment_drivingadvice"
+        tools:layout="@layout/fragment_running_status"
         android:layout_toEndOf="@+id/button_energy"
         android:layout_marginTop="120dp" />
 

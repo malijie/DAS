@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
+import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
-import com.das.data.Constants;
+import com.das.constants.Constants;
 import com.das.manager.BaiduLocationManager;
+import com.das.manager.IntentManager;
 
 public class CalculateSpeedService extends Service {
 
@@ -46,20 +48,14 @@ public class CalculateSpeedService extends Service {
                     sendEmptyMessageDelayed(MSG_CALCULATE_SPEED,1000);
                 break;
                 case MSG_CALCULATE_SPEED:
-                    sendUpdateSpeedMsg(mTrainControl.getCurrentSpeed());
+                    IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_CURRENT_SPEED,
+                            "speed",mTrainControl.getCurrentSpeed());
                     sendEmptyMessage(MSG_GET_LAST_SPEED_INFO);
                     break;
             }
         }
     };
 
-    private void sendUpdateSpeedMsg(int speed){
-        Intent i = new Intent();
-        i.setAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
-        i.putExtra("speed",speed);
-
-        sendBroadcast(i);
-    }
 
 
     @Override

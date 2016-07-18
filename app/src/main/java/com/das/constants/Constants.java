@@ -1,4 +1,4 @@
-package com.das.data;
+package com.das.constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,6 @@ import java.util.List;
  * Created by malijie on 2016/7/5.
  */
 public class Constants {
-    /**
-     * 广播Action
-     */
-    //获取当前速度
-    public static final String ACTION_UPDATE_CURRENT_SPEED = "ACTION_UPDATE_CURRENT_SPEED";
-
 
     public static List<String> getTrainInfoList(){
         String[] strTrainInfo = new String[]{

@@ -16,5 +16,12 @@ public class TrainConstants {
     public static final double RUTONG_START_LOGITUDE = 0.0;
     //发车位置到当前位置距离
     public static final int DISTANCE_FROM_START_TO_CURRENT_LOCATION = 50;
+    //牵引
+    public static final int TRAIN_RUN_STATUS_ACCLERATE = 1;
+    //制动
+    public static final int TRAIN_RUN_STATUS_BREAK = -1;
+    //惰行
+    public static final int TRAIN_RUN_STATUS_KEEP = 0;
+
 
 }

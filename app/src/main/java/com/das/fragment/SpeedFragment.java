@@ -5,10 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.das.data.Constants;
-import com.das.manager.ToastManager;
-import com.das.util.Logger;
+import com.das.constants.Constants;
+import com.das.constants.IntentConstants;
 import com.example.das.R;
 
 /**
@@ -38,7 +33,7 @@ public class SpeedFragment extends Fragment {
 
     private void initData() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.ACTION_UPDATE_CURRENT_SPEED);
+        filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
         this.getActivity().registerReceiver(mSpeedReceiver,filter);
     }
 
@@ -52,7 +47,7 @@ public class SpeedFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getAction().equals(Constants.ACTION_UPDATE_CURRENT_SPEED)){
+            if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
                 Log.d("MLJ","onReceive speed");
                 mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H" +"当前经纬度是:" + intent.getDoubleExtra("lat",0));
             }

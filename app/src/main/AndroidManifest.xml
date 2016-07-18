@@ -32,9 +32,7 @@
             android:value="tB7r29anu4XHCQkqZBMpv6FPkOBUF4HX" />
         <activity
             android:name="com.das.activity.LoginActivity"
-            android:label="DAS"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            >
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,12 +40,10 @@
         </activity>
 
         <activity android:name="com.das.activity.MainActivity"/>
-
         <activity android:name="com.das.activity.EnergyActivity" />
         <activity android:name="com.das.activity.ScheduleActivity" />
         <activity android:name="com.das.activity.TrainInformationActivity" />
         <activity android:name="com.das.activity.RunningCurveActivity" />
-
         <service android:name="com.das.service.CalculateSpeedService">
         </service>
 
