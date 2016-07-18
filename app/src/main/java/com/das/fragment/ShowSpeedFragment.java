@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.das.chart.EnergySpeedChart;
 import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
-import com.das.constants.Constants;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -55,6 +54,7 @@ public class ShowSpeedFragment extends Fragment{
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
+        filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED);
         getActivity().registerReceiver(mSpeedReceiver,filter);
 
 
@@ -71,9 +71,12 @@ public class ShowSpeedFragment extends Fragment{
     private BroadcastReceiver mSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
+            String action = intent.getAction();
+            if(action.equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
                 mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
                 updateSpeed(mTrainControl.getCurrentSpeed());
+            }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
+                mTextSuggestSpeed.setText("建议速度:" + intent.getDoubleExtra("mileage",0));
             }
         }
     };

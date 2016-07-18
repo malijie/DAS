@@ -16,12 +16,19 @@ public class IntentManager {
         Myapp.sContext.startActivity(i);
     }
 
-    public static void startService(Class service){
+    public static void startService(Class service,String action){
         Intent i = new Intent(Myapp.sContext,service);
+        i.setAction(action);
         Myapp.sContext.startService(i);
     }
 
     public static void sendBroadcastMsg(String action,String key,int value){
+        Intent i = new Intent(action);
+        i.putExtra(key,value);
+        Myapp.sContext.sendBroadcast(i);
+    }
+
+    public static void sendBroadcastMsg(String action,String key,double value){
         Intent i = new Intent(action);
         i.putExtra(key,value);
         Myapp.sContext.sendBroadcast(i);

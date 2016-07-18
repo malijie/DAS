@@ -44,13 +44,13 @@
         <activity android:name="com.das.activity.ScheduleActivity" />
         <activity android:name="com.das.activity.TrainInformationActivity" />
         <activity android:name="com.das.activity.RunningCurveActivity" />
-        <service android:name="com.das.service.CalculateSpeedService">
-        </service>
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
         </service>
+        <service android:name="com.das.service.CalculateSpeedService"/>
+        <service android:name="com.das.service.SimulatorService"/>
     </application>
 
 </manifest>

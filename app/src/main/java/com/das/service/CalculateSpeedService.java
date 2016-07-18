@@ -7,16 +7,16 @@ import android.os.IBinder;
 import android.os.Message;
 
 import com.das.constants.IntentConstants;
+import com.das.constants.MsgConstant;
+import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.constants.Constants;
 import com.das.manager.BaiduLocationManager;
 import com.das.manager.IntentManager;
+import com.das.util.Logger;
 
 public class CalculateSpeedService extends Service {
-
-    private static final int MSG_CALCULATE_SPEED = 1;
-    private static final int MSG_GET_LAST_SPEED_INFO = 2;
-
+    public static final String TAG = CalculateSpeedService.class.getSimpleName();
     private TrainControl mTrainControl = null;
     private BaiduLocationManager mLocationManager = null;
 
@@ -33,9 +33,14 @@ public class CalculateSpeedService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String action = intent.getAction();
+        Logger.d(TAG,"action=" + action);
+        if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SPEED)){
+            //计算当前速度
+            mLocationManager.start();
+            mSpeedHandler.sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
+        }
 
-        mLocationManager.start();
-        mSpeedHandler.sendEmptyMessage(MSG_GET_LAST_SPEED_INFO);
 
         return START_STICKY;
     }
@@ -44,13 +49,15 @@ public class CalculateSpeedService extends Service {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case MSG_GET_LAST_SPEED_INFO:
-                    sendEmptyMessageDelayed(MSG_CALCULATE_SPEED,1000);
+                case MsgConstant.MSG_GET_LAST_SPEED_INFO:
+                    //获取最新速度
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SPEED,1000);
                 break;
-                case MSG_CALCULATE_SPEED:
+                case MsgConstant.MSG_CALCULATE_SPEED:
+                    //计算当前速度
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_CURRENT_SPEED,
                             "speed",mTrainControl.getCurrentSpeed());
-                    sendEmptyMessage(MSG_GET_LAST_SPEED_INFO);
+                    sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
                     break;
             }
         }

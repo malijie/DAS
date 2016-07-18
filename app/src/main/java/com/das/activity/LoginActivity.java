@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.das.constants.IntentConstants;
 import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.constants.Constants;
@@ -39,7 +40,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         initViews();
         initData();
-        startServices();
+
 
     }
 
@@ -85,6 +86,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     SharePreferenceUtil.saveStartLongitude(234f);
                     IntentManager.startActivity(MainActivity.class);
 
+                    startServices();
+
                 }
                 break;
             case R.id.id_login_text_title:
@@ -92,6 +95,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         SharePreferenceUtil.saveStartLatitude(123.0f);
                         SharePreferenceUtil.saveStartLongitude(234f);
                         IntentManager.startActivity(MainActivity.class);
+                        startServices();
 //                }
                 break;
             default:
@@ -122,7 +126,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     private void startServices(){
-        IntentManager.startService(CalculateSpeedService.class);
-        IntentManager.startService(SimulatorService.class);
+        IntentManager.startService(CalculateSpeedService.class, IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
+        IntentManager.startService(SimulatorService.class,IntentConstants.ACTION_START_SIMULATE);
     }
 }

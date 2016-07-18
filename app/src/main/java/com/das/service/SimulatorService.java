@@ -2,11 +2,17 @@ package com.das.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 
+import com.das.constants.MsgConstant;
+import com.das.control.TrainConstants;
+import com.das.control.TrainControl;
 import com.das.db.DBConfig;
 import com.das.db.DBManager;
 import com.das.constants.IntentConstants;
+import com.das.manager.IntentManager;
 import com.das.util.Logger;
 
 import java.util.concurrent.ExecutorService;
@@ -16,10 +22,15 @@ import java.util.concurrent.Executors;
  * Created by malijie on 2016/7/16.
  */
 public class SimulatorService extends Service{
+    private static final String TAG = SimulatorService.class.getSimpleName();
+    private double mTotalMileage = 0;
+
     private double[][] mGradient;
     private double[][] mVel_profile;
     private double[] mStation_info;
+
     private ExecutorService mExecutorService = Executors.newCachedThreadPool();
+    private TrainControl mTrainControl = null;
 
     // Default vehicle values for CLASS 14x DMU   定义机车信息，相当于我们的读取车辆数据过程
     double Mass=49.5;
@@ -45,6 +56,24 @@ public class SimulatorService extends Service{
     // notch numbers
     int notch_num=5;
 
+    //---------------------simulator data-------------------
+    private double[] vel_limit;
+    private double[] vel_error;
+    private double[] grad_prof;
+    private double[] TractionF;
+    private double[] TractionB;
+    private double[] EnergyF;
+    private double[] EnergyB;
+    private double[] Notch;
+    private double[] acceleration;
+    private double[] acceler;
+    private double[] accF;
+    private double[] accB;
+    private double[] T;
+    private double[] vel;
+    private double[] del_T;
+
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -54,38 +83,37 @@ public class SimulatorService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+        Logger.d(TAG,"SimulatorService onCreate");
+
         mGradient =  DBManager.getInstance().read2DArrayFromTable(DBConfig.TABLE_GRADIENTS);
         mVel_profile = DBManager.getInstance().read2DArrayFromTable(DBConfig.TABLE_VELOCITY);
         mStation_info = DBManager.getInstance().read1DArrayFromTable(DBConfig.TABLE_STATION_INFO);
+
+        mTrainControl = TrainControl.getInstance();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent.getAction().equals(IntentConstants.ACTION_START_SIMULATE)){
+        String action = intent.getAction();
+        Logger.d(TAG,"SimulatorService action=" + action);
+        if(action.equals(IntentConstants.ACTION_START_SIMULATE)){
             mExecutorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     int train_control=1;
-      /*
-       *  v[i] 表示以m/s为单位的速度表
-       */
-
+                     //v[i] 表示以m/s为单位的速度表
                     double[] v = new double[(int)max_speed];
                     for(int i=1; i<=max_speed; i++) {
                         v[i-1] = i / 3.6;
                     }
 
-      /*
-       *     trac=Power./(v)/(Mass*1000);  计算牵引加速度表trac[i]
-       */
+                    //trac=Power./(v)/(Mass*1000);  计算牵引加速度表trac[i]
                     double[] trac = new double[v.length];
                     for(int i=1; i<=v.length; i++) {
                         trac[i-1] = Power/v[i-1]/(Mass*1000);
                     }
 
-      /*
-       *     Res=zeros(1,length(v));    计算制动加速度表Res[i]
-       */
+                    //Res=zeros(1,length(v));    计算制动加速度表Res[i]
                     double[] Res = new double[v.length];
                     for(int i=1; i<=Res.length; i++) {
                         Res[i-1] = 0;
@@ -98,22 +126,16 @@ public class SimulatorService extends Service{
                         Res[i-1] = Davis[0] + v[i-1] * Davis[1] + ((v[i-1] * v[i-1]) * Davis[2]);
                     }
 
-      /*
-       *       Res=Res./Mass;
-       */
+                    //Res=Res./Mass;
                     for(int i=1; i<=v.length; i++) {
                         Res[i-1] /= Mass;
                     }
 
-      /*
-       *      accel=trac-Res;     总加速度表accel[i]
-       */
+                    //accel=trac-Res;     总加速度表accel[i]
                     double[] accel = new double[v.length];
                     for(int i=1; i<=v.length; i++) {
                         accel[i-1] = trac[i-1] - Res[i-1];
                     }
-
-
 
                     // Students to modify code below     惰行速度
                     double Coasting = 0;
@@ -121,9 +143,7 @@ public class SimulatorService extends Service{
 
                     int S_min = 0;
 
-      /*
-       * S_max=max(mVel_profile(:,1))*1000;   最大里程S_max，单位m
-       */
+                    //S_max=max(mVel_profile(:,1))*1000;   最大里程S_max，单位m
                     double S_max = Double.MIN_VALUE;
                     for(int i = 0; i< mVel_profile.length; i++) {
                         S_max = Math.max(S_max, mVel_profile[i][0]);
@@ -132,9 +152,7 @@ public class SimulatorService extends Service{
 
                     int del_S = 10;
 
-      /*
-       * s=S_min:del_S:S_max;   里程表s[i]， 10m一个单位
-       */
+                    //s=S_min:del_S:S_max;   里程表s[i]， 10m一个单位
                     int[] s = new int[(int)(Math.floor(S_max) / del_S) + 1];
                     for(int i=0; i<s.length; i++) {
                         s[i] = del_S * i;
@@ -142,25 +160,9 @@ public class SimulatorService extends Service{
 
                     int size = s.length;
 
-                    double[] vel_limit = new double[size]; //更新后限速表，在中间车站处限速为1m/s,终点站处限速为1/30m/s(这个值随便取一个接近于0的值就可以)
-                    double[] vel_error = new double[size]; //
-                    double[] grad_prof = new double[size]; //坡度加速度表
-                    double[] TractionF = new double[size]; //牵引功率表
-                    double[] TractionB = new double[size]; //制动功率表
-                    double[] EnergyF = new double[size];   //每步长（10m）牵引能耗
-                    double[] EnergyB = new double[size];   //每步长（10m）制动能耗
-                    double[] Notch = new double[size];     //
-                    double[] acceleration = new double[size]; //
-                    double[] acceler = new double[size];  // 实时加速度
-                    double[] accF = new double[size];  // 实时牵引加速度
-                    double[] accB = new double[size];  // 实时制动加速度
-                    double[] T = new double[size];     //当前时刻
-                    double[] vel = new double[size];   //实时速度
-                    double[] del_T = new double[size]; //每一个步长（10m）的时间
+                    initData(s.length);
 
-      /*
-       * %DETERMINE VEL LIMIT FROM INPUT FILE  读取限速文件
-       */
+                    //%DETERMINE VEL LIMIT FROM INPUT FILE  读取限速文件
                     int pos = 2;
                     for(int i=1; i<size; i++) {
                         vel_limit[i-1] = mVel_profile[pos-2][2-1]/3.6;
@@ -172,9 +174,7 @@ public class SimulatorService extends Service{
                         }
                     }
 
-      /*
-       * %DETERMINE STATION STOPS FROM INPUT FILE  更新车站处限速
-       */
+                    //%DETERMINE STATION STOPS FROM INPUT FILE  更新车站处限速
                     pos = 1;
                     double maxStationInfo = Integer.MIN_VALUE;
                     for(int i=0; i<mStation_info.length; i++) {
@@ -188,14 +188,10 @@ public class SimulatorService extends Service{
                         }
                     }
 
-      /*
-       * %DETERMINE Terminal STATION STOPS FROM INPUT FILE  更新终点站处限速
-       */
+                    //更新终点站处限速
                     pos = 1;
 
-      /*
-       * %DETERMINE GRADIENT PROFILE FROM INPUT FILE    计算坡度加速度表
-       */
+                    //计算坡度加速度表
                     pos=2;
                     double maxGradient = Integer.MIN_VALUE;
                     for(int i=0; i<mGradient.length; i++) {
@@ -220,9 +216,7 @@ public class SimulatorService extends Service{
                         grad_prof[i] = gp;
                     }
 
-      /*
-       * %FORWARD VELOCITY CALCULATION     计算列车速度
-       */
+                     //计算列车速度
                     double[] velF = new double[size];
                     for(int i=0; i<size-1; i++) {
                         velF[i] = 0.01;
@@ -271,7 +265,6 @@ public class SimulatorService extends Service{
                         }
                     }
 
-
                     double[] velB = new double[size];
                     for(int i=0; i<size-1; i++) {
                         velB[i] = 0.01;
@@ -287,7 +280,6 @@ public class SimulatorService extends Service{
                             velB[i] = vel_limit[i+1];
                         }
                     }
-
 
                     for(int i=0; i<size; i++) {   // 牵引速度和制动速度取小的一个值作为vel[i]优化后 速度表
                         if(velF[i] <= velB[i]) {   //代表牵引
@@ -308,9 +300,7 @@ public class SimulatorService extends Service{
                         }
                     }
 
-      /*
-         end    判断列车牵引、制动、惰行的拐点
-       */
+                    //判断列车牵引、制动、惰行的拐点
                     for(int i=1; i<size-3; i++) {
                         double Resistance = (Davis[0] + Davis[1]*vel[i] + Davis[2]* Math.pow(vel[i],2)) / inertial_mass;
                         Notch[i] = ((acceler[i-1] + acceler[i-1]) / 2 + Resistance - grad_prof[i]) * vel[i]*inertial_mass *1000;
@@ -328,9 +318,7 @@ public class SimulatorService extends Service{
                         del_T[i]=2*del_S/(vel[i]+vel[i+1]);
                     }
 
-      /*
-         %Energy (F-forward B-backward) CALCULATION     每步长（10m）制动能耗表
-       */
+                    //每步长（10m）制动能耗表
                     for(int i=1; i<size-3; i++) {
                         EnergyF[i]=TractionF[i]/vel[i]*del_S;
                         if(TractionB[i]>Power) {
@@ -340,9 +328,7 @@ public class SimulatorService extends Service{
                         }
                     }
 
-      /*
-          以步长（10m）为单位更新后的坡度表
-       */
+                    //以步长（10m）为单位更新后的坡度表
                     double[] grad_1 = new double[size];
                     int apos = 1;
                     double maxGrad = 0;
@@ -356,9 +342,7 @@ public class SimulatorService extends Service{
                         }
                     }
 
-      /*
-       * altitude = -cumtrapz(s(1,:), grad_1(1,:))/1000;     坡度曲线
-       */
+                    //坡度曲线
                     double alt =0;
                     double[] altitude = new double[size];
                     for(int i=1; i<size; i++) {
@@ -369,37 +353,27 @@ public class SimulatorService extends Service{
                         altitude[i] = alt;
                     }
 
-                    // DEBUG
-      /*
-       * kWh_Mech_F=sum(EnergyF)/3.6/1000000;  总牵引能耗
-       */
-
+                    //总牵引能耗
                     double kWh_Mech_F = 0;
                     for(int i=0; i<EnergyF.length; i++) {
                         kWh_Mech_F += EnergyF[i];
                     }
                     kWh_Mech_F /= (3.6*1000000);
 
-      /*
-       * kWh_Mech_B=sum(EnergyB)/3.6/1000000;    总制动能耗
-       */
+                    //总制动能耗
                     double kWh_Mech_B = 0;
                     for(int i=0; i<EnergyB.length; i++) {
                         kWh_Mech_B += EnergyB[i];
                     }
                     kWh_Mech_B /= (3.6*1000000);
 
-      /*
-       * journey_time=max(T);   列车总运行时间
-       */
+                    //列车总运行时间
                     double journey_time = 0;
                     for(int i=0; i<T.length; i++) {
                         journey_time= Math.max(journey_time, T[i]);
                     }
 
-      /*
-       * energy_consumed=(cumsum(EnergyF)-cumsum(EnergyB))/3.6/1000000;  相应里程处的能耗表
-       */
+                    //相应里程处的能耗表
                     double[] energy_consumed = new double[size];
                     double e=0;
                     for(int i=0; i<size; i++) {
@@ -408,25 +382,19 @@ public class SimulatorService extends Service{
                         energy_consumed[i] = e;
                     }
 
-      /*
-       * kinetic_energy=1/2*inertial_mass.*vel.*vel*1000/3.6/1000000;   相应里程处的动能表
-       */
+                    //相应里程处的动能表
                     double[] kinetic_energy = new double[size];     //TODO Not working
                     for(int i=0; i<size; i++) {
                         kinetic_energy[i] = 1.0 / 2.0 * inertial_mass * vel[i] * vel[i]  * 1000 / 3.6 / 1000000;
                     }
 
-      /*
-       * potential_energy=altitude*9.81*Mass/3.6/1000;    相应里程处的势能表
-       */
+                    //相应里程处的势能表
                     double[] potential_energy = new double[size];
                     for(int i=0; i<size; i++) {
                         potential_energy[i] = altitude[i]*9.81*Mass/3.6/1000;
                     }
 
-      /*
-       * resistance_energy= cumsum((Davis(1)+Davis(2).*vel+Davis(3).*(vel.^2)).*del_S)*1000/3.6/1000000;    相应里程处的能耗表
-       */
+                    //resistance_energy= cumsum((Davis(1)+Davis(2).*vel+Davis(3).*(vel.^2)).*del_S)*1000/3.6/1000000;    相应里程处的能耗表
                     double[] resistance_energy = new double[size];
                     double re = 0;
                     for(int i=0; i<size; i++) {
@@ -435,7 +403,7 @@ public class SimulatorService extends Service{
                     }
 
                     for(int i=0;i<vel.length;i++){
-                        Logger.d("MLJ","vel[i" + i + "]" + vel[i]);
+                        Logger.d(TAG,"vel[i" + i + "]" + vel[i]);
                     }
                     //      new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
@@ -444,11 +412,49 @@ public class SimulatorService extends Service{
 
             });
 
-            /*************************************** Vehicle ******************************************/
+        }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_MILEAGE)){
+            //计算当前运行总里程
+            mSimulateHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_MILEAGE,1000);
 
         }
         return super.onStartCommand(intent, flags, startId);
     }
+
+    private void initData(int size){
+        vel_limit = new double[size]; //更新后限速表，在中间车站处限速为1m/s,终点站处限速为1/30m/s(这个值随便取一个接近于0的值就可以)
+        vel_error = new double[size]; //
+        grad_prof = new double[size]; //坡度加速度表
+        TractionF = new double[size]; //牵引功率表
+        TractionB = new double[size]; //制动功率表
+        EnergyF = new double[size];   //每步长（10m）牵引能耗
+        EnergyB = new double[size];   //每步长（10m）制动能耗
+        Notch = new double[size];     //
+        acceleration = new double[size]; //
+        acceler = new double[size];  // 实时加速度
+        accF = new double[size];  // 实时牵引加速度
+        accB = new double[size];  // 实时制动加速度
+        T = new double[size];     //当前时刻
+        vel = new double[size];   //实时速度
+        del_T = new double[size]; //每一个步长（10m）的时间
+    }
+
+    private Handler mSimulateHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MsgConstant.MSG_CALCULATE_MILEAGE:
+                    //计算当前列车里程, 速度单位是km/h
+                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+                    int velocityIndex = (int)(mTotalMileage / 10);
+                    double suggestVelocity = vel[velocityIndex];
+                    IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
+                            "suggest_velocity",suggestVelocity);
+                    break;
+            }
+
+        }
+    };
+
 
     public double brake(double vel, double max_accel, double Power, double Mass, double Coasting, double Coasting_vel) {
         double b;
