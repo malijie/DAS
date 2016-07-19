@@ -94,6 +94,8 @@ public class SimulatorService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Logger.d(TAG,"SimulatorService intent=" + intent);
+
         if(intent != null){
             String action = intent.getAction();
             Logger.d(TAG,"SimulatorService action=" + action);
@@ -413,9 +415,9 @@ public class SimulatorService extends Service{
 
                 });
 
-            }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_MILEAGE)){
-                //计算当前运行总里程
-                mSimulateHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_MILEAGE,1000);
+            }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED)){
+                //计算当建议苏度
+                mSimulateHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
 
             }
         }
@@ -445,13 +447,20 @@ public class SimulatorService extends Service{
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case MsgConstant.MSG_CALCULATE_MILEAGE:
+                case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
                     //计算当前列车里程, 速度单位是km/h
                     mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
                     int velocityIndex = (int)(mTotalMileage / 10);
+
+                    if(velocityIndex<0)
+                        velocityIndex = 0;
+
                     double suggestVelocity = vel[velocityIndex];
+                    Logger.d(TAG,"velocityIndex=" + velocityIndex +",suggestVelocity=" + suggestVelocity);
+
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
                             "suggest_velocity",suggestVelocity);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
                     break;
             }
 
@@ -477,4 +486,9 @@ public class SimulatorService extends Service{
         return b;
     }
 
+    @Override
+    public void onDestroy() {
+        mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED);
+        super.onDestroy();
+    }
 }

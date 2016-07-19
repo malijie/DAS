@@ -8,6 +8,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.das.Myapp;
+import com.das.util.Logger;
 
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class BaiduLocationManager {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
+
             //Receive Location
             StringBuffer sb = new StringBuffer(256);
             sb.append("time : ");
@@ -99,10 +101,6 @@ public class BaiduLocationManager {
                 sb.append("\ndescribe : ");
                 sb.append("gps定位成功");
 
-                mCurrentLatitude = location.getLatitude();
-                mCurrentLongitude = location.getLongitude();
-                mCurrentSpeed = location.getSpeed();
-
             } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());
@@ -114,6 +112,7 @@ public class BaiduLocationManager {
             } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
                 sb.append("\ndescribe : ");
                 sb.append("离线定位成功，离线定位结果也是有效的");
+
             } else if (location.getLocType() == BDLocation.TypeServerError) {
                 sb.append("\ndescribe : ");
                 sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
@@ -135,7 +134,12 @@ public class BaiduLocationManager {
                     sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
                 }
             }
-            Log.i("BaiduLocationApiDem", sb.toString() + ",getLocType()=" + location.getLocType());
+
+            mCurrentLatitude = location.getLatitude();
+            mCurrentLongitude = location.getLongitude();
+            mCurrentSpeed = location.getSpeed();
+
+            Log.i("BaiduLocationApiDem", sb.toString() + ",getLocType()=" + location.getLocType() + ",speed=" +  location.getSpeed());
 
         }
     }

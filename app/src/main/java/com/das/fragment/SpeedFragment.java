@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.das.constants.IntentConstants;
+import com.das.control.TrainControl;
 import com.das.manager.IntentManager;
 import com.das.service.SimulatorService;
 import com.example.das.R;
@@ -34,7 +35,7 @@ public class SpeedFragment extends Fragment {
 
     private void calculateMileage() {
         IntentManager.startService(SimulatorService.class,
-                IntentConstants.ACTION_CALCULATE_TRAIN_MILEAGE);
+                IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED);
 
     }
 
@@ -57,9 +58,10 @@ public class SpeedFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
-                mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H" +"当前经纬度是:" + intent.getDoubleExtra("lat",0));
+                mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H"
+                                    +"当前经纬度是:" + TrainControl.getInstance().getCurrentLatitude());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
-                mTextSuggestSpeed.setText("建议速度:" + intent.getDoubleExtra("suggest_velocity" + "KM/H",0));
+                mTextSuggestSpeed.setText("建议速度:" + intent.getDoubleExtra("suggest_velocity",0) + "KM/H");
             }
         }
     };

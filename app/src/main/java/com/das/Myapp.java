@@ -41,7 +41,6 @@ public class Myapp extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        Logger.d("MLJ","application onCreate");
         sContext = getApplicationContext();
         Logger.setLogSwitch(true);
         FileManager.getInstance().copyDBToRootDirectory();

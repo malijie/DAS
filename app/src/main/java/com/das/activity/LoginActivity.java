@@ -18,6 +18,7 @@ import com.das.manager.ToastManager;
 import com.das.service.CalculateSpeedService;
 import com.das.service.SimulatorService;
 import com.das.util.DistanceUtil;
+import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
 import com.example.das.R;
 
@@ -63,6 +64,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         mSpinnerRouteInfo.setAdapter(routeInfoAdapter);
         mSpinnerTrainInfo.setAdapter(trainInfoAdapter);
 
+        IntentManager.startService(CalculateSpeedService.class,
+                IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
+
 
     }
 
@@ -85,18 +89,11 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     SharePreferenceUtil.saveStartLatitude(123.0f);
                     SharePreferenceUtil.saveStartLongitude(234f);
                     IntentManager.startActivity(MainActivity.class);
-
-                    startServices();
-
+                    IntentManager.startService(SimulatorService.class,
+                            IntentConstants.ACTION_START_SIMULATE);
                 }
                 break;
             case R.id.id_login_text_title:
-//                if(checkPosition()){
-                        SharePreferenceUtil.saveStartLatitude(123.0f);
-                        SharePreferenceUtil.saveStartLongitude(234f);
-                        IntentManager.startActivity(MainActivity.class);
-                        startServices();
-//                }
                 break;
             default:
                 break;
@@ -108,14 +105,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
      */
     private boolean checkPosition() {
         if(mTrainControl.getCurrentLatitude() == 0 && mTrainControl.getCurrentLongitude() ==0){
+            Logger.d("MLJ","lat=" + mTrainControl.getCurrentLatitude() + ",lon=" + mTrainControl.getCurrentLongitude());
             ToastManager.showMsg("未完成定位，请稍后再试!");
             return false;
         }
 
-        if(getStartDistance()> TrainConstants.DISTANCE_FROM_START_TO_CURRENT_LOCATION){
-            ToastManager.showMsg("当前未在发车位置上，无法发车");
-            return false;
-        }
+//        if(getStartDistance()> TrainConstants.DISTANCE_FROM_START_TO_CURRENT_LOCATION){
+//            ToastManager.showMsg("当前未在发车位置上，无法发车");
+//            return false;
+//        }
 
         return true;
     }
@@ -125,8 +123,4 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 mTrainControl.getCurrentLatitude(),mTrainControl.getCurrentLongitude()) * 1000;
     }
 
-    private void startServices(){
-        IntentManager.startService(CalculateSpeedService.class, IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
-        IntentManager.startService(SimulatorService.class,IntentConstants.ACTION_START_SIMULATE);
-    }
 }

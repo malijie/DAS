@@ -60,7 +60,7 @@ public class CalculateSpeedService extends Service {
                     //计算当前速度
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_CURRENT_SPEED,
                             "speed",mTrainControl.getCurrentSpeed());
-Logger.d("MLJ","MSG_CALCULATE_SPEED speed=" + mTrainControl.getCurrentSpeed());
+                    Logger.d(TAG,"MSG_CALCULATE_SPEED speed=" + mTrainControl.getCurrentSpeed());
                     sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
                     break;
             }
@@ -72,5 +72,7 @@ Logger.d("MLJ","MSG_CALCULATE_SPEED speed=" + mTrainControl.getCurrentSpeed());
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mSpeedHandler.removeMessages( MsgConstant.MSG_GET_LAST_SPEED_INFO);
+        mSpeedHandler.removeMessages( MsgConstant.MSG_CALCULATE_SPEED);
     }
 }

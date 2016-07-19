@@ -713,7 +713,7 @@ public class SingleTrainSimulator {
       }
 
        for(int i=0;i<vel.length;i++){
-           Logger.d("MLJ","vel[i" + i + "]" + vel[i]);
+//           Logger.d("MLJ","vel[i" + i + "]" + vel[i]);
        }
        Toast.makeText(Myapp.sContext,"acceler.length=" + TractionF.length,Toast.LENGTH_LONG).show();
 
