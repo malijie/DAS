@@ -11,6 +11,9 @@ public class MsgConstant {
     public static final int MSG_GET_LAST_SPEED_INFO = 0x0004;
     public static final int MSG_CALCULATE_SUGGEST_SPEED = 0x0005;
     public static final int MSG_CALCULATE_LIMIT_SPEED = 0x0006;
+    public static final int MSG_CALCULATE_TOTAL_ENERGY = 0x0007;
+    public static final int MSG_CALCULATE_TOTAL_MILEAGE = 0x0008;
+
 
 
 

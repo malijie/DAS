@@ -72,6 +72,7 @@ public class SimulatorService extends Service{
     private double[] T;
     private double[] vel;
     private double[] del_T;
+    private double[] energy_consumed;
 
 
 
@@ -377,7 +378,7 @@ public class SimulatorService extends Service{
                         }
 
                         //相应里程处的能耗表
-                        double[] energy_consumed = new double[size];
+                        energy_consumed = new double[size];
                         double e=0;
                         for(int i=0; i<size; i++) {
                             e+= EnergyF[i] / 3.6 / 1000000;
@@ -415,12 +416,18 @@ public class SimulatorService extends Service{
 
                 });
 
+            }else if(action.equals(IntentConstants.ACTION_GET_CURRENT_TOTAL_MILEAGE)){
+                mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE);
+
             }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED)){
                 //计算当前建议苏度
                 mSimulateHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
             }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_LIMIT_SPEED)){
                 //计算限制速度
                 mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
+            }else if(action.equals(IntentConstants.ACTION_CALCULATE_TOTAL_CONSUME_ENERGY)){
+                //计算总能耗
+                mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY);
             }
         }
 
@@ -443,42 +450,57 @@ public class SimulatorService extends Service{
         T = new double[size];     //当前时刻
         vel = new double[size];   //实时速度
         del_T = new double[size]; //每一个步长（10m）的时间
+        energy_consumed = new double[size];
     }
 
 
     private double mSuggestVelocity;
     private double mLimitVelocity;
+    private double mTotalEnergy;
+    private int mVelocityIndex;
+
     private Handler mSimulateHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
-            int velocityIndex = (int)(mTotalMileage / 10);
-            if(velocityIndex<0)
-                velocityIndex = 0;
 
             switch (msg.what){
+                case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
+                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+                    mVelocityIndex = (int)(mTotalMileage / 10);
+                    if(mVelocityIndex<0){
+                        mVelocityIndex = 0;
+                    }
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
+                    break;
+
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
-                    //计算当前列车里程, 速度单位是km/h
-                    mSuggestVelocity = vel[velocityIndex];
+                    //计算当前列车建议速度, 速度单位是km/h
+                    mSuggestVelocity = vel[mVelocityIndex];
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
                             "suggest_velocity",mSuggestVelocity);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
                     break;
                 case MsgConstant.MSG_CALCULATE_LIMIT_SPEED:
-                    mLimitVelocity = vel_limit[velocityIndex];
+                    //计算当前限制速度
+                    mLimitVelocity = vel_limit[mVelocityIndex];
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,
                             "limit_velocity",mLimitVelocity);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,1000);
                     break;
+                case MsgConstant.MSG_CALCULATE_TOTAL_ENERGY:
+                    //计算当前总能耗
+                    mTotalEnergy = energy_consumed[mVelocityIndex];
+                    IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TOTAL_CONSUME_ENERGY,
+                            "total_energy",mTotalEnergy);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,1000);
+                    break;
             }
 
-            Logger.d(TAG,"velocityIndex=" + velocityIndex +",suggestVelocity="
+            Logger.d(TAG,"velocityIndex=" + mVelocityIndex +",suggestVelocity="
                     + mSuggestVelocity + ",limitVelocity=" + mLimitVelocity);
-
 
         }
     };
-
 
     public double brake(double vel, double max_accel, double Power, double Mass, double Coasting, double Coasting_vel) {
         double b;

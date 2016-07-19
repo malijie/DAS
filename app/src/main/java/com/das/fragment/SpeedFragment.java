@@ -31,9 +31,15 @@ public class SpeedFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_speed, container,false);
         initViews(v);
         initData();
+        calculateTotalMileage();
         calculateSuggestSpeed();
         calculateLimitSpeed();
         return v;
+    }
+
+    private void calculateTotalMileage(){
+        IntentManager.startService(SimulatorService.class,
+                IntentConstants.ACTION_GET_CURRENT_TOTAL_MILEAGE);
     }
 
     private void calculateLimitSpeed() {
@@ -44,7 +50,6 @@ public class SpeedFragment extends Fragment {
     private void calculateSuggestSpeed() {
         IntentManager.startService(SimulatorService.class,
                 IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED);
-
     }
 
     private void initData() {
