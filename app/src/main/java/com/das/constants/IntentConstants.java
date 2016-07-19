@@ -21,5 +21,9 @@ public class IntentConstants {
     public static final String ACTION_CALCULATE_TRAIN_SUGGEST_SPEED = "ACTION_CALCULATE_TRAIN_SUGGEST_SPEED";
     //更新列车建议速度
     public static final String ACTION_UPDATE_TRAIN_SUGGEST_SPEED = "ACTION_UPDATE_TRAIN_SUGGEST_SPEED";
+    //计算列车限制速度
+    public static final String ACTION_CALCULATE_TRAIN_LIMIT_SPEED = "ACTION_CALCULATE_TRAIN_LIMIT_SPEED";
+    //更新列车限制速度
+    public static final String ACTION_UPDATE_TRAIN_LIMIT_SPEED = "ACTION_UPDATE_TRAIN_LIMIT_SPEED";
 
 }

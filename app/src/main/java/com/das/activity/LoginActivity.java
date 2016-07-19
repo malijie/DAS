@@ -86,8 +86,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.id_login_text_confirm:
                 if(checkPosition()) {
-                    SharePreferenceUtil.saveStartLatitude(123.0f);
-                    SharePreferenceUtil.saveStartLongitude(234f);
+                    SharePreferenceUtil.saveStartLatitude((float)TrainConstants.RUTONG_START_LATITUDE);
+                    SharePreferenceUtil.saveStartLongitude((float)TrainConstants.RUTONG_START_LONGITUDE);
                     IntentManager.startActivity(MainActivity.class);
                     IntentManager.startService(SimulatorService.class,
                             IntentConstants.ACTION_START_SIMULATE);

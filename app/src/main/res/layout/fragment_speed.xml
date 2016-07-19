@@ -5,18 +5,18 @@
     android:background="@color/gray_8f">
     
     <TextView
-        android:id="@+id/currentspeed"
+        android:id="@+id/main_speed_text_suggest_currents_peed"
         android:layout_width="350dp"
         android:layout_height="100dp"
         android:background="@color/transparent"
         android:textColor="@android:color/white"
         android:lines="2"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:text="@string/currentspeed"
         android:gravity="center_vertical"/>
 
     <TextView
-        android:id="@+id/main_speed_text_suggest"
+        android:id="@+id/main_speed_text_suggest_speed"
         android:layout_width="350dp"
         android:layout_height="100dp"
         android:background="@color/transparent"
@@ -25,38 +25,36 @@
         android:textSize="15sp"
         android:text="@string/advicespeed"
         android:gravity="center_vertical"
-
-
-        android:layout_below="@+id/currentspeed"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/main_speed_text_suggest_currents_peed"
+        android:layout_alignParentLeft="true" />
 
     <TextView
-        android:id="@+id/maximumspeed"
+        android:id="@+id/main_speed_text_limit_speed"
         android:layout_width="350dp"
         android:layout_height="100dp"
         android:background="@color/transparent"
         android:textColor="@android:color/white"
         android:lines="1"
-        android:textSize="36sp"
+        android:textSize="15sp"
         android:text="@string/maximumspeed"
         android:gravity="center_vertical"
-
-        android:layout_below="@+id/main_speed_text_suggest"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="350dp"
-        android:layout_height="1dp"
-        android:background="@color/white"
-        android:layout_below="@+id/currentspeed"
-        android:layout_alignParentStart="true"/>
+        android:layout_below="@+id/main_speed_text_suggest_speed"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="350dp"
         android:layout_height="1dp"
         android:background="@color/white"
-        android:layout_below="@+id/main_speed_text_suggest"
-        android:layout_alignParentStart="true"/>
+        android:layout_below="@+id/main_speed_text_suggest_currents_peed"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        android:layout_below="@+id/main_speed_text_suggest_speed"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="350dp"
@@ -67,8 +65,8 @@
         android:layout_width="350dp"
         android:layout_height="1dp"
         android:background="@color/white"
-        android:layout_alignBottom="@+id/maximumspeed"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBottom="@+id/main_speed_text_limit_speed"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="1dp"
@@ -80,7 +78,7 @@
         android:layout_height="300dp"
         android:background="@color/white"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/currentspeed" />
+        android:layout_alignRight="@+id/main_speed_text_suggest_currents_peed" />
 
 
 </RelativeLayout>

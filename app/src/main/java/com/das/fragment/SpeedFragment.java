@@ -15,6 +15,7 @@ import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
 import com.das.manager.IntentManager;
 import com.das.service.SimulatorService;
+import com.das.util.Logger;
 import com.example.das.R;
 
 /**
@@ -23,17 +24,24 @@ import com.example.das.R;
 public class SpeedFragment extends Fragment {
     private TextView mTextCurrentSpeed = null;
     private TextView mTextSuggestSpeed = null;
+    private TextView mTextLimitSpeed = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_speed, container,false);
         initViews(v);
         initData();
-        calculateMileage();
+        calculateSuggestSpeed();
+        calculateLimitSpeed();
         return v;
     }
 
-    private void calculateMileage() {
+    private void calculateLimitSpeed() {
+        IntentManager.startService(SimulatorService.class,
+                IntentConstants.ACTION_CALCULATE_TRAIN_LIMIT_SPEED);
+    }
+
+    private void calculateSuggestSpeed() {
         IntentManager.startService(SimulatorService.class,
                 IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED);
 
@@ -43,13 +51,15 @@ public class SpeedFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
         filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED);
+        filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED);
         this.getActivity().registerReceiver(mSpeedReceiver,filter);
         //计算里程
     }
 
     private void initViews(View v) {
-        mTextSuggestSpeed = (TextView) v.findViewById(R.id.main_speed_text_suggest);
-        mTextCurrentSpeed = (TextView) v.findViewById(R.id.currentspeed);
+        mTextSuggestSpeed = (TextView) v.findViewById(R.id.main_speed_text_suggest_speed);
+        mTextCurrentSpeed = (TextView) v.findViewById(R.id.main_speed_text_suggest_currents_peed);
+        mTextLimitSpeed = (TextView) v.findViewById(R.id.main_speed_text_limit_speed);
     }
 
     private BroadcastReceiver mSpeedReceiver = new BroadcastReceiver(){
@@ -62,6 +72,9 @@ public class SpeedFragment extends Fragment {
                                     +"当前经纬度是:" + TrainControl.getInstance().getCurrentLatitude());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
                 mTextSuggestSpeed.setText("建议速度:" + intent.getDoubleExtra("suggest_velocity",0) + "KM/H");
+            }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
+                Logger.d("MLJ","TTTT" + intent.getDoubleExtra("limit_velocity",0));
+                mTextLimitSpeed.setText("最高限速:" + intent.getDoubleExtra("limit_velocity",0) + "KM/H");
             }
         }
     };

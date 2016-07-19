@@ -416,9 +416,11 @@ public class SimulatorService extends Service{
                 });
 
             }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED)){
-                //计算当建议苏度
+                //计算当前建议苏度
                 mSimulateHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
-
+            }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_LIMIT_SPEED)){
+                //计算限制速度
+                mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
             }
         }
 
@@ -443,26 +445,36 @@ public class SimulatorService extends Service{
         del_T = new double[size]; //每一个步长（10m）的时间
     }
 
+
+    private double mSuggestVelocity;
+    private double mLimitVelocity;
     private Handler mSimulateHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+            int velocityIndex = (int)(mTotalMileage / 10);
+            if(velocityIndex<0)
+                velocityIndex = 0;
+
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
                     //计算当前列车里程, 速度单位是km/h
-                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
-                    int velocityIndex = (int)(mTotalMileage / 10);
-
-                    if(velocityIndex<0)
-                        velocityIndex = 0;
-
-                    double suggestVelocity = vel[velocityIndex];
-                    Logger.d(TAG,"velocityIndex=" + velocityIndex +",suggestVelocity=" + suggestVelocity);
-
+                    mSuggestVelocity = vel[velocityIndex];
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
-                            "suggest_velocity",suggestVelocity);
+                            "suggest_velocity",mSuggestVelocity);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
                     break;
+                case MsgConstant.MSG_CALCULATE_LIMIT_SPEED:
+                    mLimitVelocity = vel_limit[velocityIndex];
+                    IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,
+                            "limit_velocity",mLimitVelocity);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,1000);
+                    break;
             }
+
+            Logger.d(TAG,"velocityIndex=" + velocityIndex +",suggestVelocity="
+                    + mSuggestVelocity + ",limitVelocity=" + mLimitVelocity);
+
 
         }
     };
