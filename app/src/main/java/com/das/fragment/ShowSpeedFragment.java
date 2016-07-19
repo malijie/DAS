@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.BarData;
  */
 public class ShowSpeedFragment extends Fragment{
     private static final String TAG = ShowSpeedFragment.class.getSimpleName();
+    private TextView mTextLimitSpeed = null;
     private TextView mTextSuggestSpeed = null;
     private TextView mTextCurrentSpeed = null;
     private BarChart mBarChartSuggestSpeed = null;
@@ -54,10 +55,9 @@ public class ShowSpeedFragment extends Fragment{
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
+        filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED);
         filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED);
         getActivity().registerReceiver(mSpeedReceiver,filter);
-
-
 
     }
 
@@ -65,6 +65,7 @@ public class ShowSpeedFragment extends Fragment{
         mTextCurrentSpeed = (TextView) v.findViewById(R.id.id_speed_text_current_speed);
         mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
         mTextSuggestSpeed = (TextView)v.findViewById(R.id.id_speed_text_suggest_value);
+        mTextLimitSpeed = (TextView) v.findViewById(R.id.id_speed_text_limit_value);
 
     }
 
@@ -76,7 +77,9 @@ public class ShowSpeedFragment extends Fragment{
                 mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
                 updateSpeed(mTrainControl.getCurrentSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
-                mTextSuggestSpeed.setText("建议速度:" + intent.getDoubleExtra("mileage",0));
+                mTextSuggestSpeed.setText(intent.getDoubleExtra("suggest_velocity",0) + "");
+            }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
+                mTextLimitSpeed.setText(intent.getDoubleExtra("limit_velocity",0) + "");
             }
         }
     };

@@ -501,6 +501,8 @@ public class SimulatorService extends Service{
     @Override
     public void onDestroy() {
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED);
+        mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
+
         super.onDestroy();
     }
 }

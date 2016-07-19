@@ -62,7 +62,7 @@ public class CalculateSpeedService extends Service {
                             "speed",mTrainControl.getCurrentSpeed());
                     Logger.d(TAG,"MSG_CALCULATE_SPEED speed=" + mTrainControl.getCurrentSpeed());
                     sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
-                    break;
+                break;
             }
         }
     };

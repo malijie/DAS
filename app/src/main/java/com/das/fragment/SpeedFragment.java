@@ -73,7 +73,6 @@ public class SpeedFragment extends Fragment {
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
                 mTextSuggestSpeed.setText("建议速度:" + intent.getDoubleExtra("suggest_velocity",0) + "KM/H");
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
-                Logger.d("MLJ","TTTT" + intent.getDoubleExtra("limit_velocity",0));
                 mTextLimitSpeed.setText("最高限速:" + intent.getDoubleExtra("limit_velocity",0) + "KM/H");
             }
         }
