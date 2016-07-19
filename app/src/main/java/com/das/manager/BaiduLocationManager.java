@@ -135,7 +135,7 @@ public class BaiduLocationManager {
                     sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
                 }
             }
-            Log.i("BaiduLocationApiDem", sb.toString());
+            Log.i("BaiduLocationApiDem", sb.toString() + ",getLocType()=" + location.getLocType());
 
         }
     }

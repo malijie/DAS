@@ -33,14 +33,17 @@ public class CalculateSpeedService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String action = intent.getAction();
-        Logger.d(TAG,"action=" + action);
-        if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SPEED)){
-            //计算当前速度
-            mLocationManager.start();
-            mSpeedHandler.sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
-        }
 
+        if(intent != null){
+            String action = intent.getAction();
+            Logger.d(TAG,"action=" + action);
+
+            if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SPEED)){
+                //计算当前速度
+                mLocationManager.start();
+                mSpeedHandler.sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
+            }
+        }
 
         return START_STICKY;
     }
@@ -57,6 +60,7 @@ public class CalculateSpeedService extends Service {
                     //计算当前速度
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_CURRENT_SPEED,
                             "speed",mTrainControl.getCurrentSpeed());
+Logger.d("MLJ","MSG_CALCULATE_SPEED speed=" + mTrainControl.getCurrentSpeed());
                     sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
                     break;
             }
