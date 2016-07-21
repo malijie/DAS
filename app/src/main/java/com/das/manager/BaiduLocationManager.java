@@ -49,9 +49,10 @@ public class BaiduLocationManager {
         initLocation();
     }
 
-    public void start(){
+    public void startLocation(){
         if(mLocationManager != null){
             mLocationClient.start();
+            mLocationClient.requestLocation();
         }
     }
 
@@ -171,6 +172,7 @@ public class BaiduLocationManager {
         }
     }
 
+
     public double getCurrentLatitude(){
         return mCurrentLatitude;
     }
@@ -183,25 +185,5 @@ public class BaiduLocationManager {
         return mCurrentSpeed;
     }
 
-    private float getLastKnownSpeed(){
-        if(mLocationClient == null){
-            return 0;
-        }
-        return mLocationClient.getLastKnownLocation().getSpeed();
-    }
-
-    private double getLastKnownLatitude(){
-        if(mLocationClient == null){
-            return 0;
-        }
-        return mLocationClient.getLastKnownLocation().getLatitude();
-    }
-
-    private double getLastKnownLongitude(){
-        if(mLocationClient == null){
-            return 0;
-        }
-        return mLocationClient.getLastKnownLocation().getLongitude();
-    }
 
 }

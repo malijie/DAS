@@ -13,6 +13,7 @@ import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.constants.Constants;
 import com.das.db.DBManager;
+import com.das.manager.BaiduLocationManager;
 import com.das.manager.IntentManager;
 import com.das.manager.ToastManager;
 import com.das.service.CalculateSpeedService;
@@ -30,8 +31,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private TextView mTextTitle = null;
     private Spinner mSpinnerRouteInfo = null;
     private Spinner mSpinnerTrainInfo = null;
+
     private TrainControl mTrainControl = null;
     private DBManager mDBManager = null;
+    private BaiduLocationManager mLocationManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         initViews();
         initData();
 
+        IntentManager.startService(CalculateSpeedService.class,
+                IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
 
     }
 
@@ -49,6 +54,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         mTrainControl = TrainControl.getInstance();
         mDBManager = DBManager.getInstance();
+        mLocationManager = BaiduLocationManager.getInstance();
 
         ArrayAdapter trainInfoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, Constants.getTrainInfoList());;
@@ -64,8 +70,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         mSpinnerRouteInfo.setAdapter(routeInfoAdapter);
         mSpinnerTrainInfo.setAdapter(trainInfoAdapter);
 
-        IntentManager.startService(CalculateSpeedService.class,
-                IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
+
 
 
     }
@@ -94,6 +99,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 }
                 break;
             case R.id.id_login_text_title:
+                if(checkPosition()) {
+                    SharePreferenceUtil.saveStartLatitude((float)TrainConstants.RUTONG_START_LATITUDE);
+                    SharePreferenceUtil.saveStartLongitude((float)TrainConstants.RUTONG_START_LONGITUDE);
+                    IntentManager.startActivity(MainActivity.class);
+                    IntentManager.startService(SimulatorService.class,
+                            IntentConstants.ACTION_START_SIMULATE);
+                }
                 break;
             default:
                 break;
@@ -107,6 +119,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if(mTrainControl.getCurrentLatitude() == 0 && mTrainControl.getCurrentLongitude() ==0){
             Logger.d("MLJ","lat=" + mTrainControl.getCurrentLatitude() + ",lon=" + mTrainControl.getCurrentLongitude());
             ToastManager.showMsg("未完成定位，请稍后再试!");
+            mLocationManager.startLocation();
             return false;
         }
 

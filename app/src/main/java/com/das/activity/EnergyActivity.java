@@ -17,8 +17,8 @@ public class EnergyActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_energy);
-        Button buttonreturn = (Button) findViewById(R.id.button_energy_return);
-        buttonreturn.setOnClickListener(new View.OnClickListener() {
+        Button mButtonReturn = (Button) findViewById(R.id.button_energy_return);
+        mButtonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

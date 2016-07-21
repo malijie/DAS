@@ -8,9 +8,7 @@ import android.os.Message;
 
 import com.das.constants.IntentConstants;
 import com.das.constants.MsgConstant;
-import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
-import com.das.constants.Constants;
 import com.das.manager.BaiduLocationManager;
 import com.das.manager.IntentManager;
 import com.das.util.Logger;
@@ -40,7 +38,7 @@ public class CalculateSpeedService extends Service {
 
             if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SPEED)){
                 //计算当前速度
-                mLocationManager.start();
+                mLocationManager.startLocation();
                 mSpeedHandler.sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
             }
         }

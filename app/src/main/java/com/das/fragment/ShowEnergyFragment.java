@@ -16,6 +16,7 @@ import com.das.constants.IntentConstants;
 import com.das.manager.IntentManager;
 import com.das.service.SimulatorService;
 import com.das.util.Logger;
+import com.das.util.Utils;
 import com.example.das.R;
 
 /**
@@ -61,7 +62,8 @@ public class ShowEnergyFragment extends Fragment{
         public void onReceive(Context context, Intent intent) {
             Logger.d("MLJ","intent=" + intent);
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_TOTAL_CONSUME_ENERGY)){
-                mTextTotalEnergy.setText(intent.getDoubleExtra("total_energy",0) + "KWH");
+                mTextTotalEnergy.setText(Utils.converDouble2Half(intent.getDoubleExtra("total_energy",0))
+                                        + "KWH");
             }
         }
     };
