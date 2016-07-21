@@ -34,7 +34,7 @@
     
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/id_speed_bar_chart_suggest_speed"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="460dp"
         android:layout_centerInParent="true"/>
 
@@ -103,7 +103,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/id_speed_bar_chart_suggest_speed"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        >
         <TextView
             android:id="@+id/id_speed_text_current_speed"
             android:layout_width="100dp"

@@ -17,7 +17,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2016/7/6.
+ * Created by malijie on 2016/7/6.
  */
 public class EnergySpeedChart {
     private static final String TAG = EnergySpeedChart.class.getSimpleName();
@@ -84,14 +84,17 @@ public class EnergySpeedChart {
         barChart.setScaleEnabled(false);// 是否可以缩放
         barChart.setPinchZoom(false);//
         barChart.setDrawBarShadow(true);  //设置限制线
-        LimitLine limitLine = new LimitLine(ChartConstants.SPEED_LIMIT,"");
+        LimitLine limitLine1 = new LimitLine(ChartConstants.SPEED_LIMIT,"");
+        LimitLine limitLine2 = new LimitLine(ChartConstants.SPEED_SUGGEST,"");
+
 
         //Y轴左边刻度从0-220，限制线为180
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setAxisMaxValue(ChartConstants.SPEED_LIMIT_UP);
         leftAxis.setAxisMinValue(ChartConstants.SPEED_LIMIT_DOWN);
         //刻度间距
-        leftAxis.addLimitLine(limitLine);
+        leftAxis.addLimitLine(limitLine1);
+        leftAxis.addLimitLine(limitLine2);
         leftAxis.setLabelCount(ChartConstants.SPEED_LEVEL,false);
 
         //不显示右边Y轴

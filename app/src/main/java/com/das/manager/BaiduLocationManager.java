@@ -16,7 +16,9 @@ import java.util.List;
  * Created by malijie on 2016/7/4.
  */
 public class BaiduLocationManager {
+    private static final String TAG = BaiduLocationManager.class.getSimpleName();
     private static final Object sObject = new Object();
+    private BDLocation mLocation;
     private double mCurrentLatitude;
     private double mCurrentLongitude;
     private float mCurrentSpeed;
@@ -43,6 +45,7 @@ public class BaiduLocationManager {
     public void initLocationConfig(){
         mLocationClient = new LocationClient(Myapp.sContext);     //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);    //注册监听函数
+
         initLocation();
     }
 
@@ -54,6 +57,7 @@ public class BaiduLocationManager {
 
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
+        option.setEnableSimulateGps(true);
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("gcj02");//可选，默认gcj02，设置返回的定位结果坐标系
@@ -66,7 +70,8 @@ public class BaiduLocationManager {
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
-        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
+//        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
+        option.setPriority(LocationClientOption.GpsFirst);
         mLocationClient.setLocOption(option);
     }
 
@@ -74,7 +79,7 @@ public class BaiduLocationManager {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-
+            mLocation = location;
             //Receive Location
             StringBuffer sb = new StringBuffer(256);
             sb.append("time : ");
@@ -101,6 +106,13 @@ public class BaiduLocationManager {
                 sb.append("\ndescribe : ");
                 sb.append("gps定位成功");
 
+                mCurrentLatitude = location.getLatitude();
+                mCurrentLongitude = location.getLongitude();
+                mCurrentSpeed = location.getSpeed();
+                if(mCurrentSpeed <0){
+                    mCurrentSpeed = 0;
+                }
+
             } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());
@@ -109,9 +121,23 @@ public class BaiduLocationManager {
                 sb.append(location.getOperators());
                 sb.append("\ndescribe : ");
                 sb.append("网络定位成功");
+                mLocationClient.start();
+                mCurrentLatitude = location.getLatitude();
+                mCurrentLongitude = location.getLongitude();
+                mCurrentSpeed = location.getSpeed();
+
+
             } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
                 sb.append("\ndescribe : ");
                 sb.append("离线定位成功，离线定位结果也是有效的");
+                mLocationClient.start();
+                mLocationClient.requestLocation();
+
+//                mCurrentSpeed = getLastKnownSpeed();
+//                mCurrentLongitude = getLastKnownLongitude();
+//                mCurrentLatitude = getLastKnownLatitude();
+
+
 
             } else if (location.getLocType() == BDLocation.TypeServerError) {
                 sb.append("\ndescribe : ");
@@ -135,11 +161,12 @@ public class BaiduLocationManager {
                 }
             }
 
-            mCurrentLatitude = location.getLatitude();
-            mCurrentLongitude = location.getLongitude();
-            mCurrentSpeed = location.getSpeed();
 
-            Log.i("BaiduLocationApiDem", sb.toString() + ",getLocType()=" + location.getLocType() + ",speed=" +  location.getSpeed());
+            Log.i("BaiduLocationApiDem", sb.toString() );
+            Logger.w(TAG,"getLocType()=" + location.getLocType()
+                    + ",speed=" +  mCurrentSpeed
+                    + ",lat" + mCurrentLatitude
+                    + ",long" + mCurrentLongitude);
 
         }
     }
@@ -154,6 +181,27 @@ public class BaiduLocationManager {
 
     public float getCurrentSpeed(){
         return mCurrentSpeed;
+    }
+
+    private float getLastKnownSpeed(){
+        if(mLocationClient == null){
+            return 0;
+        }
+        return mLocationClient.getLastKnownLocation().getSpeed();
+    }
+
+    private double getLastKnownLatitude(){
+        if(mLocationClient == null){
+            return 0;
+        }
+        return mLocationClient.getLastKnownLocation().getLatitude();
+    }
+
+    private double getLastKnownLongitude(){
+        if(mLocationClient == null){
+            return 0;
+        }
+        return mLocationClient.getLastKnownLocation().getLongitude();
     }
 
 }
