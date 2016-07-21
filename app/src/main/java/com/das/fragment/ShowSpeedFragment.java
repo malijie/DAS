@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.das.chart.EnergySpeedChart;
 import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
+import com.das.manager.ToastManager;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -66,7 +67,6 @@ public class ShowSpeedFragment extends Fragment{
         mBarChartSuggestSpeed = (BarChart)v.findViewById(R.id.id_speed_bar_chart_suggest_speed);
         mTextSuggestSpeed = (TextView)v.findViewById(R.id.id_speed_text_suggest_value);
         mTextLimitSpeed = (TextView) v.findViewById(R.id.id_speed_text_limit_value);
-
     }
 
     private BroadcastReceiver mSpeedReceiver = new BroadcastReceiver() {
@@ -78,8 +78,10 @@ public class ShowSpeedFragment extends Fragment{
                 updateSpeed(mTrainControl.getCurrentSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
                 mTextSuggestSpeed.setText(intent.getDoubleExtra("suggest_velocity",0) + "");
+                mEnergySpeedChart.updateSuggestSpeedLine((float)mTrainControl.getSuggestSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
                 mTextLimitSpeed.setText(intent.getDoubleExtra("limit_velocity",0) + "");
+                mEnergySpeedChart.updateLimitSpeedLine((float)mTrainControl.getLimitSpeed());
             }
         }
     };

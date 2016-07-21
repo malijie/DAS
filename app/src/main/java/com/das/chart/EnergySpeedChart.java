@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.das.Myapp;
+import com.das.manager.ToastManager;
 import com.das.util.Logger;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,6 +26,11 @@ public class EnergySpeedChart {
     private static EnergySpeedChart speedChart = null;
     private BarData mBarData;
     private BarChart mSpeedBarChart = null;
+
+    private YAxis mLeftAxis = null;
+
+    private LimitLine mLimitSpeedLine = null;
+    private LimitLine mSuggestSpeedLine = null;
 
     private EnergySpeedChart(){
 
@@ -84,18 +90,21 @@ public class EnergySpeedChart {
         barChart.setScaleEnabled(false);// 是否可以缩放
         barChart.setPinchZoom(false);//
         barChart.setDrawBarShadow(true);  //设置限制线
-        LimitLine limitLine1 = new LimitLine(ChartConstants.SPEED_LIMIT,"");
-        LimitLine limitLine2 = new LimitLine(ChartConstants.SPEED_SUGGEST,"");
+
+        mLimitSpeedLine = new LimitLine(0,"");
+        mSuggestSpeedLine = new LimitLine(0,"");
+        mLimitSpeedLine.setLineColor(Color.RED);
+        mSuggestSpeedLine.setLineColor(Color.GREEN);
 
 
         //Y轴左边刻度从0-220，限制线为180
-        YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setAxisMaxValue(ChartConstants.SPEED_LIMIT_UP);
-        leftAxis.setAxisMinValue(ChartConstants.SPEED_LIMIT_DOWN);
+        mLeftAxis = barChart.getAxisLeft();
+        mLeftAxis.setAxisMaxValue(ChartConstants.SPEED_LIMIT_UP);
+        mLeftAxis.setAxisMinValue(ChartConstants.SPEED_LIMIT_DOWN);
         //刻度间距
-        leftAxis.addLimitLine(limitLine1);
-        leftAxis.addLimitLine(limitLine2);
-        leftAxis.setLabelCount(ChartConstants.SPEED_LEVEL,false);
+        mLeftAxis.addLimitLine(mLimitSpeedLine);
+        mLeftAxis.addLimitLine(mSuggestSpeedLine);
+        mLeftAxis.setLabelCount(ChartConstants.SPEED_LEVEL,false);
 
         //不显示右边Y轴
         YAxis rightAxis = barChart.getAxisRight();
@@ -119,6 +128,29 @@ public class EnergySpeedChart {
             mSpeedBarChart.setData(getSpeedBarChartData(speed));
             mSpeedBarChart.invalidate();
         }
+    }
+
+    /**
+     * 更新最高限速
+     * @param limitSpeed
+     */
+    public void updateLimitSpeedLine(float limitSpeed){
+        mLeftAxis.removeLimitLine(mLimitSpeedLine);
+        mLimitSpeedLine = new LimitLine(limitSpeed,"");
+        mLeftAxis.addLimitLine(mLimitSpeedLine);
+        mSpeedBarChart.invalidate();
+
+    }
+
+    /**
+     * 更新建议速度
+     * @param suggestSpeed
+     */
+    public void updateSuggestSpeedLine(float suggestSpeed){
+        mLeftAxis.removeLimitLine(mSuggestSpeedLine);
+        mSuggestSpeedLine = new LimitLine(suggestSpeed,"");
+        mLeftAxis.addLimitLine(mSuggestSpeedLine);
+        mSpeedBarChart.invalidate();
     }
 
 }

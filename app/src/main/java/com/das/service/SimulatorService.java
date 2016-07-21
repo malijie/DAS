@@ -476,6 +476,7 @@ public class SimulatorService extends Service{
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
                     //计算当前列车建议速度, 速度单位是km/h
                     mSuggestVelocity = vel[mVelocityIndex];
+                    mTrainControl.setSuggestSpeed(mSuggestVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
                             "suggest_velocity",mSuggestVelocity);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
@@ -483,6 +484,7 @@ public class SimulatorService extends Service{
                 case MsgConstant.MSG_CALCULATE_LIMIT_SPEED:
                     //计算当前限制速度
                     mLimitVelocity = vel_limit[mVelocityIndex];
+                    mTrainControl.setLimitSpeed(mLimitVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,
                             "limit_velocity",mLimitVelocity);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,1000);

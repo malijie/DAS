@@ -20,6 +20,9 @@ public class TrainControl {
     private int mLastSpeed;
     private int mCurrentSpeed;
     private int mTrainCurrentRunningStatus;
+    private double mLimitSpeed;
+    private double mSuggestSpeed;
+
 
     private TrainControl(){
         mLocationManager = BaiduLocationManager.getInstance();
@@ -88,6 +91,22 @@ public class TrainControl {
             }
         }
     };
+
+    public void setSuggestSpeed(double suggestSpeed){
+        this.mSuggestSpeed = suggestSpeed;
+    }
+
+    public double getSuggestSpeed(){
+        return mSuggestSpeed;
+    }
+
+    public void setLimitSpeed(double limitSpeed){
+        this.mLimitSpeed = limitSpeed;
+    }
+
+    public double getLimitSpeed(){
+        return mLimitSpeed;
+    }
 
 
 }
