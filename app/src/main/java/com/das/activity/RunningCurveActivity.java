@@ -35,7 +35,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     }
 
     private void initChart() {
-        mRunningChartManager.createRunningCurveChart(mLineChart);
+        mRunningChartManager.initLineData();
     }
 
     private void initViews() {
@@ -45,7 +45,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     }
 
     private void initData(){
-        mRunningChartManager = RunningSpeedLineChartManager.getInstance();
+        mRunningChartManager = new RunningSpeedLineChartManager(mLineChart);
         mTrainControl = TrainControl.getInstance();
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
@@ -53,7 +53,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     }
 
     private void updateSpeedLine(int speed){
-        mRunningChartManager.updateCurrentSpeed(speed);
+        mRunningChartManager.updateYValues(speed);
     }
 
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
