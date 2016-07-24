@@ -3,18 +3,14 @@ package com.das.chart;
 import android.graphics.Color;
 
 import com.das.control.TrainConstants;
-import com.das.data.DataManager;
 import com.das.util.Logger;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +30,12 @@ public class RunningSpeedLineChartManager {
     private LineData mLineData = null;
     private LineChart mLineChart = null;
     private XAxis mXAxis = null;
-    private ArrayList<Entry> yValues = new ArrayList<>();
+    private ArrayList<Entry> ySuggestSpeedValues = new ArrayList<>();
+    private ArrayList<Entry> yLimitSpeedValues = new ArrayList<>();
+
     private ArrayList<String> xValues = new ArrayList<>();
-    private LineDataSet mLineDataSet = null;
+    private LineDataSet mSuggestSpeedLineDataSet = null;
+    private LineDataSet mLimitSpeedLineDataSet = null;
 
 
     public RunningSpeedLineChartManager(LineChart lineChart){
@@ -108,30 +107,48 @@ public class RunningSpeedLineChartManager {
     }
 
     public void initLineData(){
-        mLineData.clearValues();
-        yValues.clear();
-        xValues.clear();
+//        mLineData.clearValues();
+//        ySuggestSpeedValues.clear();
+//        yLimitSpeedValues.clear();
+//        xValues.clear();
         mLineData.setXVals(getXValue(TrainConstants.TOTAL_MILEAGE));
-        mLineData.addDataSet(getLineDataSet());
+        mLineData.addDataSet(getSuggestSpeedLineDataSet());
+        mLineData.addDataSet(getLimitSpeedLineDataSet());
         mLineData.setDrawValues(false);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }
 
-    private LineDataSet getLineDataSet() {
-        mLineDataSet =  new LineDataSet(getYValues(), "距离");
-        mLineDataSet.setLineWidth(1.75f); // 线宽
-        mLineDataSet.setCircleSize(3f);// 显示的圆形大小
-        mLineDataSet.setColor(Color.GREEN);// 显示颜色
-        mLineDataSet.setCircleColor(Color.GREEN);// 圆形的颜色
-        mLineDataSet.setHighLightColor(Color.GREEN); // 高亮的线的颜色
-        mLineDataSet.setCubicIntensity(1f);//设置平滑度
-        mLineDataSet.setDrawFilled(true);//允许填充
-        mLineDataSet.setDrawCubic(false);//设置曲线平滑
-        mLineDataSet.setDrawCircles(false);//不显示小圆点
+    private LineDataSet getSuggestSpeedLineDataSet() {
+        mSuggestSpeedLineDataSet =  new LineDataSet(getSuggestSpeedYValues(), "建议速度");
+        mSuggestSpeedLineDataSet.setLineWidth(1.75f); // 线宽
+        mSuggestSpeedLineDataSet.setCircleSize(3f);// 显示的圆形大小
+        mSuggestSpeedLineDataSet.setColor(Color.GREEN);// 显示颜色
+        mSuggestSpeedLineDataSet.setCircleColor(Color.GREEN);// 圆形的颜色
+        mSuggestSpeedLineDataSet.setHighLightColor(Color.GREEN); // 高亮的线的颜色
+        mSuggestSpeedLineDataSet.setCubicIntensity(1f);//设置平滑度
+        mSuggestSpeedLineDataSet.setDrawFilled(true);//允许填充
+        mSuggestSpeedLineDataSet.setDrawCubic(false);//设置曲线平滑
+        mSuggestSpeedLineDataSet.setDrawCircles(false);//不显示小圆点
 
-        return mLineDataSet;
+        return mSuggestSpeedLineDataSet;
     }
+
+    private LineDataSet getLimitSpeedLineDataSet() {
+        mLimitSpeedLineDataSet =  new LineDataSet(getLimitSpeedYValues(), "限制速度");
+        mLimitSpeedLineDataSet.setLineWidth(1.75f); // 线宽
+        mLimitSpeedLineDataSet.setCircleSize(3f);// 显示的圆形大小
+        mLimitSpeedLineDataSet.setColor(Color.RED);// 显示颜色
+        mLimitSpeedLineDataSet.setCircleColor(Color.RED);// 圆形的颜色
+        mLimitSpeedLineDataSet.setHighLightColor(Color.RED); // 高亮的线的颜色
+        mLimitSpeedLineDataSet.setCubicIntensity(1f);//设置平滑度
+        mLimitSpeedLineDataSet.setDrawFilled(true);//允许填充
+        mLimitSpeedLineDataSet.setDrawCubic(false);//设置曲线平滑
+        mLimitSpeedLineDataSet.setDrawCircles(false);//不显示小圆点
+
+        return mLimitSpeedLineDataSet;
+    }
+
 
     private ArrayList<String> getXValue(int count) {
         for (int i = 0; i < count; i++) {
@@ -141,15 +158,29 @@ public class RunningSpeedLineChartManager {
         return xValues;
     }
 
-    private ArrayList<Entry> getYValues(){
-        yValues.add(new Entry(1, yValues.size()));
-        return yValues;
+    private ArrayList<Entry> getSuggestSpeedYValues(){
+        ySuggestSpeedValues.add(new Entry(1, ySuggestSpeedValues.size()));
+        return ySuggestSpeedValues;
     }
 
-    public void updateYValues(float speed){
-        yValues.add(new Entry(speed, yValues.size()));
+    private ArrayList<Entry> getLimitSpeedYValues(){
+        yLimitSpeedValues.add(new Entry(1, yLimitSpeedValues.size()));
+        return yLimitSpeedValues;
+    }
+
+    public void updateSuggestSpeedYValues(float speed){
+        ySuggestSpeedValues.add(new Entry(speed, ySuggestSpeedValues.size()));
         xValues.add("" + xValues.size());
-        mLineDataSet.setYVals(yValues);
+        mSuggestSpeedLineDataSet.setYVals(ySuggestSpeedValues);
+        mLineData.setXVals(xValues);
+        mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+    }
+
+    public void updateLimitSpeedYValues(float speed){
+        yLimitSpeedValues.add(new Entry(speed, yLimitSpeedValues.size()));
+//        xValues.add("" + xValues.size());
+        mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
         mLineData.setXVals(xValues);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
@@ -157,14 +188,14 @@ public class RunningSpeedLineChartManager {
 
 
 
-    public void loadHistorySugeestSpeedValues(List<Entry> suggestSpeeds){
-        yValues.clear();
+    public void loadHistorySuggestSpeedValues(List<Entry> suggestSpeeds){
+        ySuggestSpeedValues.clear();
         for(int i=0;i<suggestSpeeds.size();i++){
-            yValues.add(suggestSpeeds.get(i));
+            ySuggestSpeedValues.add(suggestSpeeds.get(i));
         }
-        Logger.d("MLJ","yValues====" + yValues);
-        mLineDataSet.setYVals(yValues);
-        mLineData.addDataSet(mLineDataSet);
+        Logger.d("MLJ","ySuggestSpeedValues====" + ySuggestSpeedValues);
+        mSuggestSpeedLineDataSet.setYVals(ySuggestSpeedValues);
+        mLineData.addDataSet(mSuggestSpeedLineDataSet);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }

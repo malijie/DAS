@@ -430,6 +430,10 @@ public class SimulatorService extends Service{
             }else if(action.equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
                 //计算运行曲线的建议速度
                 mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
+
+            }else if(action.equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
+               //计算运行曲线的限制速度
+                mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
             }
         }
 
@@ -557,7 +561,7 @@ public class SimulatorService extends Service{
 
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED,
                                 "running_limit_velocity",mLimitVelocity);
-                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,5000);
+                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,10);
                     }
 
                     break;
