@@ -14,6 +14,7 @@ import com.das.db.DBManager;
 import com.das.constants.IntentConstants;
 import com.das.manager.IntentManager;
 import com.das.util.Logger;
+import com.das.util.SharePreferenceUtil;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -406,9 +407,8 @@ public class SimulatorService extends Service{
                             resistance_energy[i] = re;
                         }
 
-                        for(int i=0;i<vel.length;i++){
-                            Logger.d(TAG,"vel[i" + i + "]" + vel[i]);
-                        }
+                        mTrainControl.setSuggestSpeedArray(vel);
+
                         //      new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
 
@@ -428,6 +428,9 @@ public class SimulatorService extends Service{
             }else if(action.equals(IntentConstants.ACTION_CALCULATE_TOTAL_CONSUME_ENERGY)){
                 //计算总能耗
                 mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY);
+            }else if(action.equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
+                //计算运行曲线的建议速度
+                mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
             }
         }
 
@@ -462,6 +465,7 @@ public class SimulatorService extends Service{
     private int mLastSuggestVelocityIndex;
     private int mLastLimitVelocityIndex;
     private int mLastEnergyVelocityIndex;
+    private int mLastMileage;
 
 
     private Handler mSimulateHandler = new Handler(){
@@ -470,12 +474,12 @@ public class SimulatorService extends Service{
 
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
-                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
-                    mVelocityIndex = (int)(mTotalMileage / 10);
-                    if(mVelocityIndex<0){
-                        mVelocityIndex = 0;
-                    }
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
+//                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+//                    mVelocityIndex = (int)(mTotalMileage / 10);
+//                    if(mVelocityIndex<0){
+//                        mVelocityIndex = 0;
+//                    }
+//                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
                     break;
 
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
@@ -484,12 +488,17 @@ public class SimulatorService extends Service{
 //                        //上一个记录值与当前值相等，说明在10米内，不需要更新
 //                        return;
 //                    }
-                    mLastSuggestVelocityIndex = mVelocityIndex;
-                    mSuggestVelocity = vel[mVelocityIndex];
-                    mTrainControl.setSuggestSpeed(mSuggestVelocity);
-                    IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
-                            "suggest_velocity",mSuggestVelocity);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,10);
+
+                    //及时更新当前建议速度，每10米更新一次
+
+                        mLastSuggestVelocityIndex = mVelocityIndex;
+                        mSuggestVelocity = vel[mVelocityIndex];
+                        mTrainControl.setSuggestSpeed(mSuggestVelocity);
+
+                        IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
+                                "suggest_velocity",mSuggestVelocity);
+                        sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
+
                     break;
                 case MsgConstant.MSG_CALCULATE_LIMIT_SPEED:
                     //计算当前列车建议速度, 速度单位是km/h
@@ -517,13 +526,34 @@ public class SimulatorService extends Service{
                             "total_energy",mTotalEnergy);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,500);
                     break;
+                case MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED:
+                    //更新运行曲线，建议速度
+                    mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
+                    int currentMileage = (int) (mTotalMileage/1000);
+//                    if(currentMileage > mLastMileage){
+//                        mLastSuggestVelocityIndex = mVelocityIndex;
+//                        mLastMileage = currentMileage;
+
+                        mSuggestVelocity = vel[mVelocityIndex];
+                        mTrainControl.setSuggestSpeed(mSuggestVelocity);
+                        SharePreferenceUtil.saveCurrentSuggestSpeedIndex(mVelocityIndex++);
+
+Logger.d(TAG,"mSuggestVelocity======="  + mSuggestVelocity);
+
+                        IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,
+                                "running_suggest_velocity",mSuggestVelocity);
+                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,1000);
+//                    }
+
+                    break;
             }
 
-            Logger.d(TAG,"velocityIndex=" + mVelocityIndex +",suggestVelocity="
-                    + mSuggestVelocity + ",limitVelocity=" + mLimitVelocity);
+//            Logger.d(TAG,"velocityIndex=" + mVelocityIndex +",suggestVelocity="
+//                    + mSuggestVelocity + ",limitVelocity=" + mLimitVelocity);
 
         }
     };
+
 
     public double brake(double vel, double max_accel, double Power, double Mass, double Coasting, double Coasting_vel) {
         double b;
@@ -545,6 +575,8 @@ public class SimulatorService extends Service{
 
     @Override
     public void onDestroy() {
+        Logger.d(TAG,"=========onDestroy========");
+        mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
 

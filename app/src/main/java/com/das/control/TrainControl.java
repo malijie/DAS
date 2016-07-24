@@ -9,6 +9,8 @@ import com.das.manager.BaiduLocationManager;
 import com.das.constants.IntentConstants;
 import com.das.manager.IntentManager;
 import com.das.util.Logger;
+import com.das.util.SharePreferenceUtil;
+import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +164,20 @@ public class TrainControl {
 
     public double getLimitSpeed(){
         return mLimitSpeed;
+    }
+
+    public void setCurrentRunningSuggestSpeedIndex(int index){
+        SharePreferenceUtil.saveCurrentSuggestSpeedIndex(index);
+    }
+
+    private double[] mSuggestList;
+
+    public void setSuggestSpeedArray( double[] suggestList){
+        mSuggestList = suggestList;
+    }
+
+    public double[] getSuggestSpeedArray(){
+        return mSuggestList;
     }
 
 

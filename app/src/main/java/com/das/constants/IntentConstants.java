@@ -31,5 +31,7 @@ public class IntentConstants {
     public static final String ACTION_CALCULATE_TOTAL_CONSUME_ENERGY = "ACTION_CALCULATE_TOTAL_CONSUME_ENERGY";
     //更新列车能耗
     public static final String ACTION_UPDATE_TOTAL_CONSUME_ENERGY = "ACTION_UPDATE_TOTAL_CONSUME_ENERGY";
+    //更新运行曲线---建议速度
+    public static final String ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED = "ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED";
 
 }

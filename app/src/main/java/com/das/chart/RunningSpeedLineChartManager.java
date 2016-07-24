@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.das.control.TrainConstants;
 import com.das.data.DataManager;
+import com.das.util.Logger;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
@@ -150,6 +151,18 @@ public class RunningSpeedLineChartManager {
         xValues.add("" + xValues.size());
         mLineDataSet.setYVals(yValues);
         mLineData.setXVals(xValues);
+        mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+    }
+
+    public void loadHistorySugeestSpeedValues(List<Entry> suggestSpeeds){
+        yValues.clear();
+        for(int i=0;i<suggestSpeeds.size();i++){
+            yValues.add(suggestSpeeds.get(i));
+        }
+        Logger.d("MLJ","yValues====" + yValues);
+        mLineDataSet.setYVals(yValues);
+        mLineData.addDataSet(mLineDataSet);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }
