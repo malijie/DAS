@@ -43,10 +43,13 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         initChart();
         showHistorySuggestSpeedChart();
         //TODO: showHistoryLimitSpeedChart
+        showHistoryLimitSpeedChart();
         startCalculateSuggestSpeed();
         startCalculateLimitSpeed();
 
     }
+
+
 
     private void startCalculateLimitSpeed() {
         IntentManager.startService(SimulatorService.class,
@@ -58,24 +61,45 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
     }
 
-    private double[] historySpeed;
+    private double[] historySuggestSpeed;
     private void showHistorySuggestSpeedChart() {
         int index = SharePreferenceUtil.loadCurrentSuggestSpeedIndex();
         Logger.d(TAG,"index=" + index);
         if(index == 0){
             return;
         }
-        historySpeed = new double[index];
-        for(int i=0;i<historySpeed.length;i++){
-            historySpeed[i] = mTrainControl.getSuggestSpeedArray()[i];
-            Logger.d(TAG,"historySpeed[i]=" + i + "=" + historySpeed[i]);
+        historySuggestSpeed = new double[index];
+        for(int i = 0; i< historySuggestSpeed.length; i++){
+            historySuggestSpeed[i] = mTrainControl.getSuggestSpeedArray()[i];
+            Logger.d(TAG,"historySuggestSpeed[i]=" + i + "=" + historySuggestSpeed[i]);
         }
 
         List<Entry> speeds = new ArrayList<>();
-        for(int i=0;i<historySpeed.length;i++){
-            speeds.add(new Entry((float)historySpeed[i],i));
+        for(int i = 0; i< historySuggestSpeed.length; i++){
+            speeds.add(new Entry((float) historySuggestSpeed[i],i));
         }
         mRunningChartManager.loadHistorySuggestSpeedValues(speeds);
+    }
+
+    private double[] historyLimitSpeed;
+
+    private void showHistoryLimitSpeedChart() {
+        int index = SharePreferenceUtil.loadCurrentLimitSpeedIndex();
+        Logger.d(TAG,"index=" + index);
+        if(index == 0){
+            return;
+        }
+        historyLimitSpeed = new double[index];
+        for(int i = 0; i< historyLimitSpeed.length; i++){
+            historyLimitSpeed[i] = mTrainControl.getSuggestSpeedArray()[i];
+            Logger.d(TAG,"historyLimitSpeed[i]=" + i + "=" + historyLimitSpeed[i]);
+        }
+
+        List<Entry> speeds = new ArrayList<>();
+        for(int i = 0; i< historyLimitSpeed.length; i++){
+            speeds.add(new Entry((float) historyLimitSpeed[i],i));
+        }
+        mRunningChartManager.loadHistoryLimitSpeedValues(speeds);
     }
 
     private void initChart() {

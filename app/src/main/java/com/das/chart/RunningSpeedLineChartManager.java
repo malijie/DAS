@@ -193,9 +193,19 @@ public class RunningSpeedLineChartManager {
         for(int i=0;i<suggestSpeeds.size();i++){
             ySuggestSpeedValues.add(suggestSpeeds.get(i));
         }
-        Logger.d("MLJ","ySuggestSpeedValues====" + ySuggestSpeedValues);
         mSuggestSpeedLineDataSet.setYVals(ySuggestSpeedValues);
         mLineData.addDataSet(mSuggestSpeedLineDataSet);
+        mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+    }
+
+    public void loadHistoryLimitSpeedValues(List<Entry> limitSpeeds){
+        yLimitSpeedValues.clear();
+        for(int i=0;i<limitSpeeds.size();i++){
+            ySuggestSpeedValues.add(limitSpeeds.get(i));
+        }
+        mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
+        mLineData.addDataSet(mLimitSpeedLineDataSet);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }
