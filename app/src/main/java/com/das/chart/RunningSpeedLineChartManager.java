@@ -2,6 +2,7 @@ package com.das.chart;
 
 import android.graphics.Color;
 
+import com.das.control.TrainConstants;
 import com.das.data.DataManager;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -87,7 +88,7 @@ public class RunningSpeedLineChartManager {
     private void initXAxis(){
         mXAxis = mLineChart.getXAxis();
         mXAxis.setSpaceBetweenLabels(3);
-        mXAxis.setAxisMaxValue(100);
+        mXAxis.setAxisMaxValue(TrainConstants.TOTAL_MILEAGE);
         mXAxis.setAxisMinValue(0);
         mXAxis.setLabelsToSkip(9);
         mXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -109,7 +110,7 @@ public class RunningSpeedLineChartManager {
         mLineData.clearValues();
         yValues.clear();
         xValues.clear();
-        mLineData.setXVals(getXValue(20));
+        mLineData.setXVals(getXValue(TrainConstants.TOTAL_MILEAGE));
         mLineData.addDataSet(getLineDataSet());
         mLineData.setDrawValues(false);
         mLineChart.setData(mLineData);

@@ -49,6 +49,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mTrainControl = TrainControl.getInstance();
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
+        filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED);
         registerReceiver(mRunningSpeedReceiver,filter);
     }
 
@@ -56,12 +57,20 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mRunningChartManager.updateYValues(speed);
     }
 
+    private void updateSuggestSpeedLine(double speed){
+        mRunningChartManager.updateYValues((int)speed);
+    }
+
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
-                updateSpeedLine(mTrainControl.getCurrentSpeed());
+                //updateSpeedLine(mTrainControl.getCurrentSpeed());
+                //TODO: 更新当前速度
             }
+//            else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
+//                updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
+//            }
         }
     };
 

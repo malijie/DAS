@@ -27,11 +27,11 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentRight="true" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/id_curve_line_chart_running"
-        android:layout_width="800dp"
+        android:layout_width="match_parent"
         android:layout_height="500dp"
         android:background="#ffffff"
         android:layout_marginTop="100dp"

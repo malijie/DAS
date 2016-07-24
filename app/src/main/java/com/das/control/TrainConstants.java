@@ -24,5 +24,7 @@ public class TrainConstants {
     public static final int TRAIN_RUN_STATUS_KEEP = 0;
     //千米每小时转米每秒
     public static final double KM_PER_HOUR_2_M_PER_SECONDS = 0.2777778;
+    //总里程，单位公里
+    public static final int TOTAL_MILEAGE = 115;
 
 }

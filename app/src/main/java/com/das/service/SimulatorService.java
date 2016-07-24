@@ -420,7 +420,7 @@ public class SimulatorService extends Service{
                 mSimulateHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE);
 
             }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_SUGGEST_SPEED)){
-                //计算当前建议苏度
+                //计算当前建议速度
                 mSimulateHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
             }else if(action.equals(IntentConstants.ACTION_CALCULATE_TRAIN_LIMIT_SPEED)){
                 //计算限制速度
@@ -458,6 +458,11 @@ public class SimulatorService extends Service{
     private double mLimitVelocity;
     private double mTotalEnergy;
     private int mVelocityIndex;
+    //记录上一个10米处的索引值
+    private int mLastSuggestVelocityIndex;
+    private int mLastLimitVelocityIndex;
+    private int mLastEnergyVelocityIndex;
+
 
     private Handler mSimulateHandler = new Handler(){
         @Override
@@ -475,26 +480,42 @@ public class SimulatorService extends Service{
 
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
                     //计算当前列车建议速度, 速度单位是km/h
+//                    if(mLastSuggestVelocityIndex == mVelocityIndex || mVelocityIndex == vel.length){
+//                        //上一个记录值与当前值相等，说明在10米内，不需要更新
+//                        return;
+//                    }
+                    mLastSuggestVelocityIndex = mVelocityIndex;
                     mSuggestVelocity = vel[mVelocityIndex];
                     mTrainControl.setSuggestSpeed(mSuggestVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED,
                             "suggest_velocity",mSuggestVelocity);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,1000);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED,10);
                     break;
                 case MsgConstant.MSG_CALCULATE_LIMIT_SPEED:
+                    //计算当前列车建议速度, 速度单位是km/h
+                    if(mLastEnergyVelocityIndex == mVelocityIndex || mLastSuggestVelocityIndex == vel_limit.length){
+                        //上一个记录值与当前值相等，说明在10米内，不需要更新
+                        return;
+                    }
+                    mLastEnergyVelocityIndex = mVelocityIndex;
                     //计算当前限制速度
                     mLimitVelocity = vel_limit[mVelocityIndex];
                     mTrainControl.setLimitSpeed(mLimitVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,
                             "limit_velocity",mLimitVelocity);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,1000);
-                    break;
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,500);
+
                 case MsgConstant.MSG_CALCULATE_TOTAL_ENERGY:
+                    if(mLastEnergyVelocityIndex == mVelocityIndex || mVelocityIndex == energy_consumed.length){
+                        //上一个记录值与当前值相等，说明在10米内，不需要更新,或者跑完全程
+                        return;
+                    }
+                    mLastEnergyVelocityIndex = mVelocityIndex;
                     //计算当前总能耗
                     mTotalEnergy = energy_consumed[mVelocityIndex];
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TOTAL_CONSUME_ENERGY,
                             "total_energy",mTotalEnergy);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,1000);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,500);
                     break;
             }
 
