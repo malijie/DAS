@@ -15,7 +15,8 @@ public class MsgConstant {
     public static final int MSG_CALCULATE_TOTAL_MILEAGE = 0x0008;
     //更新运行曲线,建议速度
     public static final int MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED = 0x0009;
-
+    //更新运行曲线，限制速度
+    public static final int MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED = 0x0010;
 
 
 

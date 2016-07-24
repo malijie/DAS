@@ -13,6 +13,7 @@ public class SharePreferenceUtil {
     public static final String START_LOCATION_LATITUDE = "start_latitude";
     public static final String START_LOCATION_LONGITUDE = "start_longitude";
     public static final String SUGGEST_SPEED_INDEX = "suggest_speed_index";
+    public static final String LIMIT_SPEED_INDEX = "limit_speed_index";
 
 
     public static void saveStartLatitude(float latitude){
@@ -29,6 +30,14 @@ public class SharePreferenceUtil {
 
     public static int loadCurrentSuggestSpeedIndex(){
         return Myapp.sContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).getInt(SUGGEST_SPEED_INDEX,0);
+    }
+
+    public static void saveCurrentLimitSpeedIndex(int index){
+        Myapp.sContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).edit().putInt(LIMIT_SPEED_INDEX,index).commit();
+    }
+
+    public static int loadCurrentLimitSpeedIndex(){
+        return Myapp.sContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).getInt(LIMIT_SPEED_INDEX,0);
     }
 
 }

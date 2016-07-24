@@ -88,10 +88,10 @@ public class RunningSpeedLineChartManager {
 
     private void initXAxis(){
         mXAxis = mLineChart.getXAxis();
-        mXAxis.setSpaceBetweenLabels(3);
         mXAxis.setAxisMaxValue(TrainConstants.TOTAL_MILEAGE);
         mXAxis.setAxisMinValue(0);
-        mXAxis.setLabelsToSkip(9);
+        mXAxis.setLabelsToSkip(14);
+        mXAxis.setSpaceBetweenLabels(3);
         mXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     }
 
@@ -154,6 +154,8 @@ public class RunningSpeedLineChartManager {
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }
+
+
 
     public void loadHistorySugeestSpeedValues(List<Entry> suggestSpeeds){
         yValues.clear();

@@ -33,5 +33,7 @@ public class IntentConstants {
     public static final String ACTION_UPDATE_TOTAL_CONSUME_ENERGY = "ACTION_UPDATE_TOTAL_CONSUME_ENERGY";
     //更新运行曲线---建议速度
     public static final String ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED = "ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED";
+    //更新运行曲线---限制速度
+    public static final String ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED = "ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED";
 
 }

@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.os.Message;
 
 import com.das.constants.MsgConstant;
-import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.db.DBConfig;
 import com.das.db.DBManager;
@@ -408,7 +407,7 @@ public class SimulatorService extends Service{
                         }
 
                         mTrainControl.setSuggestSpeedArray(vel);
-
+                        mTrainControl.setLimitSpeedArray(vel_limit);
                         //      new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
 
@@ -465,7 +464,8 @@ public class SimulatorService extends Service{
     private int mLastSuggestVelocityIndex;
     private int mLastLimitVelocityIndex;
     private int mLastEnergyVelocityIndex;
-    private int mLastMileage;
+    private int mLastSuggestMileage;
+    private int mLastLimitMileage;
 
 
     private Handler mSimulateHandler = new Handler(){
@@ -530,20 +530,35 @@ public class SimulatorService extends Service{
                     //更新运行曲线，建议速度
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
                     int currentMileage = (int) (mTotalMileage/1000);
-//                    if(currentMileage > mLastMileage){
-//                        mLastSuggestVelocityIndex = mVelocityIndex;
-//                        mLastMileage = currentMileage;
+                    if(currentMileage > mLastSuggestMileage){
+                        mLastSuggestVelocityIndex = mVelocityIndex;
+                        mLastSuggestMileage = currentMileage;
 
                         mSuggestVelocity = vel[mVelocityIndex];
                         mTrainControl.setSuggestSpeed(mSuggestVelocity);
-                        SharePreferenceUtil.saveCurrentSuggestSpeedIndex(mVelocityIndex++);
-
-Logger.d(TAG,"mSuggestVelocity======="  + mSuggestVelocity);
+                        SharePreferenceUtil.saveCurrentSuggestSpeedIndex(mVelocityIndex);
 
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,
                                 "running_suggest_velocity",mSuggestVelocity);
-                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,1000);
-//                    }
+                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,5000);
+                    }
+                    break;
+                case MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED:
+                    //更新运行曲线，限制速度
+                    mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
+                    int currentLimitMileage = (int) (mTotalMileage/1000);
+                    if(currentLimitMileage > mLastSuggestMileage){
+                        mLastLimitVelocityIndex = mVelocityIndex;
+                        mLastLimitMileage = currentLimitMileage;
+
+                        mLimitVelocity = vel_limit[mVelocityIndex];
+                        mTrainControl.setLimitSpeed(mLimitVelocity);
+                        SharePreferenceUtil.saveCurrentLimitSpeedIndex(mVelocityIndex);
+
+                        IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED,
+                                "running_limit_velocity",mLimitVelocity);
+                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,5000);
+                    }
 
                     break;
             }
@@ -579,6 +594,7 @@ Logger.d(TAG,"mSuggestVelocity======="  + mSuggestVelocity);
         mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
+        mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
 
         super.onDestroy();
     }

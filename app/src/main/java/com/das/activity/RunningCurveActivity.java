@@ -90,12 +90,13 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         registerReceiver(mRunningSpeedReceiver,filter);
     }
 
-    private void updateSpeedLine(int speed){
-        mRunningChartManager.updateYValues(speed);
-    }
 
     private void updateSuggestSpeedLine(double speed){
         mRunningChartManager.updateYValues((int)speed);
+    }
+
+    private void updateLimitSpeedLine(double speed){
+//        mRunningChartManager.updateYValues();
     }
 
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
@@ -106,8 +107,15 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 //TODO: 更新当前速度
             }
             else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
-                Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
-                updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
+                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
+                    Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
+                    updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
+                }
+            }else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
+                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
+                    Logger.d(TAG,"========limit speed======" + mTrainControl.getLimitSpeed());
+                    updateSuggestSpeedLine(mTrainControl.getLimitSpeed());
+                }
             }
         }
     };

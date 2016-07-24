@@ -171,6 +171,7 @@ public class TrainControl {
     }
 
     private double[] mSuggestList;
+    private double[] mLimitList;
 
     public void setSuggestSpeedArray( double[] suggestList){
         mSuggestList = suggestList;
@@ -178,6 +179,14 @@ public class TrainControl {
 
     public double[] getSuggestSpeedArray(){
         return mSuggestList;
+    }
+
+    public void setLimitSpeedArray(double[] limitList){
+        mLimitList = limitList;
+    }
+
+    public double[] getLimitSpeedArray(){
+        return  mLimitList;
     }
 
 
