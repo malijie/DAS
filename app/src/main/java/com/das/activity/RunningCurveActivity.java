@@ -32,7 +32,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     private Button mButtonBack = null;
     private RunningSpeedLineChartManager mRunningChartManager = null;
     private TrainControl mTrainControl = null;
-
+    private boolean mIsFirstStart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,6 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         initChart();
         showHistorySuggestSpeedChart();
         showHistoryLimitSpeedChart();
-        startCalculateSuggestSpeed();
-        startCalculateLimitSpeed();
 
     }
 
@@ -134,8 +132,12 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
-                //updateSpeedLine(mTrainControl.getCurrentSpeed());
-                //TODO: 更新当前速度
+                if(mIsFirstStart && mTrainControl.getCurrentSpeed()>1){
+                    startCalculateSuggestSpeed();
+                    startCalculateLimitSpeed();
+                    mIsFirstStart = false;
+                }
+
             }
             else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
 //                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
@@ -163,6 +165,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mIsFirstStart = true;
         unregisterReceiver(mRunningSpeedReceiver);
     }
 }
