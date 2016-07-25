@@ -181,7 +181,7 @@ public class RunningSpeedLineChartManager {
         yLimitSpeedValues.add(new Entry(speed, yLimitSpeedValues.size()));
 //        xValues.add("" + xValues.size());
         mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
-        mLineData.setXVals(xValues);
+//        mLineData.setXVals(xValues);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }
@@ -202,7 +202,7 @@ public class RunningSpeedLineChartManager {
     public void loadHistoryLimitSpeedValues(List<Entry> limitSpeeds){
         yLimitSpeedValues.clear();
         for(int i=0;i<limitSpeeds.size();i++){
-            ySuggestSpeedValues.add(limitSpeeds.get(i));
+            yLimitSpeedValues.add(limitSpeeds.get(i));
         }
         mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
         mLineData.addDataSet(mLimitSpeedLineDataSet);

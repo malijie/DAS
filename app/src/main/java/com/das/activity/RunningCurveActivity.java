@@ -42,7 +42,6 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         initData();
         initChart();
         showHistorySuggestSpeedChart();
-        //TODO: showHistoryLimitSpeedChart
         showHistoryLimitSpeedChart();
         startCalculateSuggestSpeed();
         startCalculateLimitSpeed();
@@ -64,7 +63,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     private double[] historySuggestSpeed;
     private void showHistorySuggestSpeedChart() {
         int index = SharePreferenceUtil.loadCurrentSuggestSpeedIndex();
-        Logger.d(TAG,"index=" + index);
+        Logger.d(TAG,"Suggest index=" + index);
         if(index == 0){
             return;
         }
@@ -85,13 +84,13 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
 
     private void showHistoryLimitSpeedChart() {
         int index = SharePreferenceUtil.loadCurrentLimitSpeedIndex();
-        Logger.d(TAG,"index=" + index);
+        Logger.d(TAG,"Limit index=" + index);
         if(index == 0){
             return;
         }
         historyLimitSpeed = new double[index];
         for(int i = 0; i< historyLimitSpeed.length; i++){
-            historyLimitSpeed[i] = mTrainControl.getSuggestSpeedArray()[i];
+            historyLimitSpeed[i] = mTrainControl.getLimitSpeedArray()[i];
             Logger.d(TAG,"historyLimitSpeed[i]=" + i + "=" + historyLimitSpeed[i]);
         }
 
@@ -139,10 +138,10 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 //TODO: 更新当前速度
             }
             else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
-                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
+//                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
                     Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
                     updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
-                }
+//                }
             }else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
 //                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
                     Logger.d(TAG,"========limit speed======" + mTrainControl.getLimitSpeed());
