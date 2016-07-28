@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,8 @@ public class TrainRunningStatusFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_running_status, container, false);
         initViews(view);
         initData();
-        mTrainHandler.sendEmptyMessage(MsgConstant.MSG_GET_TRAIN_CURRENT_SPEED);
+        mTrainHandler.sendEmptyMessage(MsgConstant.MSG_GET_TRAIN_CURRENT_STATUS);
+        mStatusHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_CURRENT_TOTAL_MILEAGE);
         return view;
 
     }
@@ -75,9 +77,22 @@ public class TrainRunningStatusFragment extends Fragment {
         }
     };
 
+    private Handler mStatusHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MsgConstant.MSG_CALCULATE_CURRENT_TOTAL_MILEAGE:
+                    mTextNextStatus.setText("当前总里程是:" + TrainControl.getInstance().getTotalMileage() +"米");
+                    mStatusHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_CURRENT_TOTAL_MILEAGE,1000);
+                    break;
+            }
+        }
+    };
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mTrainHandler.removeMessages(MsgConstant.MSG_GET_TRAIN_CURRENT_STATUS);
         Myapp.sContext.unregisterReceiver(receiver);
     }
 }

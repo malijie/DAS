@@ -45,6 +45,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         initViews();
         initData();
         //开始监听当前速度
+
         IntentManager.startService(CalculateSpeedService.class,
                 IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
 

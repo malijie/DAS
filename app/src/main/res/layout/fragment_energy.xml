@@ -50,7 +50,7 @@
             android:id="@+id/id_energy_text_total_energy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1562KWH"
+            android:text="0KWH"
             android:textSize="40sp"
             android:layout_below="@id/id_energy_text_title"
             android:textColor="@color/white"/>
@@ -140,7 +140,7 @@
                android:textColor="@color/white"
                android:textSize="25dp"
                android:gravity="center"
-               android:text="170"
+               android:text="0"
                android:layout_centerHorizontal="true"
                android:background="@color/green"
                android:layout_below="@id/id_energy_text_suggest"/>
@@ -165,7 +165,7 @@
             android:textColor="@color/white"
             android:textSize="24dp"
             android:gravity="center"
-            android:text="170"
+            android:text="0"
             android:layout_centerHorizontal="true"
             android:background="@color/yellow"/>
 

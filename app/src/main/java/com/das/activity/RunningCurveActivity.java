@@ -13,6 +13,7 @@ import com.das.chart.RunningSpeedLineChartManager;
 import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
 import com.das.manager.IntentManager;
+import com.das.manager.ToastManager;
 import com.das.service.SimulatorService;
 import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
@@ -140,15 +141,19 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
 
             }
             else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
-//                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
+                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
                     Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
                     updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
-//                }
+                }else{
+                    ToastManager.showMsg("没有建议速度，行程已结束");
+                }
             }else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
-//                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
+                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
                     Logger.d(TAG,"========limit speed======" + mTrainControl.getLimitSpeed());
                     updateLimitSpeedLine(mTrainControl.getLimitSpeed());
-//                }
+                }else{
+                    ToastManager.showMsg("没有限制速度,行程已结束");
+                }
             }
         }
     };

@@ -60,7 +60,7 @@
             android:textSize="25dp"
             android:gravity="center"
             android:layout_below="@id/id_speed_text_limit"
-            android:text="170"
+            android:text="0"
             android:layout_centerHorizontal="true"
             android:background="@color/red"/>
     </RelativeLayout>
@@ -82,7 +82,7 @@
             android:textColor="@color/white"
             android:textSize="25dp"
             android:gravity="center"
-            android:text="170"
+            android:text="0"
             android:layout_centerHorizontal="true"
             android:background="@color/green"/>
 

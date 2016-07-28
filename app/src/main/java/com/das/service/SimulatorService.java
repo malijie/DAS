@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.os.Message;
 
 import com.das.constants.MsgConstant;
+import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.db.DBConfig;
 import com.das.db.DBManager;
@@ -463,7 +464,7 @@ public class SimulatorService extends Service{
     private double mSuggestVelocity;
     private double mLimitVelocity;
     private double mTotalEnergy;
-    private int mVelocityIndex;
+    private  int mVelocityIndex;
     //记录上一个10米处的索引值
     private int mLastSuggestVelocityIndex;
     private int mLastLimitVelocityIndex;
@@ -480,20 +481,21 @@ public class SimulatorService extends Service{
 
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
-//                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
-//                    mVelocityIndex = (int)(mTotalMileage / 10);
-//                    if(mVelocityIndex<0){
-//                        mVelocityIndex = 0;
-//                    }
-//                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
+                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+                    mTrainControl.setTotalMileage(mTotalMileage);
+                    mVelocityIndex = (int)(mTotalMileage / 10);
+                    if(mVelocityIndex<0){
+                        mVelocityIndex = 0;
+                    }
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
                     break;
 
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
                     //计算当前列车建议速度, 速度单位是km/h
-//                    if(mLastSuggestVelocityIndex == mVelocityIndex || mVelocityIndex == vel.length){
-//                        //上一个记录值与当前值相等，说明在10米内，不需要更新
-//                        return;
-//                    }
+                    if(mLastSuggestVelocityIndex == mVelocityIndex || mVelocityIndex == vel.length){
+                        //上一个记录值与当前值相等，说明在10米内，不需要更新
+                        return;
+                    }
 
                     //及时更新当前建议速度，每10米更新一次
 
@@ -537,13 +539,11 @@ public class SimulatorService extends Service{
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
                     int currentMileage = (int) (mTotalMileage/1000);
                     if(currentMileage > mLastSuggestMileage){
-                        mLastSuggestVelocityIndex = mVelocityIndex;
                         mLastSuggestMileage = currentMileage;
-
-                        mSuggestVelocity = vel[mSuggestSpeedIndex];
+                        mSuggestVelocity = vel[mSuggestSpeedIndex * 100];
                         mTrainControl.setSuggestSpeed(mSuggestVelocity);
                         SharePreferenceUtil.saveCurrentSuggestSpeedIndex(mSuggestSpeedIndex);
-
+                        mSuggestSpeedIndex++;
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,
                                 "running_suggest_velocity",mSuggestVelocity);
                         sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,1000);
@@ -553,17 +553,16 @@ public class SimulatorService extends Service{
                     //更新运行曲线，限制速度
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
                     int currentLimitMileage = (int) (mTotalMileage/1000);
-                    if(currentLimitMileage > mLastSuggestMileage){
-                        mLastLimitVelocityIndex = mVelocityIndex;
+                    if(currentLimitMileage > mLastLimitMileage){
                         mLastLimitMileage = currentLimitMileage;
 
-                        mLimitVelocity = vel_limit[mLimitSpeedIndex];
+                        mLimitVelocity = vel_limit[mLimitSpeedIndex * 100];
                         mTrainControl.setLimitSpeed(mLimitVelocity);
                         SharePreferenceUtil.saveCurrentLimitSpeedIndex(mLimitSpeedIndex);
-
+                        mLimitSpeedIndex++;
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED,
                                 "running_limit_velocity",mLimitVelocity);
-                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,10);
+                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,1000);
                     }
 
                     break;
@@ -601,7 +600,7 @@ public class SimulatorService extends Service{
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
-
+        mTotalMileage = 0;
         super.onDestroy();
     }
 }

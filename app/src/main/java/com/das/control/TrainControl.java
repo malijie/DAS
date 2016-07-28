@@ -32,6 +32,7 @@ public class TrainControl {
     private static final int SPEED_LIST_SIZE = 3;
     private boolean mNeedPutInCurrentSpeedList = false;
     private boolean mNeedPutInLastSpeedList = true;
+    private double mTotalMileage;
 
 
     private TrainControl(){
@@ -189,5 +190,13 @@ public class TrainControl {
         return  mLimitList;
     }
 
+    //单位是米
+    public void setTotalMileage(double totalMileage){
+        this.mTotalMileage = totalMileage;
+    }
+
+    public double getTotalMileage(){
+        return mTotalMileage;
+    }
 
 }
