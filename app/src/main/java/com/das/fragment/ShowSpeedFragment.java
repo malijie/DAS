@@ -45,7 +45,7 @@ public class ShowSpeedFragment extends Fragment{
     }
 
     private void initChart() {
-        mEnergySpeedChart.createSpeedBarChart(mBarChartSuggestSpeed,150);
+        mEnergySpeedChart.createSpeedBarChart(mBarChartSuggestSpeed,0);
     }
 
     private void initData() {

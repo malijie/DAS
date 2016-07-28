@@ -409,6 +409,7 @@ public class SimulatorService extends Service{
 
                         mTrainControl.setSuggestSpeedArray(vel);
                         mTrainControl.setLimitSpeedArray(vel_limit);
+                        mTrainControl.setCurrentEnergyConsumeArray(energy_consumed);
                         //      new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
 
@@ -483,6 +484,7 @@ public class SimulatorService extends Service{
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
                     mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
                     mTrainControl.setTotalMileage(mTotalMileage);
+                    mTrainControl.setCurrentArrayIndex(mVelocityIndex);
                     mVelocityIndex = (int)(mTotalMileage / 10);
                     if(mVelocityIndex<0){
                         mVelocityIndex = 0;
@@ -535,7 +537,7 @@ public class SimulatorService extends Service{
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,500);
                     break;
                 case MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED:
-                    //更新运行曲线，建议速度
+                    //更新运行曲线，建议速度,1公里更新一次
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
                     int currentMileage = (int) (mTotalMileage/1000);
                     if(currentMileage > mLastSuggestMileage){
@@ -550,7 +552,7 @@ public class SimulatorService extends Service{
                     }
                     break;
                 case MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED:
-                    //更新运行曲线，限制速度
+                    //更新运行曲线，限制速度,1公里更新一次
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
                     int currentLimitMileage = (int) (mTotalMileage/1000);
                     if(currentLimitMileage > mLastLimitMileage){

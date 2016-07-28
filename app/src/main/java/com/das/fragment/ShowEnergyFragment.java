@@ -47,7 +47,7 @@ public class ShowEnergyFragment extends Fragment{
     }
 
     private void calculateCurrentEnergy() {
-
+        mEnergyHandler.sendEmptyMessage(MsgConstant.MSG_CALCULATE_CURRENT_ENERGY);
     }
 
 
@@ -76,16 +76,9 @@ public class ShowEnergyFragment extends Fragment{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_CURRENT_ENERGY:
-                    if(mTrainControl.getTrainCurrentStatus() == TrainConstants.TRAIN_RUN_STATUS_BREAK){
-//                        mCurrentEnergy = mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS *
-                    }else if(mTrainControl.getTrainCurrentStatus() == TrainConstants.TRAIN_RUN_STATUS_ACCLERATE){
-
-//                    }else{
-
-                    }
-
-//                    mTextCurrentEnergy.setText(status);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_CURRENT_ENERGY,1000);
+                    mTextCurrentEnergy.setText("" +
+                            mTrainControl.getCurrentEnergyCounsumeArray()[mTrainControl.getCurrentArrayIndex()]);
+                    mEnergyHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_CURRENT_ENERGY,1000);
                     break;
             }
         }

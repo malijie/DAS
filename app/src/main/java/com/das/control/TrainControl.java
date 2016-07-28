@@ -33,7 +33,7 @@ public class TrainControl {
     private boolean mNeedPutInCurrentSpeedList = false;
     private boolean mNeedPutInLastSpeedList = true;
     private double mTotalMileage;
-
+    private int mCurrentTrainArrayIndex;
 
     private TrainControl(){
         mLocationManager = BaiduLocationManager.getInstance();
@@ -173,6 +173,7 @@ public class TrainControl {
 
     private double[] mSuggestList;
     private double[] mLimitList;
+    private double[] mCurrentEnergyCounsumeArray;
 
     public void setSuggestSpeedArray( double[] suggestList){
         mSuggestList = suggestList;
@@ -190,6 +191,15 @@ public class TrainControl {
         return  mLimitList;
     }
 
+
+    public void setCurrentEnergyConsumeArray(double[] currsumeArray){
+        mCurrentEnergyCounsumeArray = currsumeArray;
+    }
+
+    public double[] getCurrentEnergyCounsumeArray(){
+        return mCurrentEnergyCounsumeArray;
+    }
+
     //单位是米
     public void setTotalMileage(double totalMileage){
         this.mTotalMileage = totalMileage;
@@ -197,6 +207,14 @@ public class TrainControl {
 
     public double getTotalMileage(){
         return mTotalMileage;
+    }
+
+    public void setCurrentArrayIndex(int index){
+        mCurrentTrainArrayIndex = index;
+    }
+
+    public int getCurrentArrayIndex(){
+        return mCurrentTrainArrayIndex;
     }
 
 }
