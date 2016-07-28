@@ -410,6 +410,15 @@ public class SimulatorService extends Service{
                         mTrainControl.setSuggestSpeedArray(vel);
                         mTrainControl.setLimitSpeedArray(vel_limit);
                         mTrainControl.setCurrentEnergyConsumeArray(energy_consumed);
+
+//                        for(int i=0;i<vel.length;i++){
+//                            Logger.d(TAG,"vel[i]" + i + "==" + vel[i]);
+//                        }
+//
+//                        for(int i=0;i<vel_limit.length;i++){
+//                            Logger.d(TAG,"vel[i]" + i + "==" + vel[i]);
+//                        }
+
                         //      new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
 
@@ -522,7 +531,7 @@ public class SimulatorService extends Service{
                     mTrainControl.setLimitSpeed(mLimitVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,
                             "limit_velocity",mLimitVelocity);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,500);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,1000);
 
                 case MsgConstant.MSG_CALCULATE_TOTAL_ENERGY:
                     if(mLastEnergyVelocityIndex == mVelocityIndex || mVelocityIndex == energy_consumed.length){

@@ -149,6 +149,7 @@ public class EnergySpeedChart {
     public void updateSuggestSpeedLine(float suggestSpeed){
         mLeftAxis.removeLimitLine(mSuggestSpeedLine);
         mSuggestSpeedLine = new LimitLine(suggestSpeed,"");
+        mSuggestSpeedLine.setLineColor(Color.GREEN);
         mLeftAxis.addLimitLine(mSuggestSpeedLine);
         mSpeedBarChart.invalidate();
     }
