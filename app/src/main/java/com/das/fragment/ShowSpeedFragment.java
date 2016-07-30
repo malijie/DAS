@@ -78,10 +78,10 @@ public class ShowSpeedFragment extends Fragment{
                 mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
                 updateSpeed(mTrainControl.getCurrentSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
-                mTextSuggestSpeed.setText(intent.getDoubleExtra("suggest_velocity",0) + "");
+                mTextSuggestSpeed.setText(mTrainControl.getSuggestSpeed()+ "");
                 mEnergySpeedChart.updateSuggestSpeedLine((float)mTrainControl.getSuggestSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
-                mTextLimitSpeed.setText(intent.getDoubleExtra("limit_velocity",0) + "");
+                mTextLimitSpeed.setText(mTrainControl.getLimitSpeed()+ "");
                 mEnergySpeedChart.updateLimitSpeedLine((float)mTrainControl.getLimitSpeed());
             }
         }
