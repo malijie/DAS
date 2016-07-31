@@ -51,8 +51,9 @@ public class SQLContainer {
                 "VALUES('" + lat + "','" + lng + "')";
     }
 
-    public final static String getSelectStations(){
+    public final static String getAllStationInfo(){
         return "SELECT * FROM " + DBConfig.TABLE_STATION_INFO;
     }
+
 
 }

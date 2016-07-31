@@ -1,14 +1,25 @@
 package com.das.fragment;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.das.Myapp;
+import com.das.constants.IntentConstants;
+import com.das.constants.MsgConstant;
+import com.das.control.TrainControl;
 import com.das.db.DBManager;
-import com.das.util.Logger;
+import com.das.manager.ToastManager;
+import com.das.util.Utils;
 import com.example.das.R;
 
 import java.util.ArrayList;
@@ -21,14 +32,19 @@ public class SimpleScheduleFragment extends Fragment {
     private TextView mTextPreWaitTime = null;
     private TextView mTextPreArriveTime = null;
     private TextView mTextPreMileage = null;
-    private TextView mTextCurWaitTime = null;
-    private TextView mTextCurStation = null;
-    private TextView mTextCurArriveTime = null;
-    private TextView mTextCurSchedule = null;
-    private TextView mTextCurMileage = null;
+    private TextView mTextNextWaitTime = null;
+    private TextView mTextNextStation = null;
+    private TextView mTextNextArriveTime = null;
+    private TextView mTextNextSchedule = null;
+    private TextView mTextNextMileage = null;
 
-    private ArrayList<String> stationList = null;
     private DBManager mDBManager = DBManager.getInstance();
+    private TrainControl mTrainControl = TrainControl.getInstance();
+    private ArrayList<String> mStationList = null;
+    private ArrayList<Double> mStationMileageList = null;
+    private ArrayList<Long> mStationScheduleTimeList = null;
+    private long mWaitTime = 0;
+    private int mCurrentStationIndex = 0;
 
 
     @Override
@@ -36,14 +52,23 @@ public class SimpleScheduleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_simpleschedule, container,false);
         initViews(view);
         initData();
+        updateCurrentSchedule();
         return view;
     }
 
+    private void updateCurrentSchedule() {
+        mScheduleHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_CURRENT_STATION_NAME);
+    }
+
     private void initData() {
-        stationList = mDBManager.getStations();
-        for(int i=0;i<stationList.size();i++){
-            Logger.d("MLJ","stationList[i]" + i + "==" + stationList.get(i));
-        }
+        mStationList = mDBManager.getStationNames();
+        mStationMileageList = mDBManager.getStationMileages();
+        mStationScheduleTimeList =  mDBManager.getStatonScheduleTimes();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_WAIT_TIME);
+        filter.addAction(IntentConstants.ACTION_TRAIN_BEGIN_START);
+        Myapp.sContext.registerReceiver(mScheduleReceiver,filter);
     }
 
     private void initViews(View view) {
@@ -51,10 +76,81 @@ public class SimpleScheduleFragment extends Fragment {
         mTextPreWaitTime = (TextView) view.findViewById(R.id.simple_schedule_text_pre_station_wait_time);
         mTextPreArriveTime =  (TextView) view.findViewById(R.id.formerstationarrivaltime);
         mTextPreMileage =  (TextView) view.findViewById(R.id.formerstationmileage);
-        mTextCurWaitTime =  (TextView) view.findViewById(R.id.simple_schedule_text_current_station_wait_time);
-        mTextCurStation =  (TextView) view.findViewById(R.id.simple_schedule_text_current_station_text);
-        mTextCurArriveTime =  (TextView) view.findViewById(R.id.nextstationarrivaltime);
-        mTextCurSchedule =  (TextView) view.findViewById(R.id.nextstationtrainplan);
-        mTextCurMileage =  (TextView) view.findViewById(R.id.nextstationmileage);
+        mTextNextWaitTime =  (TextView) view.findViewById(R.id.simple_schedule_text_current_station_wait_time);
+        mTextNextStation =  (TextView) view.findViewById(R.id.simple_schedule_text_current_station_text);
+        mTextNextArriveTime =  (TextView) view.findViewById(R.id.nextstationarrivaltime);
+        mTextNextSchedule =  (TextView) view.findViewById(R.id.nextstationtrainplan);
+        mTextNextMileage =  (TextView) view.findViewById(R.id.nextstationmileage);
+    }
+
+    private BroadcastReceiver mScheduleReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_TRAIN_WAIT_TIME)){
+                //靠站,停靠时间1秒钟记录一次
+                mTrainControl.updateTrainWaitTime();
+            }else if(intent.getAction().equals(IntentConstants.ACTION_TRAIN_BEGIN_START)){
+                //列车启动
+                mScheduleHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_CURRENT_STATION_NAME);
+            }
+        }
+    };
+
+    private double currentMileage;
+    private Handler mScheduleHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MsgConstant.MSG_UPDATE_CURRENT_STATION_NAME:
+                currentMileage = mTrainControl.getTotalMileage();
+
+                if(currentMileage == 0 ){
+                    //列车还未运行
+                    mTextNextStation.setText(mStationList.get(1));
+                    mTextNextMileage.setText("里程" + "\n" + Utils.convertDouble2Half(mStationMileageList.get(1)));
+                    mTextNextSchedule.setText("当前计划" + "\n" +  "准时");
+                    mTextNextArriveTime.setText("到达时间" + "\n" +
+                    mTrainControl.getNextStationArriveTime(Utils.second2Millis(mStationScheduleTimeList.get(1))));
+
+                    return;
+                }
+
+                if(currentMileage >= Utils.convertKM2M(mStationMileageList.get(mStationList.size()-1))){
+                    mTextNextStation.setText(mStationList.get(mStationList.size()-1));
+                    mTextNextMileage.setText("" + mStationMileageList.get(mStationMileageList.size()-1));
+                    ToastManager.showMsg("到达终点站");
+                    return;
+                }
+
+                for(int i=0;i<mStationList.size();i++){
+                    if((i+1)==mStationList.size()){
+                        break;
+                    }
+
+                    if(currentMileage <= Utils.convertKM2M(mStationMileageList.get(i+1))
+                            &&
+                            currentMileage>Utils.convertKM2M(mStationMileageList.get(i))){
+
+                        mTextPreStation.setText(mStationList.get(i));
+                        mTextPreMileage.setText("里程"  + mStationMileageList.get(i));
+
+                        mTextNextStation.setText(mStationList.get(i+1));
+                        mTextNextMileage.setText("里程" + "\n" +  mStationMileageList.get(i+1));
+                        mTextNextSchedule.setText("当前计划" + "\n" +  "晚点");
+                        mTextNextArriveTime.setText("到达时间" + "\n" + mTrainControl.getNextStationArriveTime(mStationScheduleTimeList.get(0)));
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Myapp.sContext.unregisterReceiver(mScheduleReceiver);
+
     }
 }

@@ -15,7 +15,6 @@ import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
 import com.das.manager.IntentManager;
 import com.das.service.SimulatorService;
-import com.das.util.Logger;
 import com.das.util.Utils;
 import com.example.das.R;
 
@@ -78,11 +77,11 @@ public class SpeedFragment extends Fragment {
                                     +"当前经纬度是:" + TrainControl.getInstance().getCurrentLatitude());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
                 mTextSuggestSpeed.setText("建议速度:"
-                        + Utils.converDouble2Half(intent.getDoubleExtra("suggest_velocity",0))
+                        + Utils.convertDouble2Half(intent.getDoubleExtra("suggest_velocity",0))
                         + "KM/H");
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
                 mTextLimitSpeed.setText("最高限速:"
-                        + Utils.converDouble2Half(intent.getDoubleExtra("limit_velocity",0))
+                        + Utils.convertDouble2Half(intent.getDoubleExtra("limit_velocity",0))
                         + "KM/H");
             }
         }

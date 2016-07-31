@@ -60,13 +60,31 @@ public class DBManager {
         db.execSQL(SQLContainer.getInsertStartLatLng(lat, lng));
     }
 
-    public ArrayList<String> getStations(){
-        Cursor result = db.rawQuery(SQLContainer.getSelectStations(),null);
+    public ArrayList<String> getStationNames(){
+        Cursor result = db.rawQuery(SQLContainer.getAllStationInfo(),null);
         ArrayList<String> stations = new ArrayList<>();
-        for(result.moveToFirst();result.moveToNext();){
+        for(;result.moveToNext();){
             stations.add(result.getString(1));
         }
         return stations;
+    }
+
+    public ArrayList<Double> getStationMileages(){
+        Cursor result = db.rawQuery(SQLContainer.getAllStationInfo(),null);
+        ArrayList<Double> mileages = new ArrayList<>();
+        for(;result.moveToNext();){
+            mileages.add(Double.parseDouble(result.getString(0)));
+        }
+        return mileages;
+    }
+
+    public ArrayList<Long> getStatonScheduleTimes(){
+        Cursor result = db.rawQuery(SQLContainer.getAllStationInfo(),null);
+        ArrayList<Long> scheduleTimes = new ArrayList<>();
+        for(;result.moveToNext();){
+            scheduleTimes.add(result.getLong(3));
+        }
+        return scheduleTimes;
     }
 
 }

@@ -35,5 +35,9 @@ public class IntentConstants {
     public static final String ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED = "ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED";
     //更新运行曲线---限制速度
     public static final String ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED = "ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED";
+    //更新列车计划状态---记录停靠时间
+    public static final String ACTION_UPDATE_TRAIN_WAIT_TIME = "ACTION_UPDATE_TRAIN_WAIT_TIME";
+    //列车启动
+    public static final String ACTION_TRAIN_BEGIN_START = "ACTION_TRAIN_BEGIN_START";
 
 }

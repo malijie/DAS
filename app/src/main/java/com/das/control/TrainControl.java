@@ -12,7 +12,9 @@ import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
 import com.github.mikephil.charting.data.Entry;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -213,6 +215,21 @@ public class TrainControl {
 
     public int getCurrentArrayIndex(){
         return mCurrentTrainArrayIndex;
+    }
+
+    public String getNextStationArriveTime(long duringTime){
+        long currentTime = System.currentTimeMillis() + duringTime;
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        return format.format(new Date(currentTime));
+    }
+
+    private int mWaitTime;
+    public void updateTrainWaitTime(){
+        mWaitTime += 1;
+    }
+
+    public int getWaitTime(){
+        return mWaitTime;
     }
 
 }

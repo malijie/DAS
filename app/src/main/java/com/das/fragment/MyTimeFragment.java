@@ -57,10 +57,6 @@ public class MyTimeFragment extends Fragment {
                     CharSequence sysTimeStr = DateFormat.format("  yyyy-MM-dd \n    HH:mm:ss  \n       E", sysTime);
                     mTime.setText(sysTimeStr);
 
-                    //写入全局变量中
-     //              Myapp myapp=  ((Myapp)getActivity().getApplicationContext());
-     //              myapp.setMytime((String)sysTimeStr);
-
                 break;
 
                 default:

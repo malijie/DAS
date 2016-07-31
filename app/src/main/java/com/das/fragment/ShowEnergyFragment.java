@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.das.Myapp;
 import com.das.constants.IntentConstants;
 import com.das.constants.MsgConstant;
-import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.manager.IntentManager;
 import com.das.service.SimulatorService;
@@ -89,7 +88,7 @@ public class ShowEnergyFragment extends Fragment{
         public void onReceive(Context context, Intent intent) {
             Logger.d("MLJ","intent=" + intent);
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_TOTAL_CONSUME_ENERGY)){
-                mTextTotalEnergy.setText(Utils.converDouble2Half(intent.getDoubleExtra("total_energy",0))
+                mTextTotalEnergy.setText(Utils.convertDouble2Half(intent.getDoubleExtra("total_energy",0))
                                         + "KWH");
             }
         }
