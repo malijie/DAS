@@ -1,5 +1,7 @@
 package com.das.util;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by n on malijie 2016/7/21.
  */
@@ -23,6 +25,11 @@ public class Utils {
      */
     public static long second2Millis(long second){
         return second * 1000;
+    }
+
+    public static String millis2Time(long millis){
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        return format.format(millis);
     }
 
 }

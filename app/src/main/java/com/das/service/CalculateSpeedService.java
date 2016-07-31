@@ -61,12 +61,13 @@ public class CalculateSpeedService extends Service {
                     Logger.d(TAG,"MSG_CALCULATE_SPEED speed=" + mTrainControl.getCurrentSpeed());
                     sendEmptyMessage(MsgConstant.MSG_GET_LAST_SPEED_INFO);
 
-                    mileage += 1000;
-                    mTrainControl.setTotalMileage(mileage);
+//                    mileage += 1000;
+//                    mTrainControl.setTotalMileage(mileage);
 
                     //到站
                     if(mTrainControl.getCurrentSpeed() == 0 && mTrainControl.getTotalMileage()>0){
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_WAIT_TIME);
+                        mTrainControl.setArriveStationTime(System.currentTimeMillis());
                     }
 
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_TRAIN_BEGIN_START);

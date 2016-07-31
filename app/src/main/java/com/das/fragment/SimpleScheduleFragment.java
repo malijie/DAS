@@ -19,6 +19,7 @@ import com.das.constants.MsgConstant;
 import com.das.control.TrainControl;
 import com.das.db.DBManager;
 import com.das.manager.ToastManager;
+import com.das.util.Logger;
 import com.das.util.Utils;
 import com.example.das.R;
 
@@ -89,9 +90,11 @@ public class SimpleScheduleFragment extends Fragment {
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_TRAIN_WAIT_TIME)){
                 //靠站,停靠时间1秒钟记录一次
                 mTrainControl.updateTrainWaitTime();
+                mTextNextWaitTime.setText("停靠时间:" + Utils.millis2Time(Utils.second2Millis(mTrainControl.getWaitTime())));
             }else if(intent.getAction().equals(IntentConstants.ACTION_TRAIN_BEGIN_START)){
                 //列车启动
                 mScheduleHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_CURRENT_STATION_NAME);
+                mTrainControl.setWaitTime(0);
             }
         }
     };
@@ -109,9 +112,8 @@ public class SimpleScheduleFragment extends Fragment {
                     mTextNextStation.setText(mStationList.get(1));
                     mTextNextMileage.setText("里程" + "\n" + Utils.convertDouble2Half(mStationMileageList.get(1)));
                     mTextNextSchedule.setText("当前计划" + "\n" +  "准时");
-                    mTextNextArriveTime.setText("到达时间" + "\n" +
+                    mTextNextArriveTime.setText("到达时间2" + "\n" +
                     mTrainControl.getNextStationArriveTime(Utils.second2Millis(mStationScheduleTimeList.get(1))));
-
                     return;
                 }
 
@@ -133,11 +135,13 @@ public class SimpleScheduleFragment extends Fragment {
 
                         mTextPreStation.setText(mStationList.get(i));
                         mTextPreMileage.setText("里程"  + mStationMileageList.get(i));
+                        mTextPreArriveTime.setText("到达时间:" + mTrainControl.getArrveStationTime());
 
                         mTextNextStation.setText(mStationList.get(i+1));
                         mTextNextMileage.setText("里程" + "\n" +  mStationMileageList.get(i+1));
                         mTextNextSchedule.setText("当前计划" + "\n" +  "晚点");
-                        mTextNextArriveTime.setText("到达时间" + "\n" + mTrainControl.getNextStationArriveTime(mStationScheduleTimeList.get(0)));
+                        mTextNextArriveTime.setText("到达时间" + "\n" + mTrainControl.getNextStationArriveTime(Utils.second2Millis(mStationScheduleTimeList.get(i+1))));
+
                         break;
                     }
                 }

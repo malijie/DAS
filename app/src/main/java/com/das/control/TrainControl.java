@@ -2,7 +2,6 @@ package com.das.control;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.das.constants.MsgConstant;
 import com.das.manager.BaiduLocationManager;
@@ -10,7 +9,7 @@ import com.das.constants.IntentConstants;
 import com.das.manager.IntentManager;
 import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
-import com.github.mikephil.charting.data.Entry;
+import com.das.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class TrainControl {
     private boolean mNeedPutInLastSpeedList = true;
     private double mTotalMileage;
     private int mCurrentTrainArrayIndex;
+    private long mArriveStationTime;
 
     private TrainControl(){
         mLocationManager = BaiduLocationManager.getInstance();
@@ -218,10 +218,12 @@ public class TrainControl {
     }
 
     public String getNextStationArriveTime(long duringTime){
-        long currentTime = System.currentTimeMillis() + duringTime;
+        long currentTime = 0;
+        currentTime = System.currentTimeMillis() + duringTime;
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         return format.format(new Date(currentTime));
     }
+
 
     private int mWaitTime;
     public void updateTrainWaitTime(){
@@ -232,4 +234,15 @@ public class TrainControl {
         return mWaitTime;
     }
 
+    public void setWaitTime(int value){
+        mWaitTime = value;
+    }
+
+    public void setArriveStationTime(long arriveStationTime) {
+        this.mArriveStationTime = arriveStationTime;
+    }
+
+    public long getArrveStationTime(){
+        return Utils.second2Millis(mArriveStationTime);
+    }
 }
