@@ -108,8 +108,6 @@ public class TrainControl {
                         int averLastSpeed = getAverageSpeed(mLastSpeedList);
                         int averCurrentSpeed = getAverageSpeed(mCurrentSpeedList);
 
-                        Logger.d("MLJ","LastSpeedList=" + mLastSpeedList + ",CurrentSpeedList=" + mCurrentSpeedList
-                                + "averLastSpeed=" + averLastSpeed + "averCurrentSpeed=" + averCurrentSpeed);
                         if(averCurrentSpeed > averLastSpeed){
                            setTrainCurrentStatus(TrainConstants.TRAIN_RUN_STATUS_ACCLERATE);
                         }else if(averCurrentSpeed == averLastSpeed){

@@ -483,6 +483,8 @@ public class SimulatorService extends Service{
     private int mLastLimitMileage;
     private int mSuggestSpeedIndex;
     private int mLimitSpeedIndex;
+    private int currentLimitMileage;
+    private int currentSuggestMileage;
 
 
     private Handler mSimulateHandler = new Handler(){
@@ -548,33 +550,38 @@ public class SimulatorService extends Service{
                 case MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED:
                     //更新运行曲线，建议速度,1公里更新一次
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
-                    int currentMileage = (int) (mTotalMileage/1000);
-                    if(currentMileage > mLastSuggestMileage){
-                        mLastSuggestMileage = currentMileage;
-                        mSuggestVelocity = vel[mSuggestSpeedIndex * 100];
-                        mTrainControl.setSuggestSpeed(mSuggestVelocity);
+                    currentSuggestMileage = (int) (mTotalMileage/1000);
+                    if(currentSuggestMileage > mLastSuggestMileage && mSuggestSpeedIndex<vel.length){
+                        mLastSuggestMileage = currentSuggestMileage;
+
+                        mTrainControl.setSuggestSpeed(mSuggestSpeedIndex*100>vel.length
+                                ?
+                                vel[vel.length-1]:vel[mSuggestSpeedIndex*100]);
+
                         SharePreferenceUtil.saveCurrentSuggestSpeedIndex(mSuggestSpeedIndex);
                         mSuggestSpeedIndex++;
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,
                                 "running_suggest_velocity",mSuggestVelocity);
-                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,1000);
                     }
+                    sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED,1000);
                     break;
                 case MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED:
                     //更新运行曲线，限制速度,1公里更新一次
                     mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
-                    int currentLimitMileage = (int) (mTotalMileage/1000);
-                    if(currentLimitMileage > mLastLimitMileage){
+                    currentLimitMileage = (int) (mTotalMileage/1000);
+                    if(currentLimitMileage > mLastLimitMileage && mLimitSpeedIndex<vel_limit.length){
                         mLastLimitMileage = currentLimitMileage;
 
-                        mLimitVelocity = vel_limit[mLimitSpeedIndex * 100];
-                        mTrainControl.setLimitSpeed(mLimitVelocity);
+                        mTrainControl.setLimitSpeed(mLimitSpeedIndex*100>vel_limit.length
+                                ?
+                                vel_limit[vel_limit.length-1]:vel_limit[mLimitSpeedIndex*100]);
                         SharePreferenceUtil.saveCurrentLimitSpeedIndex(mLimitSpeedIndex);
                         mLimitSpeedIndex++;
+
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED,
                                 "running_limit_velocity",mLimitVelocity);
-                        sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,1000);
                     }
+                    sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,1000);
 
                     break;
             }

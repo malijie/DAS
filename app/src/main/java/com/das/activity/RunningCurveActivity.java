@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.das.chart.RunningSpeedLineChartManager;
 import com.das.constants.IntentConstants;
@@ -30,6 +31,7 @@ import java.util.List;
 public class RunningCurveActivity extends Activity implements View.OnClickListener{
     private static final String TAG = RunningCurveActivity.class.getSimpleName();
     private LineChart mLineChart = null;
+    private TextView mTextTest = null;
     private Button mButtonBack = null;
     private RunningSpeedLineChartManager mRunningChartManager = null;
     private TrainControl mTrainControl = null;
@@ -68,7 +70,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         }
         historySuggestSpeed = new double[index];
         for(int i = 0; i< historySuggestSpeed.length; i++){
-            historySuggestSpeed[i] = mTrainControl.getSuggestSpeedArray()[i];
+            historySuggestSpeed[i] = mTrainControl.getSuggestSpeedArray()[i * 100];
             Logger.d(TAG,"historySuggestSpeed[i]=" + i + "=" + historySuggestSpeed[i]);
         }
 
@@ -89,7 +91,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         }
         historyLimitSpeed = new double[index];
         for(int i = 0; i< historyLimitSpeed.length; i++){
-            historyLimitSpeed[i] = mTrainControl.getLimitSpeedArray()[i];
+            historyLimitSpeed[i] = mTrainControl.getLimitSpeedArray()[i * 100];
             Logger.d(TAG,"historyLimitSpeed[i]=" + i + "=" + historyLimitSpeed[i]);
         }
 
@@ -107,7 +109,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     private void initViews() {
         mLineChart = (LineChart) findViewById(R.id.id_curve_line_chart_running);
         mButtonBack = (Button) findViewById(R.id.id_curve_line_chart_back);
-
+        mTextTest = (TextView) findViewById(R.id.text_test);
     }
 
     private void initData(){
@@ -133,7 +135,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_CURRENT_SPEED)){
-                if(mIsFirstStart && mTrainControl.getCurrentSpeed()>1){
+                if(mIsFirstStart&& mTrainControl.getCurrentSpeed()>1){
                     startCalculateSuggestSpeed();
                     startCalculateLimitSpeed();
                     mIsFirstStart = false;
@@ -141,6 +143,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
 
             }
             else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
+                mTextTest.setText("suggestIndex=" + SharePreferenceUtil.loadCurrentSuggestSpeedIndex() + ",limitIndex=" + SharePreferenceUtil.loadCurrentLimitSpeedIndex());
                 if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
                     Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
                     updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());

@@ -6,8 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.das.Myapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by Administrator on 2016/6/30.
+ * Created by malijie on 2016/6/30.
  */
 public class DBManager {
 
@@ -55,6 +58,15 @@ public class DBManager {
 
     public void saveTheStartLatLng(double lat,double lng){
         db.execSQL(SQLContainer.getInsertStartLatLng(lat, lng));
+    }
+
+    public ArrayList<String> getStations(){
+        Cursor result = db.rawQuery(SQLContainer.getSelectStations(),null);
+        ArrayList<String> stations = new ArrayList<>();
+        for(result.moveToFirst();result.moveToNext();){
+            stations.add(result.getString(1));
+        }
+        return stations;
     }
 
 }
