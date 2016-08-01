@@ -112,7 +112,7 @@ public class SimpleScheduleFragment extends Fragment {
                     mTextNextStation.setText(mStationList.get(1));
                     mTextNextMileage.setText("里程" + "\n" + Utils.convertDouble2Half(mStationMileageList.get(1)));
                     mTextNextSchedule.setText("当前计划" + "\n" +  "准时");
-                    mTextNextArriveTime.setText("到达时间2" + "\n" +
+                    mTextNextArriveTime.setText("到达时间" + "\n" +
                     mTrainControl.getNextStationArriveTime(Utils.second2Millis(mStationScheduleTimeList.get(1))));
                     return;
                 }
@@ -120,7 +120,6 @@ public class SimpleScheduleFragment extends Fragment {
                 if(currentMileage >= Utils.convertKM2M(mStationMileageList.get(mStationList.size()-1))){
                     mTextNextStation.setText(mStationList.get(mStationList.size()-1));
                     mTextNextMileage.setText("" + mStationMileageList.get(mStationMileageList.size()-1));
-                    ToastManager.showMsg("到达终点站");
                     return;
                 }
 

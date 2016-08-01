@@ -4,14 +4,24 @@
 
     <TextView
         android:id="@+id/formerstation"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/gradient"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:lines="1"
         android:textSize="20sp"
         android:gravity="center_vertical"/>
-
+    <TextView
+        android:id="@+id/prewaittime"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient"
+        android:textColor="@android:color/white"
+        android:lines="1"
+        android:textSize="20sp"
+        android:text="停靠时间"
+        android:layout_toRightOf="@id/formerstation"
+        android:gravity="center_vertical"/>
     <TextView
         android:id="@+id/formerstationarrivaltime"
         android:layout_width="200dp"
@@ -41,15 +51,27 @@
 
     <TextView
         android:id="@+id/nextstation"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="100dp"
         android:background="@color/black"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:lines="1"
         android:textSize="20sp"
         android:gravity="center_vertical"
         android:layout_below="@+id/formerstationarrivaltime"
         android:layout_alignParentStart="true" />
+
+
+    <TextView
+        android:id="@+id/next_station_wait_time"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:background="@color/black"
+        android:textColor="@android:color/white"
+        android:lines="1"
+        android:textSize="20sp"
+        android:layout_below="@+id/formerstationarrivaltime"
+        android:layout_toRightOf="@id/nextstation" />
 
     <TextView
         android:id="@+id/nextstationarrivaltime"
@@ -62,7 +84,7 @@
         android:gravity="center_vertical"
         android:text="@string/arrivaltime"
         android:layout_below="@+id/nextstation"
-        android:layout_alignParentStart="true" />
+        />
 
     <TextView
         android:id="@+id/nextstationtrainplan"
@@ -75,7 +97,7 @@
         android:gravity="center_vertical"
         android:text="@string/trainplan"
         android:layout_below="@+id/nextstation"
-        android:layout_toStartOf="@+id/nextstationmileage" />
+        android:layout_toRightOf="@id/nextstationarrivaltime"/>
 
     <TextView
         android:id="@+id/nextstationmileage"
@@ -88,11 +110,11 @@
         android:gravity="center_vertical"
         android:text="@string/mileage"
         android:layout_below="@+id/nextstation"
-        android:layout_alignEnd="@+id/nextstation" />
+        android:layout_toRightOf="@id/nextstationtrainplan"/>
 
     <TextView
         android:id="@+id/secondstation"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/gradient"
         android:textColor="@android:color/black"
@@ -100,7 +122,21 @@
         android:textSize="20sp"
         android:gravity="center_vertical"
         android:layout_below="@+id/nextstationarrivaltime"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="true" />
+    <TextView
+        android:id="@+id/secondstationwaittime"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient"
+        android:textColor="@android:color/white"
+        android:text="停靠时间"
+        android:lines="1"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/nextstationarrivaltime"
+        android:layout_toRightOf="@id/secondstation"
+
+        />
 
     <TextView
         android:id="@+id/secondstationarrivaltime"
@@ -130,7 +166,7 @@
 
     <TextView
         android:id="@+id/thirdstation"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/gradient"
         android:textColor="@android:color/black"
@@ -138,7 +174,19 @@
         android:textSize="20sp"
         android:gravity="center_vertical"
         android:layout_below="@+id/secondstationarrivaltime"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="true" />
+    <TextView
+        android:id="@+id/thirdstationwaittime"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient"
+        android:textColor="@android:color/white"
+        android:text="停靠时间"
+        android:lines="1"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/secondstationarrivaltime"
+        android:layout_toRightOf="@id/thirdstation" />
 
     <TextView
         android:id="@+id/thirdstationarrivaltime"
@@ -164,11 +212,12 @@
         android:gravity="center_vertical"
         android:text="@string/mileage"
         android:layout_below="@+id/thirdstation"
-        android:layout_toEndOf="@+id/thirdstationarrivaltime" />
+        android:layout_toEndOf="@+id/thirdstationarrivaltime"
+        android:layout_toRightOf="@+id/thirdstationarrivaltime" />
 
     <TextView
         android:id="@+id/fourthstation"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/gradient"
         android:textColor="@android:color/black"
@@ -176,7 +225,20 @@
         android:textSize="20sp"
         android:gravity="center_vertical"
         android:layout_below="@+id/thirdstationarrivaltime"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/fourthstationwaittime"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient"
+        android:textColor="@android:color/white"
+        android:text="停靠时间"
+        android:lines="1"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/thirdstationarrivaltime"
+        android:layout_toRightOf="@id/fourthstation"/>
 
     <TextView
         android:id="@+id/fourthstationarrivaltime"
