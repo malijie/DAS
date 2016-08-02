@@ -16,6 +16,7 @@ import com.das.constants.IntentConstants;
 import com.das.control.TrainControl;
 import com.das.manager.ToastManager;
 import com.das.util.Logger;
+import com.das.util.Utils;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -78,10 +79,10 @@ public class ShowSpeedFragment extends Fragment{
                 mTextCurrentSpeed.setText(mTrainControl.getCurrentSpeed() + "");
                 updateSpeed(mTrainControl.getCurrentSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
-                mTextSuggestSpeed.setText(mTrainControl.getSuggestSpeed()+ "");
+                mTextSuggestSpeed.setText(Utils.convertDouble2Half(intent.getDoubleExtra("suggest_velocity",0)));
                 mEnergySpeedChart.updateSuggestSpeedLine((float)mTrainControl.getSuggestSpeed());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
-                mTextLimitSpeed.setText(mTrainControl.getLimitSpeed()+ "");
+                mTextLimitSpeed.setText(Utils.convertDouble2Half(intent.getDoubleExtra("limit_velocity",0)));
                 mEnergySpeedChart.updateLimitSpeedLine((float)mTrainControl.getLimitSpeed());
             }
         }

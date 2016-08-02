@@ -88,7 +88,7 @@ public class SimpleScheduleFragment extends Fragment {
             if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_TRAIN_WAIT_TIME)){
                 //靠站,停靠时间1秒钟记录一次
                 mTrainControl.updateTrainWaitTime();
-                mTextNextWaitTime.setText("停靠时间:" + Utils.millis2Time(Utils.second2Millis(mTrainControl.getWaitTime())));
+                mTextNextWaitTime.setText(Utils.millis2Time(Utils.second2Millis(mTrainControl.getWaitTime())));
             }else if(intent.getAction().equals(IntentConstants.ACTION_TRAIN_BEGIN_START)){
                 //列车启动
                 mScheduleHandler.sendEmptyMessage(MsgConstant.MSG_UPDATE_CURRENT_STATION_NAME);
