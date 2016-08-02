@@ -78,13 +78,22 @@ public class DBManager {
         return mileages;
     }
 
-    public ArrayList<Long> getStatonScheduleTimes(){
+    public ArrayList<Long> getStationScheduleTimes(){
         Cursor result = db.rawQuery(SQLContainer.getAllStationInfo(),null);
         ArrayList<Long> scheduleTimes = new ArrayList<>();
         for(;result.moveToNext();){
             scheduleTimes.add(result.getLong(3));
         }
         return scheduleTimes;
+    }
+
+    public ArrayList<Integer> getStationWaitTimes(){
+        Cursor result = db.rawQuery(SQLContainer.getAllStationInfo(),null);
+        ArrayList<Integer> arriveTimes = new ArrayList<>();
+        for(;result.moveToNext();){
+            arriveTimes.add(result.getInt(2));
+        }
+        return arriveTimes;
     }
 
 }

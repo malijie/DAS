@@ -242,7 +242,7 @@ public class TrainControl {
         this.mArriveStationTime = arriveStationTime;
     }
 
-    public long getArrveStationTime(){
+    public long getArriveStationTime(){
         return Utils.second2Millis(mArriveStationTime);
     }
 }

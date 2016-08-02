@@ -18,8 +18,6 @@ import com.das.constants.IntentConstants;
 import com.das.constants.MsgConstant;
 import com.das.control.TrainControl;
 import com.das.db.DBManager;
-import com.das.manager.ToastManager;
-import com.das.util.Logger;
 import com.das.util.Utils;
 import com.example.das.R;
 
@@ -64,7 +62,7 @@ public class SimpleScheduleFragment extends Fragment {
     private void initData() {
         mStationList = mDBManager.getStationNames();
         mStationMileageList = mDBManager.getStationMileages();
-        mStationScheduleTimeList =  mDBManager.getStatonScheduleTimes();
+        mStationScheduleTimeList =  mDBManager.getStationScheduleTimes();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentConstants.ACTION_UPDATE_TRAIN_WAIT_TIME);
@@ -134,7 +132,7 @@ public class SimpleScheduleFragment extends Fragment {
 
                         mTextPreStation.setText(mStationList.get(i));
                         mTextPreMileage.setText("里程"  + mStationMileageList.get(i));
-                        mTextPreArriveTime.setText("到达时间:" + mTrainControl.getArrveStationTime());
+                        mTextPreArriveTime.setText("到达时间:" + mTrainControl.getArriveStationTime());
 
                         mTextNextStation.setText(mStationList.get(i+1));
                         mTextNextMileage.setText("里程" + "\n" +  mStationMileageList.get(i+1));
