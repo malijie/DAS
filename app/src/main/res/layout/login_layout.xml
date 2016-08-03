@@ -29,6 +29,7 @@
             android:textSize="45sp"
             />
         <EditText
+            android:id="@+id/id_login_edit_driver_name"
             android:layout_width="500dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -51,6 +52,7 @@
             android:layout_marginLeft="30dp"
             />
         <EditText
+            android:id="@+id/id_login_edit_train_no"
             android:layout_width="500dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

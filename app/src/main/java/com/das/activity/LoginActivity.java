@@ -2,9 +2,11 @@ package com.das.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,6 +29,8 @@ import com.example.das.R;
  * Created by Administrator on 2016/6/26.
  */
 public class LoginActivity extends Activity implements View.OnClickListener{
+    private EditText mEditDriverName = null;
+    private EditText mEditTrainNo = null;
     private TextView mTextConfirm = null;
     private TextView mTextTitle = null;
     private Spinner mSpinnerRouteInfo = null;
@@ -82,6 +86,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         mSpinnerRouteInfo = (Spinner) findViewById(R.id.id_login_spinner_route_info);
         mSpinnerTrainInfo = (Spinner) findViewById(R.id.id_login_spinner_train_info);
         mTextTitle = (TextView) findViewById(R.id.id_login_text_title);
+        mEditDriverName = (EditText) findViewById(R.id.id_login_edit_driver_name);
+        mEditTrainNo = (EditText) findViewById(R.id.id_login_edit_train_no);
 
         mTextConfirm.setOnClickListener(this);
         mTextTitle.setOnClickListener(this);
@@ -127,6 +133,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 //        if(getStartDistance()> TrainConstants.DISTANCE_FROM_START_TO_CURRENT_LOCATION){
 //            ToastManager.showMsg("当前未在发车位置上，无法发车");
 //            return false;
+//        }
+
+//        if(TextUtils.isEmpty(mEditDriverName.getText().toString())){
+//            ToastManager.showMsg("列车司机不能为空");
+//            return true;
+//        }
+//
+//        if(TextUtils.isEmpty(mEditTrainNo.getText().toString())){
+//            ToastManager.showMsg("车次不能为空");
+//            return true;
 //        }
 
         return true;

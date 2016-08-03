@@ -505,14 +505,14 @@ public class SimulatorService extends Service{
 
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
                     //计算当前列车建议速度, 速度单位是km/h
-                    if(mLastSuggestVelocityIndex == mVelocityIndex || mVelocityIndex == vel.length){
-                        //上一个记录值与当前值相等，说明在10米内，不需要更新
-                        return;
-                    }
+//                    if(mLastSuggestVelocityIndex == mVelocityIndex || mVelocityIndex == vel.length){
+//                        //上一个记录值与当前值相等，说明在10米内，不需要更新
+//                        return;
+//                    }
 
                     //及时更新当前建议速度，每10米更新一次
 
-                        mLastSuggestVelocityIndex = mVelocityIndex;
+//                        mLastSuggestVelocityIndex = mVelocityIndex;
                         mSuggestVelocity = vel[mVelocityIndex];
                         mTrainControl.setSuggestSpeed(mSuggestVelocity);
 
@@ -523,18 +523,18 @@ public class SimulatorService extends Service{
                     break;
                 case MsgConstant.MSG_CALCULATE_LIMIT_SPEED:
                     //计算当前列车建议速度, 速度单位是km/h
-                    if(mLastEnergyVelocityIndex == mVelocityIndex || mLastSuggestVelocityIndex == vel_limit.length){
-                        //上一个记录值与当前值相等，说明在10米内，不需要更新
-                        return;
-                    }
-                    mLastEnergyVelocityIndex = mVelocityIndex;
+//                    if(mLastEnergyVelocityIndex == mVelocityIndex || mLastSuggestVelocityIndex == vel_limit.length){
+//                        //上一个记录值与当前值相等，说明在10米内，不需要更新
+//                        return;
+//                    }
+//                    mLastEnergyVelocityIndex = mVelocityIndex;
                     //计算当前限制速度
                     mLimitVelocity = vel_limit[mVelocityIndex];
                     mTrainControl.setLimitSpeed(mLimitVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,
                             "limit_velocity",mLimitVelocity);
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_LIMIT_SPEED,1000);
-
+                    break;
                 case MsgConstant.MSG_CALCULATE_TOTAL_ENERGY:
                     if(mLastEnergyVelocityIndex == mVelocityIndex || mVelocityIndex == energy_consumed.length){
                         //上一个记录值与当前值相等，说明在10米内，不需要更新,或者跑完全程
