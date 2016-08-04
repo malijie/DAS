@@ -25,6 +25,12 @@ public class ChartConstants {
     //运行里程，单位KM
     public static final int RUNNING_DISTANCE = 30;
 
-
+    /**
+     * 里程表常量
+     */
+    //速度上限
+    public static final float MILEAGE_LIMIT_UP = 120f;
+    //速度下限
+    public static final float MILEAGE_LIMIT_DOWN = 0F;
 
 }
