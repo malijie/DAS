@@ -19,6 +19,14 @@ public class Utils {
     }
 
     /**
+     * 千米转成米
+     * @return
+     */
+    public static double convertM2kM(double m){
+        return m / 1000;
+    }
+
+    /**
      * 秒转换为毫秒
      * @param second
      * @return

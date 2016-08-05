@@ -39,6 +39,8 @@ public class MsgConstant {
     public static final int MSG_UPDATE_PRE_ARRIVE_TIME = 0X0020;
     //更新前一站里程
     public static final int MSG_UPDATE_PRE_MILEAGE = 0X0021;
+    //更新里程图
+    public static final int MSG_UPDATE_BARCHART_MILEAGE = 0X0022;
 
 
 
