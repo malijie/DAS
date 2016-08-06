@@ -55,5 +55,9 @@ public class SQLContainer {
         return "SELECT * FROM " + DBConfig.TABLE_STATION_INFO;
     }
 
+    public final static String getPowerInfo(int velocity){
+        return "SELECT * FROM " + DBConfig.TABLE_POWER + " where Velocity='" + velocity + "'";
+    }
+
 
 }

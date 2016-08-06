@@ -34,18 +34,18 @@ public class SimulatorService extends Service{
     private TrainControl mTrainControl = null;
 
     // Default vehicle values for CLASS 14x DMU   定义机车信息，相当于我们的读取车辆数据过程
-    double Mass=49.5;
+    double Mass=138;
     double lambda=0.08;
     double inertial_mass=Mass*(1+lambda);
-    double Davis[] = new double[] {1.35379143, 0.006369827, 0.004215268, 0};
-    double Power=334*0.7*1000;
-    double max_speed=75*1.6;
+    double Davis[] = new double[] {1.04, 0.0162, 0.000138};
+//    double Power=334*0.7*1000;
+    double max_speed=130;
     int seats=121;
     // MAXIMUM TRACTION FORCE
     double co_fric=0.1;
     double gravity=9.81;
     double driving_wheel_Po=Mass*0.5;
-    double max_traction=Mass * 1000 * 9.81 * co_fric * (driving_wheel_Po/Mass)/1000;
+    double max_traction=214.8 * 0.9 ;
     // MAXIMUM ACCELERATION
     double max_accel=max_traction/Mass;
     // STATION DWELL TIME (Seconds)
@@ -75,6 +75,8 @@ public class SimulatorService extends Service{
     private double[] del_T;
     private double[] energy_consumed;
 
+    private DBManager mDBManager = null;
+
 
 
     @Override
@@ -90,8 +92,8 @@ public class SimulatorService extends Service{
         mGradient =  DBManager.getInstance().read2DArrayFromTable(DBConfig.TABLE_GRADIENTS);
         mVel_profile = DBManager.getInstance().read2DArrayFromTable(DBConfig.TABLE_VELOCITY);
         mStation_info = DBManager.getInstance().read1DArrayFromTable(DBConfig.TABLE_STATION_INFO);
-
         mTrainControl = TrainControl.getInstance();
+        mDBManager = DBManager.getInstance();
     }
 
     @Override
@@ -114,8 +116,10 @@ public class SimulatorService extends Service{
 
                         //trac=Power./(v)/(Mass*1000);  计算牵引加速度表trac[i]
                         double[] trac = new double[v.length];
+                        double traction;
                         for(int i=1; i<=v.length; i++) {
-                            trac[i-1] = Power/v[i-1]/(Mass*1000);
+                            traction = mDBManager.getTractionFromVelocity((int)(v[i-1]))*1000;
+                            trac[i-1] = traction *v[i-1]/(Mass*1000);
                         }
 
                         //Res=zeros(1,length(v));    计算制动加速度表Res[i]
@@ -241,8 +245,10 @@ public class SimulatorService extends Service{
                             } else if(train_control==3) {
                             }
 
+                            traction = mDBManager.getTractionFromVelocity((int)velF[i])*1000;
                             if(velF[i] < vel_limit[i]) {     //当前速度小于限速时
-                                double Traction = Power*vel_error[i]/velF[i]/(inertial_mass*1000);  //  牵引加速度计算
+
+                                double Traction = traction*vel_error[i]/(inertial_mass*1000);  //  牵引加速度计算
                                 if(Traction > max_accel) {
                                     Traction = max_accel;
                                 }
@@ -251,7 +257,7 @@ public class SimulatorService extends Service{
                                         Math.pow(velF[i],2) + (2*accF[i+1]*del_S),
                                         0.5);                                       //牵引速度
                             } else {        //当前速度大于等于限速时
-                                double Traction = Power*vel_error[i]/velF[i]/(inertial_mass*1000);
+                                double Traction = traction*vel_error[i]/(inertial_mass*1000);
                                 if(Traction > max_accel) {
                                     Traction = max_accel;
                                 }
@@ -277,7 +283,8 @@ public class SimulatorService extends Service{
                         for(int i = (int) Math.floor(S_max / del_S)-1; i>=0; --i) {
                             if(velB[i+1] < vel_limit[i+1]) {
                                 double Resistance = (Davis[0] + (Davis[1]*velB[i+1]) + (Davis[2]* Math.pow(velB[i+1],2))) / inertial_mass;  //  列车阻力（空气阻力、摩擦力等）加速度
-                                accB[i]=Resistance + brake(velB[i+1], max_accel, Power, inertial_mass, Coasting, Coasting_vel)- grad_prof[i+1];  //列车制动加速度（阻力加速度+制动加速度brake-坡度加速度）
+                                double power = mDBManager.getBreakFromVelocity((int)velB[i+1]) *1000 * velB[i+1];
+                                accB[i]=Resistance + brake(velB[i+1], max_accel, power, inertial_mass, Coasting, Coasting_vel)- grad_prof[i+1];  //列车制动加速度（阻力加速度+制动加速度brake-坡度加速度）
                                 velB[i] = Math.pow(
                                         Math.pow(velB[i+1],2) + (2*accB[i]*del_S),
                                         0.5);
@@ -324,13 +331,15 @@ public class SimulatorService extends Service{
                         }
 
                         //每步长（10m）制动能耗表
+                        double power;
                         for(int i=1; i<size-3; i++) {
                             EnergyF[i]=TractionF[i]/vel[i]*del_S;
-                            if(TractionB[i]>Power) {
-                                EnergyB[i]=Power/vel[i]*del_S;
-                            } else {
+//                            power = mDBManager.getBreakFromVelocity((int)vel[i]) * vel[i];
+//                            if(TractionB[i]>power) {
+//                                EnergyB[i]=power/vel[i]*del_S;
+//                            } else {
                                 EnergyB[i]=TractionB[i]/vel[i]*del_S;
-                            }
+//                            }
                         }
 
                         //以步长（10m）为单位更新后的坡度表
@@ -413,13 +422,20 @@ public class SimulatorService extends Service{
 
 //                        for(int i=0;i<vel.length;i++){
 //                            Logger.d(TAG,"vel[i]" + i + "==" + vel[i]);
-//                        }
 //
-//                        for(int i=0;i<vel_limit.length;i++){
+//
+                        Logger.d(TAG,"T size=" + T.length);
+                        Logger.d(TAG,"vel size=" + vel.length);
+
+//                        for(int i=0;i<vel.length;i++){
 //                            Logger.d(TAG,"vel[i]" + i + "==" + vel[i]);
 //                        }
 
-                        //      new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
+                        for(int i=0;i<13000;i++){
+                            Logger.d(TAG,"i" + i + "==" +i);
+                        }
+
+//                              new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
 
                     }

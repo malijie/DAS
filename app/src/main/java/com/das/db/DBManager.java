@@ -1,13 +1,12 @@
 package com.das.db;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.das.Myapp;
+import com.das.util.Logger;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by malijie on 2016/6/30.
@@ -20,7 +19,7 @@ public class DBManager {
 
 
     private DBManager(){
-        db = new SQLiteHelper(Myapp.sContext).getWritableDatabase();
+        db = new SQLiteHelper(Myapp.sContext).getReadableDatabase();
     }
 
     public static DBManager getInstance(){
@@ -43,7 +42,7 @@ public class DBManager {
             resultArray[i][0] = Float.parseFloat(result.getString(0));
             resultArray[i][1] = Float.parseFloat(result.getString(1));
         }
-
+        result.close();
         return resultArray;
     }
 
@@ -53,6 +52,7 @@ public class DBManager {
         for(int i=0;result.moveToNext();i++){
             resultArray[i] = Float.parseFloat(result.getString(0));
         }
+        result.close();
         return resultArray;
     }
 
@@ -66,6 +66,7 @@ public class DBManager {
         for(;result.moveToNext();){
             stations.add(result.getString(1));
         }
+        result.close();
         return stations;
     }
 
@@ -75,6 +76,7 @@ public class DBManager {
         for(;result.moveToNext();){
             mileages.add(Double.parseDouble(result.getString(0)));
         }
+        result.close();
         return mileages;
     }
 
@@ -84,6 +86,7 @@ public class DBManager {
         for(;result.moveToNext();){
             scheduleTimes.add(result.getLong(3));
         }
+        result.close();
         return scheduleTimes;
     }
 
@@ -93,7 +96,30 @@ public class DBManager {
         for(;result.moveToNext();){
             arriveTimes.add(result.getInt(2));
         }
+        result.close();
         return arriveTimes;
+    }
+
+    public double getTractionFromVelocity(int velocity){
+        Cursor result = db.rawQuery(SQLContainer.getPowerInfo(velocity),null);
+        double traction = 0;
+        if(result.moveToNext()){
+            traction = Double.parseDouble(result.getString(1));
+        }
+        result.close();
+
+        return traction;
+    }
+
+    public double getBreakFromVelocity(int velocity){
+        Cursor result = db.rawQuery(SQLContainer.getPowerInfo(velocity),null);
+        double brake = 0;
+
+        if(result.moveToNext()){
+            brake = Double.parseDouble(result.getString(2));
+        }
+        result.close();
+        return brake;
     }
 
 }

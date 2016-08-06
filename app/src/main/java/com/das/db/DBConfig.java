@@ -11,6 +11,8 @@ public class DBConfig {
     public static final String TABLE_GRADIENTS = "LutongX_Gradients";
     public static final String TABLE_STATION_INFO = "LutongX_Stations_info";
     public static final String TABLE_VELOCITY = "LutongX_Veloteprofile";
+    public static final String TABLE_POWER = "power_info";
+
 
 
 
