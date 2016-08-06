@@ -6,6 +6,7 @@ import com.das.control.TrainConstants;
 import com.das.util.Logger;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -207,6 +208,18 @@ public class RunningSpeedLineChartManager {
         mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
         mLineData.addDataSet(mLimitSpeedLineDataSet);
         mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+    }
+
+
+    private LimitLine xLimitLine = null;
+
+    public void updateSpeedLimitLine(float mileage){
+        mXAxis.removeLimitLine(xLimitLine);
+        xLimitLine = new LimitLine(mileage,"速率");
+        xLimitLine.setLineColor(Color.BLUE);
+        xLimitLine.setTextColor(Color.BLUE);
+        mXAxis.addLimitLine(xLimitLine);
         mLineChart.invalidate();
     }
 

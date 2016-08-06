@@ -18,6 +18,7 @@ import com.das.manager.ToastManager;
 import com.das.service.SimulatorService;
 import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
+import com.das.util.Utils;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -131,6 +132,10 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mRunningChartManager.updateLimitSpeedYValues((int)speed);
     }
 
+    private void updateCurrentSpeedLine(float mileage){
+        mRunningChartManager.updateSpeedLimitLine(mileage);
+    }
+
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -147,6 +152,8 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
                     Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
                     updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
+                    //更新速率曲线
+                    updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
                 }else{
                     ToastManager.showMsg("没有建议速度，行程已结束");
                 }
