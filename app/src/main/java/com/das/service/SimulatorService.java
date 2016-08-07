@@ -49,7 +49,7 @@ public class SimulatorService extends Service{
     // MAXIMUM ACCELERATION
     double max_accel=max_traction/Mass;
     // STATION DWELL TIME (Seconds)
-    int dwell=30;
+    int dwell=120;
     // STATION TERMINAL TIME (Seconds)
     int Terminal_time=15*60;
     // proportional k

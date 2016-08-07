@@ -25,6 +25,9 @@ import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
 import com.example.das.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Administrator on 2016/6/26.
  */
@@ -98,8 +101,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.id_login_text_confirm:
                 if(checkPosition()) {
-                    SharePreferenceUtil.saveStartLatitude((float)TrainConstants.RUTONG_START_LATITUDE);
-                    SharePreferenceUtil.saveStartLongitude((float)TrainConstants.RUTONG_START_LONGITUDE);
+                    saveTrainInfo();
                     IntentManager.startActivity(MainActivity.class);
                     IntentManager.startService(SimulatorService.class,
                             IntentConstants.ACTION_START_SIMULATE);
@@ -107,8 +109,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.id_login_text_title:
                 if(checkPosition()) {
-                    SharePreferenceUtil.saveStartLatitude((float)TrainConstants.RUTONG_START_LATITUDE);
-                    SharePreferenceUtil.saveStartLongitude((float)TrainConstants.RUTONG_START_LONGITUDE);
+                    saveTrainInfo();
                     IntentManager.startActivity(MainActivity.class);
                     IntentManager.startService(SimulatorService.class,
                             IntentConstants.ACTION_START_SIMULATE);
@@ -117,6 +118,17 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+    private void saveTrainInfo(){
+        SharePreferenceUtil.saveStartLatitude((float)TrainConstants.RUTONG_START_LATITUDE);
+        SharePreferenceUtil.saveStartLongitude((float)TrainConstants.RUTONG_START_LONGITUDE);
+        SharePreferenceUtil.saveDriverName(mEditDriverName.getText().toString());
+        SharePreferenceUtil.saveTrainNo(mEditTrainNo.getText().toString());
+        SharePreferenceUtil.saveTrainModel(mSpinnerTrainInfo.getSelectedItem().toString());
+        SharePreferenceUtil.saveTrainStartTime(new SimpleDateFormat("HH:mm:ss").format(new Date()));
+
+
     }
 
     /**
