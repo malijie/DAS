@@ -39,5 +39,7 @@ public class IntentConstants {
     public static final String ACTION_UPDATE_TRAIN_WAIT_TIME = "ACTION_UPDATE_TRAIN_WAIT_TIME";
     //列车启动
     public static final String ACTION_TRAIN_BEGIN_START = "ACTION_TRAIN_BEGIN_START";
+    //更新运行曲线图里程
+    public static final String ACTION_TRAIN_CURVE_MILEAGE = "ACTION_TRAIN_CURVE_MILEAGE";
 
 }

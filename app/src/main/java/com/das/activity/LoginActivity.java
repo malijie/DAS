@@ -55,6 +55,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         IntentManager.startService(CalculateSpeedService.class,
                 IntentConstants.ACTION_CALCULATE_TRAIN_SPEED);
+        IntentManager.startService(SimulatorService.class,
+                IntentConstants.ACTION_START_SIMULATE);
 
     }
 
@@ -103,8 +105,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 if(checkPosition()) {
                     saveTrainInfo();
                     IntentManager.startActivity(MainActivity.class);
-                    IntentManager.startService(SimulatorService.class,
-                            IntentConstants.ACTION_START_SIMULATE);
+
                 }
                 break;
             case R.id.id_login_text_title:

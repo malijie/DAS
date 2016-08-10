@@ -3,7 +3,9 @@ package com.das.chart;
 import android.graphics.Color;
 
 import com.das.control.TrainConstants;
+import com.das.control.TrainControl;
 import com.das.util.Logger;
+import com.das.util.Utils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
@@ -13,6 +15,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,11 +91,56 @@ public class RunningSpeedLineChartManager {
 
     private void initXAxis(){
         mXAxis = mLineChart.getXAxis();
-        mXAxis.setAxisMaxValue(TrainConstants.TOTAL_MILEAGE);
-        mXAxis.setAxisMinValue(0);
-        mXAxis.setLabelsToSkip(14);
-        mXAxis.setSpaceBetweenLabels(3);
+        mXAxis.setAxisMaxValue(5.0f);
+        mXAxis.setAxisMinValue(0.0f);
+        mXAxis.setLabelsToSkip(1);
+//        mXAxis.setSpaceBetweenLabels(20);
         mXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    }
+
+
+    private static float startX = 0;
+    private static float endX = 5;
+
+    public void updateXYAxis(double[] suggestSpeedArray,double[] limitSpeedArray){
+        xValues.clear();
+        yLimitSpeedValues.clear();
+        ySuggestSpeedValues.clear();
+        mLineData.clearValues();
+        mLineData.setXVals(updateXVals());
+
+        for(float i=startX;i<endX;i+=0.1){
+            float index = i * 100;
+            int mIndex = (int)index;
+            ySuggestSpeedValues.add(new Entry((float) suggestSpeedArray[mIndex], ySuggestSpeedValues.size()));
+        }
+
+        for(float i=startX;i<endX;i+=0.1){
+            float index = i * 100;
+            int mIndex = (int)index;
+            yLimitSpeedValues.add(new Entry((float) limitSpeedArray[mIndex], yLimitSpeedValues.size()));
+        }
+
+        mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
+        mSuggestSpeedLineDataSet.setYVals(ySuggestSpeedValues);
+        mLineData.addDataSet(mLimitSpeedLineDataSet);
+        mLineData.addDataSet(mSuggestSpeedLineDataSet);
+
+        mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+    }
+
+
+
+    private ArrayList<String> updateXVals(){
+        for (float i = startX; i < endX; i += 0.1) {
+            // x轴显示的数据，这里默认使用数字下标显示
+            xValues.add("" + Utils.convertFloat1Half(i));
+        }
+        startX += 0.1;
+        endX +=0.1;
+
+        return xValues;
     }
 
     private void initRightYAxis(){
@@ -112,10 +160,10 @@ public class RunningSpeedLineChartManager {
 //        ySuggestSpeedValues.clear();
 //        yLimitSpeedValues.clear();
 //        xValues.clear();
-        mLineData.setXVals(getXValue(TrainConstants.TOTAL_MILEAGE));
+        mLineData.setXVals(getXValue(5));
         mLineData.addDataSet(getSuggestSpeedLineDataSet());
         mLineData.addDataSet(getLimitSpeedLineDataSet());
-        mLineData.setDrawValues(false);
+        mLineData.setDrawValues(true);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
     }
@@ -152,9 +200,8 @@ public class RunningSpeedLineChartManager {
 
 
     private ArrayList<String> getXValue(int count) {
-        for (int i = 0; i < count; i++) {
-            // x轴显示的数据，这里默认使用数字下标显示
-            xValues.add("" + i);
+        for (float i = 0; i < count; i += 0.1) {
+            xValues.add("" +  Utils.convertFloat1Half(i));
         }
         return xValues;
     }

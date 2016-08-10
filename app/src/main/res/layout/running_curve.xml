@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/id_curve_text_title"
         android:text="dd"
-        android:textSize="16sp"
+        android:textSize="50sp"
         android:textColor="@color/white"
         />
     <View
@@ -40,7 +40,7 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/id_curve_line_chart_running"
-        android:layout_width="match_parent"
+        android:layout_width="800dp"
         android:layout_height="500dp"
         android:background="#ffffff"
         android:layout_marginTop="100dp"

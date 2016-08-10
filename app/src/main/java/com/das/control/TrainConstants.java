@@ -27,4 +27,6 @@ public class TrainConstants {
     //总里程，单位公里
     public static final int TOTAL_MILEAGE = 115;
 
+
+
 }

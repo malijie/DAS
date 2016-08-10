@@ -86,7 +86,7 @@ public class TrainControl {
                     break;
                 case MsgConstant.MSG_GET_TRAIN_CURRENT_STATUS:
                     float mSpeed = mLocationManager.getCurrentSpeed();
-                    Logger.d("MLJ","speed=" + mSpeed);
+//                    Logger.d("MLJ","speed=" + mSpeed);
                     if(mNeedPutInLastSpeedList && mLastSpeedList.size() != SPEED_LIST_SIZE){
                         mLastSpeedList.add(mSpeed);
                     }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.das.chart.RunningSpeedLineChartManager;
 import com.das.constants.IntentConstants;
+import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
 import com.das.manager.IntentManager;
 import com.das.manager.ToastManager;
@@ -64,53 +65,62 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
 
     private double[] historySuggestSpeed;
     private void showHistorySuggestSpeedChart() {
-        int index = SharePreferenceUtil.loadCurrentSuggestSpeedIndex();
-        Logger.d(TAG,"Suggest index=" + index);
-        if(index == 0){
-            return;
-        }
-        historySuggestSpeed = new double[index];
-        for(int i = 0; i< historySuggestSpeed.length; i++){
-            historySuggestSpeed[i] = mTrainControl.getSuggestSpeedArray()[i * 100];
-            Logger.d(TAG,"historySuggestSpeed[i]=" + i + "=" + historySuggestSpeed[i]);
-        }
-
-        List<Entry> speeds = new ArrayList<>();
-        for(int i = 0; i< historySuggestSpeed.length; i++){
-            speeds.add(new Entry((float) historySuggestSpeed[i],i));
-        }
-        mRunningChartManager.loadHistorySuggestSpeedValues(speeds);
+//        int index = SharePreferenceUtil.loadCurrentSuggestSpeedIndex();
+//        Logger.d(TAG,"Suggest index=" + index);
+//        if(index == 0){
+//            return;
+//        }
+//        historySuggestSpeed = new double[index];
+//        for(int i = 0; i< historySuggestSpeed.length; i++){
+//            historySuggestSpeed[i] = mTrainControl.getSuggestSpeedArray()[i * 100];
+//            Logger.d(TAG,"historySuggestSpeed[i]=" + i + "=" + historySuggestSpeed[i]);
+//        }
+//
+//        List<Entry> speeds = new ArrayList<>();
+//        for(int i = 0; i< historySuggestSpeed.length; i++){
+//            speeds.add(new Entry((float) historySuggestSpeed[i],i));
+//        }
+//        mRunningChartManager.loadHistorySuggestSpeedValues(speeds);
     }
 
     private double[] historyLimitSpeed;
 
     private void showHistoryLimitSpeedChart() {
-        int index = SharePreferenceUtil.loadCurrentLimitSpeedIndex();
-        Logger.d(TAG,"Limit index=" + index);
-        if(index == 0){
-            return;
-        }
-        historyLimitSpeed = new double[index];
-        for(int i = 0; i< historyLimitSpeed.length; i++){
-            historyLimitSpeed[i] = mTrainControl.getLimitSpeedArray()[i * 100];
-            Logger.d(TAG,"historyLimitSpeed[i]=" + i + "=" + historyLimitSpeed[i]);
-        }
-
-        List<Entry> speeds = new ArrayList<>();
-        for(int i = 0; i< historyLimitSpeed.length; i++){
-            speeds.add(new Entry((float) historyLimitSpeed[i],i));
-        }
-        mRunningChartManager.loadHistoryLimitSpeedValues(speeds);
+//        int index = SharePreferenceUtil.loadCurrentLimitSpeedIndex();
+//        Logger.d(TAG,"Limit index=" + index);
+//        if(index == 0){
+//            return;
+//        }
+//        historyLimitSpeed = new double[index];
+//        for(int i = 0; i< historyLimitSpeed.length; i++){
+//            historyLimitSpeed[i] = mTrainControl.getLimitSpeedArray()[i * 100];
+//            Logger.d(TAG,"historyLimitSpeed[i]=" + i + "=" + historyLimitSpeed[i]);
+//        }
+//
+//        List<Entry> speeds = new ArrayList<>();
+//        for(int i = 0; i< historyLimitSpeed.length; i++){
+//            speeds.add(new Entry((float) historyLimitSpeed[i],i));
+//        }
+//        mRunningChartManager.loadHistoryLimitSpeedValues(speeds);
     }
 
     private void initChart() {
         mRunningChartManager.initLineData();
     }
 
+    private static float mileage = 1;
     private void initViews() {
         mLineChart = (LineChart) findViewById(R.id.id_curve_line_chart_running);
         mButtonBack = (Button) findViewById(R.id.id_curve_line_chart_back);
         mTextTest = (TextView) findViewById(R.id.text_test);
+
+        mTextTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray());
+//                mileage++;
+            }
+        });
     }
 
     private void initData(){
@@ -120,6 +130,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         filter.addAction(IntentConstants.ACTION_UPDATE_CURRENT_SPEED);
         filter.addAction(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED);
         filter.addAction(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
+        filter.addAction(IntentConstants.ACTION_TRAIN_CURVE_MILEAGE);
         registerReceiver(mRunningSpeedReceiver,filter);
     }
 
@@ -146,25 +157,30 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                     mIsFirstStart = false;
                 }
 
-            }
-            else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
-                mTextTest.setText("suggestIndex=" + SharePreferenceUtil.loadCurrentSuggestSpeedIndex() + ",limitIndex=" + SharePreferenceUtil.loadCurrentLimitSpeedIndex());
-                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
-                    Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
-                    updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
-                    //更新速率曲线
-                    updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
-                }else{
-                    ToastManager.showMsg("没有建议速度，行程已结束");
+            }else if(intent.getAction().equals(IntentConstants.ACTION_TRAIN_CURVE_MILEAGE)){
+                if(mTrainControl.getTotalMileage() > TrainConstants.TOTAL_MILEAGE * 1000){
+                   return;
                 }
-            }else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
-                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
-                    Logger.d(TAG,"========limit speed======" + mTrainControl.getLimitSpeed());
-                    updateLimitSpeedLine(mTrainControl.getLimitSpeed());
-                }else{
-                    ToastManager.showMsg("没有限制速度,行程已结束");
-                }
+                mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
+                        mTrainControl.getLimitSpeedArray());
             }
+//            else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
+//                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
+//                    Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
+//                    updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
+//                    //更新速率曲线
+//                    updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
+//                }else{
+//                    ToastManager.showMsg("没有建议速度，行程已结束");
+//                }
+//            }else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
+//                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
+//                    Logger.d(TAG,"========limit speed======" + mTrainControl.getLimitSpeed());
+//                    updateLimitSpeedLine(mTrainControl.getLimitSpeed());
+//                }else{
+//                    ToastManager.showMsg("没有限制速度,行程已结束");
+//                }
+//            }
         }
     };
 

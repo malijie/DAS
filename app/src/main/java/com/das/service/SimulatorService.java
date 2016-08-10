@@ -427,13 +427,10 @@ public class SimulatorService extends Service{
                         Logger.d(TAG,"T size=" + T.length);
                         Logger.d(TAG,"vel size=" + vel.length);
 
-//                        for(int i=0;i<vel.length;i++){
-//                            Logger.d(TAG,"vel[i]" + i + "==" + vel[i]);
-//                        }
-
-                        for(int i=0;i<13000;i++){
-                            Logger.d(TAG,"i" + i + "==" +i);
+                        for(int i=0;i<vel.length;i++){
+                            Logger.d(TAG,"vel[i]" + i + "==" + vel[i]);
                         }
+
 
 //                              new STSGraphs(altitude, vel, vel_limit, T, s, v, trac, Res, accel, Mass, acceler, TractionF, TractionB, energy_consumed, resistance_energy, kinetic_energy, potential_energy);
 
@@ -501,7 +498,7 @@ public class SimulatorService extends Service{
     private int mLimitSpeedIndex;
     private int currentLimitMileage;
     private int currentSuggestMileage;
-
+    private double mLastTotalMileage;
 
     private Handler mSimulateHandler = new Handler(){
         @Override
@@ -509,14 +506,26 @@ public class SimulatorService extends Service{
 
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
-                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+
+//                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+
+                    mTotalMileage+= 20;
                     mTrainControl.setTotalMileage(mTotalMileage);
-                    mTrainControl.setCurrentArrayIndex(mVelocityIndex);
-                    mVelocityIndex = (int)(mTotalMileage / 10);
                     if(mVelocityIndex<0){
                         mVelocityIndex = 0;
                     }
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
+                    mVelocityIndex = (int)(mTotalMileage / 10);
+                    mTrainControl.setCurrentArrayIndex(mVelocityIndex);
+Logger.d("MLJ","totalMileage=" + mTotalMileage + ",lastMileage=" + mLastTotalMileage + ",index=" + mVelocityIndex);
+
+                    //更新运行曲线里程表
+                    if(mTotalMileage - mLastTotalMileage >= 100){
+                        IntentManager.sendBroadcastMsg(IntentConstants.ACTION_TRAIN_CURVE_MILEAGE);
+                        mLastTotalMileage = mTotalMileage;
+                    }
+
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,10);
+
                     break;
 
                 case MsgConstant.MSG_CALCULATE_SUGGEST_SPEED:
@@ -529,6 +538,10 @@ public class SimulatorService extends Service{
                     //及时更新当前建议速度，每10米更新一次
 
 //                        mLastSuggestVelocityIndex = mVelocityIndex;
+                        if(mVelocityIndex >= vel.length){
+                            mVelocityIndex = vel.length -1;
+                            return;
+                        }
                         mSuggestVelocity = vel[mVelocityIndex];
                         mTrainControl.setSuggestSpeed(mSuggestVelocity);
 
@@ -545,6 +558,10 @@ public class SimulatorService extends Service{
 //                    }
 //                    mLastEnergyVelocityIndex = mVelocityIndex;
                     //计算当前限制速度
+                    if(mVelocityIndex >= vel_limit.length){
+                        mVelocityIndex = vel_limit.length -1;
+                        return;
+                    }
                     mLimitVelocity = vel_limit[mVelocityIndex];
                     mTrainControl.setLimitSpeed(mLimitVelocity);
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED,

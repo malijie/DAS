@@ -1,5 +1,6 @@
 package com.das.util;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 /**
@@ -8,6 +9,11 @@ import java.text.SimpleDateFormat;
 public class Utils {
     public static String convertDouble2Half(double num){
       return new java.text.DecimalFormat("#.00").format(num);
+    }
+
+    public static float convertFloat1Half(float num){
+        BigDecimal b   =   new   BigDecimal(num);
+        return b.setScale(1,BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     /**
