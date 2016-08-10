@@ -509,7 +509,9 @@ public class SimulatorService extends Service{
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
 
                     mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+                    Logger.d("MLJ","mTotalMileage=" + mTotalMileage);
 
+//                    mTotalMileage += 20;
                     if(mTotalMileage > TrainConstants.TOTAL_MILEAGE * 1000){
                         ToastManager.showMsg("行驶结束!");
                         return;
@@ -528,7 +530,7 @@ public class SimulatorService extends Service{
                         mLastTotalMileage = mTotalMileage;
                     }
 
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,3000);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);
 
                     break;
 
@@ -621,6 +623,7 @@ public class SimulatorService extends Service{
                     sendEmptyMessageDelayed(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED,1000);
 
                     break;
+
             }
 
 //            Logger.d(TAG,"velocityIndex=" + mVelocityIndex +",suggestVelocity="

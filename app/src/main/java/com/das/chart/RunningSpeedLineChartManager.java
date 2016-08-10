@@ -115,12 +115,18 @@ public class RunningSpeedLineChartManager {
         for(float i=startX;i<endX;i+=0.1){
             float index = i * 100;
             int mIndex = (int)index;
+            if(mIndex > suggestSpeedArray.length){
+                break;
+            }
             ySuggestSpeedValues.add(new Entry((float) suggestSpeedArray[mIndex], ySuggestSpeedValues.size()));
         }
 
         for(float i=startX;i<endX;i+=0.1){
             float index = i * 100;
             int mIndex = (int)index;
+            if(mIndex > limitSpeedArray.length){
+                break;
+            }
             yLimitSpeedValues.add(new Entry((float) limitSpeedArray[mIndex], yLimitSpeedValues.size()));
         }
 
@@ -239,34 +245,34 @@ public class RunningSpeedLineChartManager {
 
 
 
-    public void loadHistorySuggestSpeedValues(List<Entry> suggestSpeeds){
-        ySuggestSpeedValues.clear();
-        for(int i=0;i<suggestSpeeds.size();i++){
-            ySuggestSpeedValues.add(suggestSpeeds.get(i));
-        }
-        mSuggestSpeedLineDataSet.setYVals(ySuggestSpeedValues);
-        mLineData.addDataSet(mSuggestSpeedLineDataSet);
-        mLineChart.setData(mLineData);
-        mLineChart.invalidate();
-    }
-
-    public void loadHistoryLimitSpeedValues(List<Entry> limitSpeeds){
-        yLimitSpeedValues.clear();
-        for(int i=0;i<limitSpeeds.size();i++){
-            yLimitSpeedValues.add(limitSpeeds.get(i));
-        }
-        mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
-        mLineData.addDataSet(mLimitSpeedLineDataSet);
-        mLineChart.setData(mLineData);
-        mLineChart.invalidate();
-    }
+//    public void loadHistorySuggestSpeedValues(List<Entry> suggestSpeeds){
+//        ySuggestSpeedValues.clear();
+//        for(int i=0;i<suggestSpeeds.size();i++){
+//            ySuggestSpeedValues.add(suggestSpeeds.get(i));
+//        }
+//        mSuggestSpeedLineDataSet.setYVals(ySuggestSpeedValues);
+//        mLineData.addDataSet(mSuggestSpeedLineDataSet);
+//        mLineChart.setData(mLineData);
+//        mLineChart.invalidate();
+//    }
+//
+//    public void loadHistoryLimitSpeedValues(List<Entry> limitSpeeds){
+//        yLimitSpeedValues.clear();
+//        for(int i=0;i<limitSpeeds.size();i++){
+//            yLimitSpeedValues.add(limitSpeeds.get(i));
+//        }
+//        mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
+//        mLineData.addDataSet(mLimitSpeedLineDataSet);
+//        mLineChart.setData(mLineData);
+//        mLineChart.invalidate();
+//    }
 
 
     private LimitLine xLimitLine = null;
 
     public void updateSpeedLimitLine(float mileage){
         mXAxis.removeLimitLine(xLimitLine);
-        xLimitLine = new LimitLine(mileage,"速率");
+        xLimitLine = new LimitLine(0.1F,"速率");
         xLimitLine.setLineColor(Color.BLUE);
         xLimitLine.setTextColor(Color.BLUE);
         mXAxis.addLimitLine(xLimitLine);

@@ -48,7 +48,6 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         initChart();
         showHistorySuggestSpeedChart();
         showHistoryLimitSpeedChart();
-
     }
 
 
@@ -154,6 +153,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 if(mIsFirstStart&& mTrainControl.getCurrentSpeed()>1){
                     startCalculateSuggestSpeed();
                     startCalculateLimitSpeed();
+
                     mIsFirstStart = false;
                 }
 
@@ -161,8 +161,11 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 if(mTrainControl.getTotalMileage() > TrainConstants.TOTAL_MILEAGE * 1000){
                    return;
                 }
+
                 mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
                         mTrainControl.getLimitSpeedArray());
+                updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
+
             }
 //            else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
 //                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
