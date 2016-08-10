@@ -103,6 +103,9 @@ public class RunningSpeedLineChartManager {
     private static float endX = 5;
 
     public void updateXYAxis(double[] suggestSpeedArray,double[] limitSpeedArray){
+        if(suggestSpeedArray == null || limitSpeedArray== null){
+            return;
+        }
         xValues.clear();
         yLimitSpeedValues.clear();
         ySuggestSpeedValues.clear();

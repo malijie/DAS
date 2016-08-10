@@ -13,6 +13,7 @@ import com.das.db.DBConfig;
 import com.das.db.DBManager;
 import com.das.constants.IntentConstants;
 import com.das.manager.IntentManager;
+import com.das.manager.ToastManager;
 import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
 
@@ -507,16 +508,19 @@ public class SimulatorService extends Service{
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
 
-//                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
 
-                    mTotalMileage+= 20;
+                    if(mTotalMileage > TrainConstants.TOTAL_MILEAGE * 1000){
+                        ToastManager.showMsg("行驶结束!");
+                        return;
+                    }
+
                     mTrainControl.setTotalMileage(mTotalMileage);
                     if(mVelocityIndex<0){
                         mVelocityIndex = 0;
                     }
                     mVelocityIndex = (int)(mTotalMileage / 10);
                     mTrainControl.setCurrentArrayIndex(mVelocityIndex);
-Logger.d("MLJ","totalMileage=" + mTotalMileage + ",lastMileage=" + mLastTotalMileage + ",index=" + mVelocityIndex);
 
                     //更新运行曲线里程表
                     if(mTotalMileage - mLastTotalMileage >= 100){
@@ -524,7 +528,7 @@ Logger.d("MLJ","totalMileage=" + mTotalMileage + ",lastMileage=" + mLastTotalMil
                         mLastTotalMileage = mTotalMileage;
                     }
 
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,10);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,3000);
 
                     break;
 
