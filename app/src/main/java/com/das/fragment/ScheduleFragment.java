@@ -68,7 +68,7 @@ public class ScheduleFragment extends Fragment {
         mStationSchduleTimes = mDBManager.getStationScheduleTimes();
         mStationWaitTimes = mDBManager.getStationWaitTimes();
 
-        double mileage = mTrainControl.getTotalMileage();
+        double mileage = Utils.convertM2kM(mTrainControl.getTotalMileage());
         if(mileage <= mStationMileage.get(1)){
             //柯坦站与张旗杆站之间
             index = 1;
@@ -338,7 +338,7 @@ public class ScheduleFragment extends Fragment {
             mNext4StationWaitTime.setText("停靠时间:" );
             mNext4StationArriveTime.setText("到达时间:");
             mNext4StationMileage.setText("里程:");
-        }else if(mileage > mStationMileage.get(7) && mileage <= mStationMileage.get(8)){
+        }else if(mileage > mStationMileage.get(7)){
             //上周村站与钟鸣站
             index = 8;
             mPreStationName.setText(mStationNames.get(index -1));

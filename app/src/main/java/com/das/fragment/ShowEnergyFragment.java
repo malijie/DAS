@@ -62,7 +62,6 @@ public class ShowEnergyFragment extends Fragment{
         mTextTotalEnergy = (TextView) v.findViewById(R.id.id_energy_text_total_energy);
         mTextSuggestEnergy = (TextView) v.findViewById(R.id.id_energy_text_suggest_value);
         mTextCurrentEnergy = (TextView) v.findViewById(R.id.id_energy_text_current_value);
-
     }
 
     private void calculateTotalEnergy(){
@@ -75,6 +74,9 @@ public class ShowEnergyFragment extends Fragment{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_CURRENT_ENERGY:
+                    if(mTrainControl.getCurrentArrayIndex() > mTrainControl.getCurrentEnergyCounsumeArray().length){
+                        return;
+                    }
                     mTextCurrentEnergy.setText("" +
                             mTrainControl.getCurrentEnergyCounsumeArray()[mTrainControl.getCurrentArrayIndex()]);
                     mEnergyHandler.sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_CURRENT_ENERGY,1000);
