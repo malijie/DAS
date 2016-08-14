@@ -47,5 +47,9 @@ public class Utils {
         return format.format(millis);
     }
 
+    public static float meterPerSecond2KMPerSecond(float meterPerSecond){
+        return meterPerSecond * 3.6f;
+    }
+
 
 }

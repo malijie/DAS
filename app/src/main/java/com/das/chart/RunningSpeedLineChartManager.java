@@ -118,7 +118,7 @@ public class RunningSpeedLineChartManager {
             if(mIndex > suggestSpeedArray.length){
                 break;
             }
-            ySuggestSpeedValues.add(new Entry((float) suggestSpeedArray[mIndex], ySuggestSpeedValues.size()));
+            ySuggestSpeedValues.add(new Entry(Utils.meterPerSecond2KMPerSecond((float)suggestSpeedArray[mIndex]), ySuggestSpeedValues.size()));
         }
 
         for(float i=startX;i<endX;i+=0.1){
@@ -127,7 +127,7 @@ public class RunningSpeedLineChartManager {
             if(mIndex > limitSpeedArray.length){
                 break;
             }
-            yLimitSpeedValues.add(new Entry((float) limitSpeedArray[mIndex], yLimitSpeedValues.size()));
+            yLimitSpeedValues.add(new Entry((float) Utils.meterPerSecond2KMPerSecond((float)limitSpeedArray[mIndex]), yLimitSpeedValues.size()));
         }
 
         mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
@@ -271,8 +271,9 @@ public class RunningSpeedLineChartManager {
     private LimitLine xLimitLine = null;
 
     public void updateSpeedLimitLine(float mileage){
+
         mXAxis.removeLimitLine(xLimitLine);
-        xLimitLine = new LimitLine(0.1F,"速率");
+        xLimitLine = new LimitLine(mileage,"速率");
         xLimitLine.setLineColor(Color.BLUE);
         xLimitLine.setTextColor(Color.BLUE);
         mXAxis.addLimitLine(xLimitLine);

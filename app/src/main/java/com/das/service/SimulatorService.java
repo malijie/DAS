@@ -508,10 +508,9 @@ public class SimulatorService extends Service{
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
 
-                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+//                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+                    mTotalMileage += 20;
                     Logger.d("MLJ","mTotalMileage=" + mTotalMileage);
-
-//                    mTotalMileage += 20;
                     if(mTotalMileage > TrainConstants.TOTAL_MILEAGE * 1000){
                         ToastManager.showMsg("行驶结束!");
                         return;
@@ -579,12 +578,18 @@ public class SimulatorService extends Service{
                         //上一个记录值与当前值相等，说明在10米内，不需要更新,或者跑完全程
                         return;
                     }
+
+                    if(mVelocityIndex >= energy_consumed.length){
+                        mVelocityIndex = energy_consumed.length -1;
+                        return;
+                    }
+
                     mLastEnergyVelocityIndex = mVelocityIndex;
                     //计算当前总能耗
                     mTotalEnergy = energy_consumed[mVelocityIndex];
                     IntentManager.sendBroadcastMsg(IntentConstants.ACTION_UPDATE_TOTAL_CONSUME_ENERGY,
                             "total_energy",mTotalEnergy);
-                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,500);
+                    sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_ENERGY,1000);
                     break;
                 case MsgConstant.MSG_UPDATE_RUNNING_CURVE_SUGGEST_SPEED:
                     //更新运行曲线，建议速度,1公里更新一次
@@ -658,6 +663,7 @@ public class SimulatorService extends Service{
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_SUGGEST_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_LIMIT_SPEED);
         mSimulateHandler.removeMessages(MsgConstant.MSG_UPDATE_RUNNING_CURVE_LIMIT_SPEED);
+        mSimulateHandler.removeMessages(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE);
         mTotalMileage = 0;
         super.onDestroy();
     }
