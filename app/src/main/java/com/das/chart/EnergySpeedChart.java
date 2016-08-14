@@ -6,6 +6,7 @@ import android.util.Log;
 import com.das.Myapp;
 import com.das.manager.ToastManager;
 import com.das.util.Logger;
+import com.das.util.Utils;
 import com.example.das.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -136,7 +137,7 @@ public class EnergySpeedChart {
      */
     public void updateLimitSpeedLine(float limitSpeed){
         mLeftAxis.removeLimitLine(mLimitSpeedLine);
-        mLimitSpeedLine = new LimitLine(limitSpeed,"");
+        mLimitSpeedLine = new LimitLine(Utils.meterPerSecond2KMPerSecond(limitSpeed),"");
         mLeftAxis.addLimitLine(mLimitSpeedLine);
         mSpeedBarChart.invalidate();
 
@@ -148,7 +149,7 @@ public class EnergySpeedChart {
      */
     public void updateSuggestSpeedLine(float suggestSpeed){
         mLeftAxis.removeLimitLine(mSuggestSpeedLine);
-        mSuggestSpeedLine = new LimitLine(suggestSpeed,"");
+        mSuggestSpeedLine = new LimitLine(Utils.meterPerSecond2KMPerSecond(suggestSpeed),"");
         mSuggestSpeedLine.setLineColor(Color.GREEN);
         mLeftAxis.addLimitLine(mSuggestSpeedLine);
         mSpeedBarChart.invalidate();
