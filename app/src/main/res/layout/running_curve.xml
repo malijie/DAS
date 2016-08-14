@@ -14,15 +14,6 @@
         android:textColor="@color/white"
         android:textSize="40sp"
         android:layout_marginTop="20dp"/>
-    <TextView
-        android:id="@+id/text_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/id_curve_text_title"
-        android:text="dd"
-        android:textSize="50sp"
-        android:textColor="@color/white"
-        />
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"

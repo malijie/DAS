@@ -76,12 +76,14 @@ public class SpeedFragment extends Fragment {
                 mTextCurrentSpeed.setText("当前速度:" + intent.getIntExtra("speed",0) + "KM/H"
                                     +"当前经纬度是:" + TrainControl.getInstance().getCurrentLatitude());
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_SUGGEST_SPEED)){
+                String strSuggestSpeed = Utils.convertDouble2Half(intent.getDoubleExtra("suggest_velocity",0));
                 mTextSuggestSpeed.setText("建议速度:"
-                        + Utils.convertDouble2Half(intent.getDoubleExtra("suggest_velocity",0))
+                        + Utils.meterPerSecond2KMPerSecond(Float.parseFloat(strSuggestSpeed))
                         + "KM/H");
             }else if(action.equals(IntentConstants.ACTION_UPDATE_TRAIN_LIMIT_SPEED)){
+                String strLimitSpeed = Utils.convertDouble2Half(intent.getDoubleExtra("limit_velocity",0));
                 mTextLimitSpeed.setText("最高限速:"
-                        + Utils.convertDouble2Half(intent.getDoubleExtra("limit_velocity",0))
+                        + Utils.meterPerSecond2KMPerSecond(Float.parseFloat(strLimitSpeed))
                         + "KM/H");
             }
         }

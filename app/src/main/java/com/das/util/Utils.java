@@ -43,7 +43,7 @@ public class Utils {
     }
 
     public static String millis2Time(long millis){
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("mm:ss");
         return format.format(millis);
     }
 
