@@ -10,6 +10,77 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上周村站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="60dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="无为南站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="160dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="襄安站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="260dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="洪港站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="350dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="龙桥站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="450dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="庐江南站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="530dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="张旗杆站"
+        android:layout_toRightOf="@id/id_mileage_barchar"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="550dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"/>
+
+
 
 
 </RelativeLayout>

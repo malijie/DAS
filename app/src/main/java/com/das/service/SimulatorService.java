@@ -507,9 +507,9 @@ public class SimulatorService extends Service{
 
             switch (msg.what){
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
-
-//                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
-                    mTotalMileage += 20;
+                    removeMessages(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE);
+                    mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
+//                    mTotalMileage += 20;
                     Logger.d("MLJ","mTotalMileage=" + mTotalMileage);
                     if(mTotalMileage > TrainConstants.TOTAL_MILEAGE * 1000){
                         ToastManager.showMsg("行驶结束!");

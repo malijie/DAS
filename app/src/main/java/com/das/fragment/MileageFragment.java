@@ -18,7 +18,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 
 /**
- * Created by Administrator on 2016/8/3.
+ * Created by malijie on 2016/8/3.
  */
 public class MileageFragment extends Fragment {
     private static final int UPDATE_MILEAGE_INTERVAL = 30 * 1000;

@@ -14,6 +14,11 @@
         android:layout_alignParentEnd="true"
         tools:layout="@layout/mytime" />
 
+    <View
+        android:layout_width="1dp"
+        android:layout_height="93dp"
+        android:background="@color/white"
+        android:layout_toLeftOf="@id/mytime"/>
 
     <fragment
         android:id="@+id/fragment_drivingadvice"

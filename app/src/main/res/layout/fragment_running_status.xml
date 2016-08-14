@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/countdown"
-        android:layout_width="300dp"
+        android:layout_width="298dp"
         android:layout_height="200dp"
         android:background="@color/transparent"
         android:textColor="@android:color/white"
@@ -40,6 +40,12 @@
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/currentcondition" />
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="200dp"
+        android:background="@color/white"
+        android:layout_toRightOf="@+id/countdown"/>
 
     <TextView
         android:layout_width="500dp"

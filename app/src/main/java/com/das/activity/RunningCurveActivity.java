@@ -111,15 +111,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     private void initViews() {
         mLineChart = (LineChart) findViewById(R.id.id_curve_line_chart_running);
         mButtonBack = (Button) findViewById(R.id.id_curve_line_chart_back);
-        mTextTest = (TextView) findViewById(R.id.text_test);
 
-        mTextTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray());
-//                mileage++;
-            }
-        });
     }
 
     private void initData(){
