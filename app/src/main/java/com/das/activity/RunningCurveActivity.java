@@ -139,7 +139,10 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mRunningChartManager.updateSpeedLimitLine(mileage);
     }
 
-    private static float speed = 50;
+    private static float speed = 10;
+    private static float mLastTotalMileage = 0;
+    private float mCurrentTotalMileage = 0;
+
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -155,32 +158,31 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 if(mTrainControl.getTotalMileage() > TrainConstants.TOTAL_MILEAGE * 1000){
                    return;
                 }
-                //更新建议速度，限制速度
-                mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
-                        mTrainControl.getLimitSpeedArray());
+
+                if(mTrainControl.getTotalMileage() < 5000){
+                    //更新建议速度，限制速度
+                    mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
+                            mTrainControl.getLimitSpeedArray(),true);
+                }else{
+                    if(mTrainControl.getTotalMileage() - mLastTotalMileage > 5 * 1000){
+                        mLastTotalMileage = (float)mTrainControl.getTotalMileage();
+                        //更新建议速度，限制速度
+                        mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
+                                mTrainControl.getLimitSpeedArray(),false);
+                    }else{
+                        mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
+                                mTrainControl.getLimitSpeedArray(),true);
+                    }
+                }
+
+
+
                 //更新速率
                 updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
                 //更新当前速度
-                mRunningChartManager.updateCurrentSpeedLine(mTrainControl.getCurrentSpeed());
+                mRunningChartManager.updateCurrentSpeedLine();
 
             }
-//            else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
-//                if(SharePreferenceUtil.loadCurrentSuggestSpeedIndex()<= mTrainControl.getSuggestSpeedArray().length){
-//                    Logger.d(TAG,"========suggest speed======" + mTrainControl.getSuggestSpeed());
-//                    updateSuggestSpeedLine(mTrainControl.getSuggestSpeed());
-//                    //更新速率曲线
-//                    updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
-//                }else{
-//                    ToastManager.showMsg("没有建议速度，行程已结束");
-//                }
-//            }else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_LIMIT_SPEED)){
-//                if(SharePreferenceUtil.loadCurrentLimitSpeedIndex()<= mTrainControl.getLimitSpeedArray().length){
-//                    Logger.d(TAG,"========limit speed======" + mTrainControl.getLimitSpeed());
-//                    updateLimitSpeedLine(mTrainControl.getLimitSpeed());
-//                }else{
-//                    ToastManager.showMsg("没有限制速度,行程已结束");
-//                }
-//            }
         }
     };
 

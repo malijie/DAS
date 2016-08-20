@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.das.control.TrainConstants;
 import com.das.control.TrainControl;
+import com.das.service.SimulatorService;
 import com.das.util.Logger;
 import com.das.util.Utils;
 import com.github.mikephil.charting.charts.LineChart;
@@ -104,7 +105,9 @@ public class RunningSpeedLineChartManager {
     private static float startX = 0;
     private static float endX = 5;
 
-    public void updateXYAxis(double[] suggestSpeedArray,double[] limitSpeedArray){
+
+
+    public void updateXYAxis(double[] suggestSpeedArray,double[] limitSpeedArray,boolean isFirstIn){
         if(suggestSpeedArray == null || limitSpeedArray== null){
             return;
         }
@@ -112,7 +115,8 @@ public class RunningSpeedLineChartManager {
         yLimitSpeedValues.clear();
         ySuggestSpeedValues.clear();
         mLineData.clearValues();
-        mLineData.setXVals(updateXVals());
+        mLineData.setXVals(updateXVals(isFirstIn));
+Logger.d("MLJ","startX=" + startX + ",endX=" +endX);
 
         for(float i=startX;i<endX;i+=0.1){
             float index = i * 100;
@@ -122,7 +126,6 @@ public class RunningSpeedLineChartManager {
             }
             ySuggestSpeedValues.add(new Entry(Utils.meterPerSecond2KMPerSecond((float)suggestSpeedArray[mIndex]), ySuggestSpeedValues.size()));
         }
-
         for(float i=startX;i<endX;i+=0.1){
             float index = i * 100;
             int mIndex = (int)index;
@@ -141,21 +144,11 @@ public class RunningSpeedLineChartManager {
         mLineChart.invalidate();
     }
 
-    private static float mLastCurrentSpeed = 0;
-    private ArrayList<Float> mSpeedList = new ArrayList<Float>();
+    private static List<Integer> mSpeedList = new ArrayList<Integer>();
 
-    public void updateCurrentSpeedLine(float currentSpeed){
+    public void updateCurrentSpeedLine(){
         yCurrentSpeedValues.clear();
-        int maxLength = (int) ((endX - startX)/0.1);
-        if(mSpeedList.size() != maxLength){
-            mSpeedList.add(currentSpeed);
-        }else{
-            mSpeedList.clear();
-            for(int i=0;i<mSpeedList.size()-1;i++){
-                mSpeedList.add(mSpeedList.get(i+1));
-            }
-            mSpeedList.add(currentSpeed);
-        }
+        mSpeedList = SimulatorService.getCurrentSpeedList();
 
         for(int i=0;i<mSpeedList.size();i++){
             yCurrentSpeedValues.add(new Entry(mSpeedList.get(i), i));
@@ -167,20 +160,20 @@ public class RunningSpeedLineChartManager {
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
 
-        mLastCurrentSpeed = currentSpeed;
-
     }
 
 
 
-    private ArrayList<String> updateXVals(){
+    private ArrayList<String> updateXVals(boolean isFirstIn){
+
+        if(!isFirstIn){
+            startX += 5;
+            endX +=5;
+        }
         for (float i = startX; i < endX; i += 0.1) {
             // x轴显示的数据，这里默认使用数字下标显示
             xValues.add("" + Utils.convertFloat1Half(i));
         }
-        startX += 0.1;
-        endX +=0.1;
-
         return xValues;
     }
 

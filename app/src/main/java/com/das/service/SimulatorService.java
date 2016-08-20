@@ -17,6 +17,8 @@ import com.das.manager.ToastManager;
 import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -501,6 +503,14 @@ public class SimulatorService extends Service{
     private int currentSuggestMileage;
     private double mLastTotalMileage;
 
+    private static List<Integer> mCurrentSpeedList = new ArrayList<>();
+
+    public static List<Integer> getCurrentSpeedList(){
+        return mCurrentSpeedList;
+    }
+
+    private static int testSpeed = 10;
+
     private Handler mSimulateHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -509,7 +519,7 @@ public class SimulatorService extends Service{
                 case MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE:
                     removeMessages(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE);
                     mTotalMileage = mTotalMileage + mTrainControl.getCurrentSpeed() * TrainConstants.KM_PER_HOUR_2_M_PER_SECONDS * 1;
-//                    mTotalMileage += 20;
+//mTotalMileage += 20;
                     Logger.d("MLJ","mTotalMileage=" + mTotalMileage);
                     if(mTotalMileage > TrainConstants.TOTAL_MILEAGE * 1000){
                         ToastManager.showMsg("行驶结束!");
@@ -527,6 +537,13 @@ public class SimulatorService extends Service{
                     if(mTotalMileage - mLastTotalMileage >= 100){
                         IntentManager.sendBroadcastMsg(IntentConstants.ACTION_TRAIN_CURVE_MILEAGE);
                         mLastTotalMileage = mTotalMileage;
+
+                        if(mCurrentSpeedList.size() != 50){
+                            mCurrentSpeedList.add(mTrainControl.getCurrentSpeed());
+//mCurrentSpeedList.add(testSpeed++);
+                        }else{
+                            mCurrentSpeedList.clear();
+                        }
                     }
 
                     sendEmptyMessageDelayed(MsgConstant.MSG_CALCULATE_TOTAL_MILEAGE,1000);

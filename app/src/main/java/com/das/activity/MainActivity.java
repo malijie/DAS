@@ -1,12 +1,19 @@
 package com.das.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.das.chart.RunningSpeedLineChartManager;
+import com.das.constants.IntentConstants;
+import com.das.control.TrainControl;
+import com.das.util.Logger;
 import com.example.das.R;
 
 /**
@@ -28,7 +35,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
     private void initData() {
-
     }
 
     private void initViews(){
@@ -68,8 +74,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         }
 
+//    private BroadcastReceiver mMainReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if(intent.getAction().equals(IntentConstants.ACTION_TRAIN_CURVE_MILEAGE)){
+//                new RunningSpeedLineChartManager().updateCurrentSpeedLine(
+//                        TrainControl.getInstance().getCurrentSpeed());
+//            }
+//        }
+//    };
+
     @Override
     protected void onDestroy() {
+        Logger.d("MainActivity","onDestroy");
+//        unregisterReceiver(mMainReceiver);
         super.onDestroy();
     }
 }
