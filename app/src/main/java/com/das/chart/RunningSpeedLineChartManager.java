@@ -142,12 +142,25 @@ public class RunningSpeedLineChartManager {
     }
 
     private static float mLastCurrentSpeed = 0;
+    private ArrayList<Float> mSpeedList = new ArrayList<Float>();
 
     public void updateCurrentSpeedLine(float currentSpeed){
         yCurrentSpeedValues.clear();
+        int maxLength = (int) ((endX - startX)/0.1);
+        if(mSpeedList.size() != maxLength){
+            mSpeedList.add(currentSpeed);
+        }else{
+            mSpeedList.clear();
+            for(int i=0;i<mSpeedList.size()-1;i++){
+                mSpeedList.add(mSpeedList.get(i+1));
+            }
+            mSpeedList.add(currentSpeed);
+        }
 
-        yCurrentSpeedValues.add(new Entry(mLastCurrentSpeed, 0));
-        yCurrentSpeedValues.add(new Entry(currentSpeed, 1));
+        for(int i=0;i<mSpeedList.size();i++){
+            yCurrentSpeedValues.add(new Entry(mSpeedList.get(i), i));
+        }
+
         mCurrentSpeedLineDataSet.setYVals(yCurrentSpeedValues);
         mLineData.addDataSet(mCurrentSpeedLineDataSet);
 
