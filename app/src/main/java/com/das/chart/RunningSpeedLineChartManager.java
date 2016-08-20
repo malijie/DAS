@@ -36,10 +36,12 @@ public class RunningSpeedLineChartManager {
     private XAxis mXAxis = null;
     private ArrayList<Entry> ySuggestSpeedValues = new ArrayList<>();
     private ArrayList<Entry> yLimitSpeedValues = new ArrayList<>();
+    private ArrayList<Entry> yCurrentSpeedValues = new ArrayList<>();
 
     private ArrayList<String> xValues = new ArrayList<>();
     private LineDataSet mSuggestSpeedLineDataSet = null;
     private LineDataSet mLimitSpeedLineDataSet = null;
+    private LineDataSet mCurrentSpeedLineDataSet = null;
 
 
     public RunningSpeedLineChartManager(LineChart lineChart){
@@ -127,7 +129,7 @@ public class RunningSpeedLineChartManager {
             if(mIndex > limitSpeedArray.length){
                 break;
             }
-            yLimitSpeedValues.add(new Entry((float) Utils.meterPerSecond2KMPerSecond((float)limitSpeedArray[mIndex]), yLimitSpeedValues.size()));
+            yLimitSpeedValues.add(new Entry(Utils.meterPerSecond2KMPerSecond((float)limitSpeedArray[mIndex]), yLimitSpeedValues.size()));
         }
 
         mLimitSpeedLineDataSet.setYVals(yLimitSpeedValues);
@@ -137,6 +139,23 @@ public class RunningSpeedLineChartManager {
 
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
+    }
+
+    private static float mLastCurrentSpeed = 0;
+
+    public void updateCurrentSpeedLine(float currentSpeed){
+        yCurrentSpeedValues.clear();
+
+        yCurrentSpeedValues.add(new Entry(mLastCurrentSpeed, 0));
+        yCurrentSpeedValues.add(new Entry(currentSpeed, 1));
+        mCurrentSpeedLineDataSet.setYVals(yCurrentSpeedValues);
+        mLineData.addDataSet(mCurrentSpeedLineDataSet);
+
+        mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+
+        mLastCurrentSpeed = currentSpeed;
+
     }
 
 
@@ -172,9 +191,25 @@ public class RunningSpeedLineChartManager {
         mLineData.setXVals(getXValue(5));
         mLineData.addDataSet(getSuggestSpeedLineDataSet());
         mLineData.addDataSet(getLimitSpeedLineDataSet());
+        mLineData.addDataSet(getCurrentSpeedLineDataSet());
         mLineData.setDrawValues(true);
         mLineChart.setData(mLineData);
         mLineChart.invalidate();
+    }
+
+    private LineDataSet getCurrentSpeedLineDataSet() {
+        mCurrentSpeedLineDataSet =  new LineDataSet(getCurrentSpeedYValues(), "当前速度");
+        mCurrentSpeedLineDataSet.setLineWidth(1.75f); // 线宽
+        mCurrentSpeedLineDataSet.setCircleSize(3f);// 显示的圆形大小
+        mCurrentSpeedLineDataSet.setColor(Color.BLACK);// 显示颜色
+        mCurrentSpeedLineDataSet.setCircleColor(Color.BLACK);// 圆形的颜色
+        mCurrentSpeedLineDataSet.setHighLightColor(Color.BLACK); // 高亮的线的颜色
+        mCurrentSpeedLineDataSet.setCubicIntensity(1f);//设置平滑度
+        mCurrentSpeedLineDataSet.setDrawFilled(true);//允许填充
+        mCurrentSpeedLineDataSet.setDrawCubic(false);//设置曲线平滑
+        mCurrentSpeedLineDataSet.setDrawCircles(false);//不显示小圆点
+
+        return mSuggestSpeedLineDataSet;
     }
 
     private LineDataSet getSuggestSpeedLineDataSet() {
@@ -218,6 +253,11 @@ public class RunningSpeedLineChartManager {
     private ArrayList<Entry> getSuggestSpeedYValues(){
         ySuggestSpeedValues.add(new Entry(1, ySuggestSpeedValues.size()));
         return ySuggestSpeedValues;
+    }
+
+    private ArrayList<Entry> getCurrentSpeedYValues(){
+        yCurrentSpeedValues.add(new Entry(1, yCurrentSpeedValues.size()));
+        return yCurrentSpeedValues;
     }
 
     private ArrayList<Entry> getLimitSpeedYValues(){

@@ -46,8 +46,9 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         initViews();
         initData();
         initChart();
-        showHistorySuggestSpeedChart();
-        showHistoryLimitSpeedChart();
+
+//        showHistorySuggestSpeedChart();
+//        showHistoryLimitSpeedChart();
     }
 
 
@@ -138,6 +139,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mRunningChartManager.updateSpeedLimitLine(mileage);
     }
 
+    private static float speed = 50;
     private BroadcastReceiver mRunningSpeedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -153,10 +155,13 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 if(mTrainControl.getTotalMileage() > TrainConstants.TOTAL_MILEAGE * 1000){
                    return;
                 }
-
+                //更新建议速度，限制速度
                 mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
                         mTrainControl.getLimitSpeedArray());
+                //更新速率
                 updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
+                //更新当前速度
+                mRunningChartManager.updateCurrentSpeedLine(mTrainControl.getCurrentSpeed());
 
             }
 //            else if(intent.getAction().equals(IntentConstants.ACTION_UPDATE_RUNNING_CURVE_SUGGEST_SPEED)){
