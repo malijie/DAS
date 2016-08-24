@@ -23,6 +23,7 @@ import com.das.service.SimulatorService;
 import com.das.util.DistanceUtil;
 import com.das.util.Logger;
 import com.das.util.SharePreferenceUtil;
+import com.das.util.Utils;
 import com.example.das.R;
 
 import java.text.SimpleDateFormat;
@@ -128,7 +129,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         SharePreferenceUtil.saveTrainNo(mEditTrainNo.getText().toString());
         SharePreferenceUtil.saveTrainModel(mSpinnerTrainInfo.getSelectedItem().toString());
         SharePreferenceUtil.saveTrainStartTime(new SimpleDateFormat("HH:mm:ss").format(new Date()));
-
+        Utils.setStartTimeMillions(System.currentTimeMillis());
 
     }
 

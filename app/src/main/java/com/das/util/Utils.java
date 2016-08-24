@@ -47,9 +47,23 @@ public class Utils {
         return format.format(millis);
     }
 
+    public static String millis2CurrentTime(long millis){
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(millis);
+    }
+
     public static float meterPerSecond2KMPerSecond(float meterPerSecond){
         return meterPerSecond * 3.6f;
     }
 
+
+    private static long startTimeMillions;
+    public static void setStartTimeMillions(long timeMillions){
+        startTimeMillions = timeMillions;
+    }
+
+    public static long getStartTimeMillions(){
+        return startTimeMillions;
+    }
 
 }

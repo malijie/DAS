@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.das.util.SharePreferenceUtil;
+import com.das.util.Utils;
 import com.example.das.R;
 
 /**
@@ -34,6 +35,7 @@ public class TrainInformationFragment extends Fragment{
         mTextTrainNo.setText("车次:" + SharePreferenceUtil.loadTrainNo());
         mTextTrainStyle.setText("车型:" + SharePreferenceUtil.loadTrainModel());
         mTextScheduleStartTime.setText("计划发车时间:" + SharePreferenceUtil.loadTrainStartTime());
+        mTextScheduleEndTime.setText("计划达到时间:" + Utils.millis2CurrentTime(Utils.getStartTimeMillions() + 8580 * 1000));
     }
 
     private void initViews(View view) {
