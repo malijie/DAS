@@ -38,8 +38,8 @@ public class MileageBarChart {
 
         mBarchart.setTouchEnabled(true); // 设置是否可以触摸
 
-        mBarchart.setDragEnabled(true);// 是否可以拖拽
-        mBarchart.setScaleEnabled(true);// 是否可以缩放
+        mBarchart.setDragEnabled(false);// 是否可以拖拽
+        mBarchart.setScaleEnabled(false);// 是否可以缩放
 
         mBarchart.setPinchZoom(false);//
 
