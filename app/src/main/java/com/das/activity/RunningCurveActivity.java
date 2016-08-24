@@ -47,6 +47,8 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         initData();
         initChart();
 
+        mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
+                mTrainControl.getLimitSpeedArray(),true);
 //        showHistorySuggestSpeedChart();
 //        showHistoryLimitSpeedChart();
     }

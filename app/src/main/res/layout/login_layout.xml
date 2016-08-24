@@ -76,7 +76,8 @@
         <Spinner
             android:id="@+id/id_login_spinner_train_info"
             android:layout_width="500dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 
     <LinearLayout
