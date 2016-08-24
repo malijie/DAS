@@ -135,9 +135,6 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
         mRunningChartManager.updateLimitSpeedYValues((int)speed);
     }
 
-    private void updateCurrentSpeedLine(float mileage){
-        mRunningChartManager.updateSpeedLimitLine(mileage);
-    }
 
     private static float speed = 10;
     private static float mLastTotalMileage = 0;
@@ -178,7 +175,7 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
 
 
                 //更新速率
-                updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
+//                updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
                 //更新当前速度
                 mRunningChartManager.updateCurrentSpeedLine();
 

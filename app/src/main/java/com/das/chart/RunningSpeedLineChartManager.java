@@ -116,7 +116,6 @@ public class RunningSpeedLineChartManager {
         ySuggestSpeedValues.clear();
         mLineData.clearValues();
         mLineData.setXVals(updateXVals(isFirstIn));
-Logger.d("MLJ","startX=" + startX + ",endX=" +endX);
 
         for(float i=startX;i<endX;i+=0.1){
             float index = i * 100;
@@ -190,10 +189,6 @@ Logger.d("MLJ","startX=" + startX + ",endX=" +endX);
     }
 
     public void initLineData(){
-//        mLineData.clearValues();
-//        ySuggestSpeedValues.clear();
-//        yLimitSpeedValues.clear();
-//        xValues.clear();
         mLineData.setXVals(getXValue(5));
         mLineData.addDataSet(getSuggestSpeedLineDataSet());
         mLineData.addDataSet(getLimitSpeedLineDataSet());
@@ -215,7 +210,7 @@ Logger.d("MLJ","startX=" + startX + ",endX=" +endX);
         mCurrentSpeedLineDataSet.setDrawCubic(false);//设置曲线平滑
         mCurrentSpeedLineDataSet.setDrawCircles(false);//不显示小圆点
 
-        return mSuggestSpeedLineDataSet;
+        return mCurrentSpeedLineDataSet;
     }
 
     private LineDataSet getSuggestSpeedLineDataSet() {
@@ -314,16 +309,5 @@ Logger.d("MLJ","startX=" + startX + ",endX=" +endX);
 //    }
 
 
-    private LimitLine xLimitLine = null;
-
-    public void updateSpeedLimitLine(float mileage){
-
-        mXAxis.removeLimitLine(xLimitLine);
-        xLimitLine = new LimitLine(mileage,"速率");
-        xLimitLine.setLineColor(Color.BLUE);
-        xLimitLine.setTextColor(Color.BLUE);
-        mXAxis.addLimitLine(xLimitLine);
-        mLineChart.invalidate();
-    }
 
 }
