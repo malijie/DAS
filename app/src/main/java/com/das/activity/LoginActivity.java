@@ -112,8 +112,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 if(checkPosition()) {
                     saveTrainInfo();
                     IntentManager.startActivity(MainActivity.class);
-                    IntentManager.startService(SimulatorService.class,
-                            IntentConstants.ACTION_START_SIMULATE);
+//                    IntentManager.startService(SimulatorService.class,
+//                            IntentCo`
+//
+//
+// ads
+//
+// asd
+// as
+// d
+// asnstants.ACTION_START_SIMULATE);
                 }
                 break;
             default:

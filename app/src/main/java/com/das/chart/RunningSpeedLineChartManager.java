@@ -107,6 +107,8 @@ public class RunningSpeedLineChartManager {
 
 
 
+    private static List<Integer> mSpeedList = new ArrayList<Integer>();
+
     public void updateXYAxis(double[] suggestSpeedArray,double[] limitSpeedArray,boolean isFirstIn){
         if(suggestSpeedArray == null || limitSpeedArray== null){
             return;
@@ -143,11 +145,13 @@ public class RunningSpeedLineChartManager {
         mLineChart.invalidate();
     }
 
-    private static List<Integer> mSpeedList = new ArrayList<Integer>();
-
-    public void updateCurrentSpeedLine(){
+    public void updateCurrentSpeedLine(boolean speedStatus){
         yCurrentSpeedValues.clear();
         mSpeedList = SimulatorService.getCurrentSpeedList();
+
+        if(!speedStatus){
+            mSpeedList.clear();
+        }
 
         for(int i=0;i<mSpeedList.size();i++){
             yCurrentSpeedValues.add(new Entry(mSpeedList.get(i), i));
@@ -161,13 +165,21 @@ public class RunningSpeedLineChartManager {
 
     }
 
-
+    public void clearCurrentSpeedLine(){
+        yCurrentSpeedValues.clear();
+        mCurrentSpeedLineDataSet.setYVals(yCurrentSpeedValues);
+        mLineData.addDataSet(mCurrentSpeedLineDataSet);
+        mLineChart.setData(mLineData);
+        mLineChart.invalidate();
+    }
 
     private ArrayList<String> updateXVals(boolean isFirstIn){
 
         if(!isFirstIn){
             startX += 5;
             endX +=5;
+
+
         }
         for (float i = startX; i < endX; i += 0.1) {
             // x轴显示的数据，这里默认使用数字下标显示

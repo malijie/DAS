@@ -154,32 +154,33 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
                 }
 
             }else if(intent.getAction().equals(IntentConstants.ACTION_TRAIN_CURVE_MILEAGE)){
+                boolean status = true;
                 if(mTrainControl.getTotalMileage() > TrainConstants.TOTAL_MILEAGE * 1000){
                    return;
                 }
 
                 if(mTrainControl.getTotalMileage() < 5000){
                     //更新建议速度，限制速度
+                    status = true;
                     mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
-                            mTrainControl.getLimitSpeedArray(),true);
+                            mTrainControl.getLimitSpeedArray(),status);
+
                 }else{
-                    if(mTrainControl.getTotalMileage() - mLastTotalMileage > 5 * 1000){
+                    if(mTrainControl.getTotalMileage() - mLastTotalMileage >= 5 * 1000){
                         mLastTotalMileage = (float)mTrainControl.getTotalMileage();
+                        status = false;
                         //更新建议速度，限制速度
                         mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
-                                mTrainControl.getLimitSpeedArray(),false);
+                                mTrainControl.getLimitSpeedArray(),status);
                     }else{
+                        status = true;
                         mRunningChartManager.updateXYAxis(mTrainControl.getSuggestSpeedArray(),
                                 mTrainControl.getLimitSpeedArray(),true);
                     }
                 }
 
-
-
-                //更新速率
-//                updateCurrentSpeedLine((float)Utils.convertM2kM(mTrainControl.getTotalMileage()));
-                //更新当前速度
-                mRunningChartManager.updateCurrentSpeedLine();
+                //更新当前速度a
+                mRunningChartManager.updateCurrentSpeedLine(status);
 
             }
         }
@@ -198,6 +199,6 @@ public class RunningCurveActivity extends Activity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         mIsFirstStart = true;
-        unregisterReceiver(mRunningSpeedReceiver);
+//        unregisterReceiver(mRunningSpeedReceiver);
     }
 }
